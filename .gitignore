@@ -9,3 +9,9 @@ ref.html
 static/photography/2026/01/*_original.JPG
 *.bak
 *_backup/
+
+# 可选：排除所有大于 10MB 的文件（需要手动管理）
+# 如果你想排除特定目录的大文件，可以添加：
+# static/photography/**/*.JPG
+# static/photography/**/*.jpg
+# !static/photography/**/*_compressed.jpg  # 但保留压缩版本

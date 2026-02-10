@@ -17,7 +17,7 @@ const products = [
   {
     id: '14inch',
     size: '[14寸] 30.5 x 35.6 cm',
-    price: 65,
+    price: 68,
     tag: '满印无裁',
     description: null,
     isRecommended: true
@@ -25,7 +25,7 @@ const products = [
   {
     id: '16inch',
     size: '[16寸] 30.5 x 40.6 cm',
-    price: 72,
+    price: 88,
     tag: null,
     description: null,
     isRecommended: false
@@ -33,7 +33,7 @@ const products = [
   {
     id: '20inch',
     size: '[20寸] 40.0 x 50.0 cm',
-    price: 114,
+    price: 119,
     tag: null,
     description: null,
     isRecommended: false
@@ -41,7 +41,7 @@ const products = [
   {
     id: 'planA',
     size: '[14寸] 30.5 x 35.6 cm + 35x40cm 专业装裱',
-    price: 227,
+    price: 248,
     tag: '小巧紧凑',
     description: '卡纸宽2.5cm，画面利用率高',
     isRecommended: false
@@ -49,7 +49,7 @@ const products = [
   {
     id: 'planB',
     size: '[16寸] 30.5 x 40.6 cm + 35x40cm 专业装裱',
-    price: 240,
+    price: 298,
     tag: '艺术感强',
     description: '卡纸宽5cm，更有艺术品装裱的感觉',
     isRecommended: false
@@ -57,7 +57,7 @@ const products = [
   {
     id: 'planC',
     size: '[20寸] 40.0 x 50.0 cm + 45x51cm 专业装裱',
-    price: 360,
+    price: 368,
     tag: '效果最佳',
     description: '卡纸宽5cm，大画幅视觉张力更强',
     isRecommended: false
@@ -67,6 +67,22 @@ const products = [
 export default function Artwork001() {
   // 默认选中第二个（14寸推荐款），因为第一个现在是数字版
   const [selectedItem, setSelectedItem] = useState(products[1]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handlePurchaseClick = () => {
+    if (selectedItem.isDigital) {
+      window.location.href = '/sukima-ml/digital-001';
+      return;
+    }
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
+
+  // Construct buy page URL with query parameters
+  const buyPageUrl = `/buy?product=Portrait of the Gap Sage&variant=Official Release&spec=${encodeURIComponent(selectedItem.size)}&price=${selectedItem.price}`;
 
   return (
     <Layout
@@ -166,13 +182,9 @@ export default function Artwork001() {
               </div>
 
               <div style={{ marginTop: '40px' }}>
-                <Link
-                  to={selectedItem.isDigital ? '/sukima-ml/digital-001' : '/buy'}
-                  className={styles.purchaseBtn}
-                  style={{ display: 'block', textDecoration: 'none' }}
-                >
+                <button className={styles.purchaseBtn} onClick={handlePurchaseClick}>
                   {selectedItem.isDigital ? '获取数字版 / GET DIGITAL COPY' : `奉纳信仰 (V我${selectedItem.price}) / OFFER FAITH`}
-                </Link>
+                </button>
 
                 <p className={styles.smallNotice}>
                   {selectedItem.isDigital ? '* 数字典藏包含高清原图' : '* 点击按钮扫码，助紫妈重返幻想乡'}
@@ -182,6 +194,43 @@ export default function Artwork001() {
             </div>
           </div>
         </main>
+
+        {/* Purchase Modal */}
+        {isModalOpen && (
+          <div className={styles.modalOverlay} onClick={handleCloseModal}>
+            <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
+              <button className={styles.modalCloseBtn} onClick={handleCloseModal}>×</button>
+              <div className={styles.modalGrid}>
+                <div className={styles.modalImageSection}>
+                  <img src="/img/artworks/yukari_v0.5.webp" alt="戴珍珠耳环的八云紫" className={styles.modalImage} />
+                </div>
+                <div className={styles.modalInfoSection}>
+                  <div>
+                    <h2 className={styles.modalTitle}>确认选购信息</h2>
+                    <div className={styles.modalDetailRow}>
+                      <span className={styles.modalDetailLabel}>作品:</span>
+                      <span>Portrait of the Gap Sage</span>
+                    </div>
+                    <div className={styles.modalDetailRow}>
+                      <span className={styles.modalDetailLabel}>款式:</span>
+                      <span>Official Release</span>
+                    </div>
+                    <div className={styles.modalDetailRow}>
+                      <span className={styles.modalDetailLabel}>规格:</span>
+                      <span>{selectedItem.size}</span>
+                    </div>
+                    <div className={styles.modalPrice}>
+                      ¥ {Number.isInteger(selectedItem.price) ? `${selectedItem.price}.00` : selectedItem.price}
+                    </div>
+                  </div>
+                  <a href={buyPageUrl} className={styles.confirmPurchaseBtn}>
+                    前往购买页面 / Proceed to Buy
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </Layout>
   );
