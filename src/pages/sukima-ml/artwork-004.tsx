@@ -1,0 +1,240 @@
+import React from 'react';
+import Layout from '@theme/Layout';
+import styles from './artwork-004.module.css';
+
+// 定义产品数据 — 价格对应002 special款
+const products = [
+    {
+        id: 'core-14',
+        type: '仅画芯',
+        name: '14寸画芯',
+        spec: '14 inch',
+        imageSize: '30 × 35 cm',
+        price: 68,
+        note: '满印无留白',
+    },
+    {
+        id: 'core-16',
+        type: '仅画芯',
+        name: '16寸画芯',
+        spec: '16 inch',
+        isRecommended: true,
+        tag: 'Recommended',
+        description: '360PPI原生分辨率，Pixel-to-Paper无损映射',
+        imageSize: '30 × 40 cm',
+        price: 78,
+        note: '满印无留白',
+    },
+    {
+        id: 'core-20',
+        type: '仅画芯',
+        name: '20寸画芯',
+        spec: '20 inch',
+        imageSize: '40 × 50 cm',
+        price: 119,
+        note: '满印无留白',
+    },
+    {
+        id: 'framed-14',
+        type: '装裱款',
+        name: '装裱款 14寸',
+        spec: '16寸画框',
+        imageSize: '25 × 33.4 cm',
+        price: 215,
+        note: '含卡纸',
+    },
+    {
+        id: 'framed-16',
+        type: '装裱款',
+        name: '装裱款 16寸',
+        spec: '40×50cm画框',
+        imageSize: '30 × 40 cm',
+        price: 288,
+        note: '含20寸卡纸',
+        isRecommended: true,
+        tag: 'Recommended',
+        description: '360PPI无损映射，装裱效果极佳',
+    },
+    {
+        id: 'framed-20',
+        type: '装裱款',
+        name: '装裱款 20寸',
+        spec: '60×50cm画框',
+        imageSize: '50 × 37.5 cm',
+        price: 378,
+        note: '含卡纸',
+        tag: '效果最佳',
+        description: '大画幅视觉张力更强',
+    },
+];
+
+export default function Artwork004() {
+    const [selectedProduct, setSelectedProduct] = React.useState(products[0]);
+    const [isModalOpen, setIsModalOpen] = React.useState(false);
+
+    const handlePurchaseClick = () => {
+        setIsModalOpen(true);
+    };
+
+    const handleCloseModal = () => {
+        setIsModalOpen(false);
+    };
+
+    const currentPrice = selectedProduct.price;
+    const currentImage = '/img/artworks/artwork-004.webp';
+
+    // Construct buy page URL with query parameters
+    const buyPageUrl = `/buy?product=${encodeURIComponent('妖怪之山的秋千')}&variant=${encodeURIComponent('Standard')}&spec=${encodeURIComponent(selectedProduct.name + (selectedProduct.spec ? ` (${selectedProduct.spec})` : ''))}&price=${currentPrice}`;
+
+    return (
+        <Layout
+            title="《妖怪之山的秋千》"
+            description="東方風神録 × 弗拉戈纳尔《秋千》— 早苗与文文的决定性瞬间"
+        >
+            <div className={styles.pageContainer}>
+                <main className={styles.mainGrid}>
+
+                    {/* 左侧：艺术展示区 */}
+                    <div className={styles.visualColumn}>
+                        <div className={styles.cardContainer}>
+                            <div className={`${styles.artworkCard} ${styles.cardActive}`}>
+                                <div className={styles.frameWrapper}>
+                                    <img
+                                        src={currentImage}
+                                        alt="妖怪之山的秋千"
+                                        className={styles.artworkImage}
+                                    />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className={styles.captionText}>
+                            Fig 4. The Swing × Mountain of Faith, 2025.
+                        </div>
+                    </div>
+
+                    {/* 右侧：信息交互区 */}
+                    <div className={styles.infoColumn}>
+                        <div className={styles.infoContent}>
+
+                            <h1 className={styles.mainTitle}>
+                                The Swing × Mountain of Faith<br />
+                                <span className={styles.subTitleCn}>妖怪之山的秋千</span>
+                            </h1>
+
+                            <div className={styles.artistMeta}>
+                                <span className={styles.badge} style={{ marginRight: 10, backgroundColor: '#6a1b9a' }}>New Arrival</span>
+                                <span>Artist: Sukima-ML Official</span>
+                            </div>
+
+                            {/* 动态价格显示 */}
+                            <div className={styles.priceTag}>
+                                ¥ {currentPrice}.00
+                            </div>
+
+                            <div className={styles.dividerShort}></div>
+
+                            <div className={styles.quoteBlock}>
+                                <p>
+                                    哈内姆勒 Photo RAG 308g (Hahnemühle)<br />
+                                    博物馆级装裱
+                                    <br /><br />
+                                    <strong>🔪 全链路无损映射 (Pixel-to-Paper)</strong><br />
+                                    这次画师直接以360PPI——打印机的原生分辨率起稿。
+                                    我们第一次实现了从画布到纸面的完全无损映射：每一个墨点都是画师亲手所绘，没有算法插值，绝对锐利。
+                                    <br /><br />
+                                    <a href="/giclee" className={styles.learnMoreLink}>点击了解更多工艺细节 →</a>
+                                    <br /><br />
+                                    画师主页：<a href="https://space.bilibili.com/308844850" target="_blank" rel="noopener noreferrer" style={{ color: '#6a1b9a', textDecoration: 'underline' }}>Bilibili @真菌_isomer</a>
+                                </p>
+                            </div>
+
+                            {/* 交互式价格表 */}
+                            <div className={styles.specsContainer}>
+                                <h3 className={styles.specTitle}>1. 选择规格 (Select Size)</h3>
+                                <div className={styles.priceList}>
+                                    {products.map((item: any) => (
+                                        <div
+                                            key={item.id}
+                                            className={`
+                                                ${styles.priceItem} 
+                                                ${item.isRecommended ? styles.recommendedItem : ''}
+                                                ${selectedProduct.id === item.id ? styles.selected : ''}
+                                            `}
+                                            onClick={() => setSelectedProduct(item)}
+                                        >
+                                            <div className={styles.itemMainInfo}>
+                                                <span className={styles.sizeLabel}>
+                                                    {item.name} {item.spec && <span style={{ fontSize: '0.8em', color: '#666' }}>({item.spec})</span>}
+                                                </span>
+                                                <span className={styles.priceValue}>
+                                                    ¥ {item.price}
+                                                </span>
+                                            </div>
+                                            <div className={styles.itemTagRow}>
+                                                <span className={styles.itemDescription}>
+                                                    {item.type} · 画面: {item.imageSize} · {item.note}
+                                                </span>
+                                            </div>
+                                            {(item.tag || item.description) && (
+                                                <div className={styles.itemTagRow} style={{ marginTop: '4px' }}>
+                                                    {item.tag && <span className={styles.badge} style={{ marginRight: '8px' }}>{item.tag}</span>}
+                                                    {item.description && <span className={styles.itemDescription} style={{ display: 'inline', color: '#e65100' }}>{item.description}</span>}
+                                                </div>
+                                            )}
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+
+                            <div style={{ marginTop: '40px' }}>
+                                <button className={styles.purchaseBtn} onClick={handlePurchaseClick}>
+                                    荡入幻想 / Swing into Fantasy
+                                </button>
+                                <p className={styles.smallNotice}>* 点击按钮扫码，备注规格</p>
+                            </div>
+
+                        </div>
+                    </div>
+                </main>
+
+                {/* Purchase Modal */}
+                {isModalOpen && (
+                    <div className={styles.modalOverlay} onClick={handleCloseModal}>
+                        <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
+                            <button className={styles.modalCloseBtn} onClick={handleCloseModal}>×</button>
+                            <div className={styles.modalGrid}>
+                                <div className={styles.modalImageSection}>
+                                    <img src={currentImage} alt="妖怪之山的秋千" className={styles.modalImage} />
+                                </div>
+                                <div className={styles.modalInfoSection}>
+                                    <div>
+                                        <h2 className={styles.modalTitle}>确认选购信息</h2>
+                                        <div className={styles.modalDetailRow}>
+                                            <span className={styles.modalDetailLabel}>作品:</span>
+                                            <span>妖怪之山的秋千 (The Swing)</span>
+                                        </div>
+                                        <div className={styles.modalDetailRow}>
+                                            <span className={styles.modalDetailLabel}>规格:</span>
+                                            <span>{selectedProduct.name}</span>
+                                        </div>
+                                        <div className={styles.modalDetailRow}>
+                                            <span className={styles.modalDetailLabel}>配置:</span>
+                                            <span>{selectedProduct.note}</span>
+                                        </div>
+                                        <div className={styles.modalPrice}>
+                                            ¥ {currentPrice}.00
+                                        </div>
+                                    </div>
+                                    <a href={buyPageUrl} className={styles.confirmPurchaseBtn}>
+                                        前往购买页面 / Proceed to Buy
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                )}
+            </div>
+        </Layout>
+    );
+}

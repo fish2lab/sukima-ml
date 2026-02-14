@@ -14,7 +14,7 @@ import { artworks } from '../../data/galleryData';
 const YUKARI_BASE_WIDTH_PX = 750; // Increased to match new artwork width (500px / 0.666)
 
 export default function MagicGallery() {
-  const [currentIndex, setCurrentIndex] = useState(1);
+  const [currentIndex, setCurrentIndex] = useState(0);
   const [showInfo, setShowInfo] = useState(false);
   const [direction, setDirection] = useState(0);
   const [generations, setGenerations] = useState<Record<string, number>>({});
