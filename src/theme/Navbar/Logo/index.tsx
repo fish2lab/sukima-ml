@@ -6,11 +6,10 @@ import styles from './styles.module.css';
 
 /**
  * 自定义 Logo 组件 - 双品牌展示
- * 隙间月影 (指向首页) & Studio Phantasm (指向摄影页面)
+ * 隙间月影 (指向首页) & Studio Phantasm (指向摄影网站 fcsu.dev)
  */
 export default function Logo(): ReactNode {
     const logoLink = useBaseUrl('/');
-    const phantasmLink = useBaseUrl('/phantasm');
     const logoImageUrl = useBaseUrl('/img/new.webp');
 
     return (
@@ -30,7 +29,7 @@ export default function Logo(): ReactNode {
                     隙间月影
                 </Link>
                 <span className={styles.separator}>&</span>
-                <Link to={phantasmLink} className={styles.phantasmLink}>
+                <Link to="https://fcsu.dev" className={styles.phantasmLink}>
                     Studio Phantasm
                 </Link>
             </div>

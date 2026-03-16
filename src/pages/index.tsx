@@ -39,7 +39,7 @@ const navigationItems: NavigationItem[] = [
   },
   {
     title: 'PHANTASM',
-    link: '/phantasm',
+    link: 'https://fcsu.dev',
     description: <Translate id="home.module.phantasm.desc">Medium format photography with Fujifilm GFX100S.</Translate>,
   },
 ];
@@ -163,7 +163,7 @@ function ASCIIDemo() {
 
       {/* Phase Phantasm Link */}
       <Link
-        to="/phantasm"
+        to="https://fcsu.dev"
         style={{
           position: 'absolute',
           top: '50%',

@@ -72,22 +72,7 @@ const config: Config = {
   ],
 
   plugins: [
-    // Redirect short URLs to /phantasm
-    [
-      '@docusaurus/plugin-client-redirects',
-      {
-        redirects: [
-          {
-            from: '/ph',
-            to: '/phantasm',
-          },
-          {
-            from: '/photograph',
-            to: '/phantasm',
-          },
-        ],
-      },
-    ],
+    // Redirects removed - photography moved to fcsu.dev
   ],
 
   themeConfig: {
@@ -132,7 +117,7 @@ const config: Config = {
           className: 'navbar-sukima-item',
         },
         {
-          to: '/phantasm',
+          href: 'https://fcsu.dev',
           label: '摄影作品',
           position: 'left',
           className: 'navbar-phantasm-item',
