@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Footer from '@theme-original/Footer';
+import { translate } from '@docusaurus/Translate';
 import QRCodeModal from '../../components/QRCodeModal';
 
 export default function FooterWrapper(props) {
@@ -28,7 +29,8 @@ export default function FooterWrapper(props) {
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         imageSrc="/img/groupQRcode.webp"
-        title="扫码加入QQ群"
+        title={translate({ id: 'qr.qq.title', message: '扫码加入QQ群' })}
+        imageAlt={translate({ id: 'qr.qq.alt', message: '隙间月影 QQ 群二维码' })}
       />
     </>
   );

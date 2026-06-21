@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react';
+import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import { useColorMode } from '@docusaurus/theme-common';
 
 interface GiscusCommentsProps {
@@ -7,7 +8,9 @@ interface GiscusCommentsProps {
 
 export default function GiscusComments({ forceTheme }: GiscusCommentsProps = {}) {
   const { colorMode } = useColorMode();
+  const { i18n } = useDocusaurusContext();
   const giscusRef = useRef<HTMLDivElement>(null);
+  const giscusLang = i18n.currentLocale === 'en' ? 'en' : 'zh-CN';
 
   useEffect(() => {
     if (!giscusRef.current) return;
@@ -24,7 +27,7 @@ export default function GiscusComments({ forceTheme }: GiscusCommentsProps = {})
     script.setAttribute('data-emit-metadata', '0');
     script.setAttribute('data-input-position', 'top');
     script.setAttribute('data-theme', forceTheme || (colorMode === 'dark' ? 'dark' : 'light'));
-    script.setAttribute('data-lang', 'zh-CN');
+    script.setAttribute('data-lang', giscusLang);
     script.setAttribute('crossorigin', 'anonymous');
     script.async = true;
 
@@ -35,7 +38,7 @@ export default function GiscusComments({ forceTheme }: GiscusCommentsProps = {})
         giscusRef.current.innerHTML = '';
       }
     };
-  }, [colorMode, forceTheme]);
+  }, [colorMode, forceTheme, giscusLang]);
 
   return <div ref={giscusRef} />;
 }

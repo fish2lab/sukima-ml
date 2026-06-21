@@ -1,17 +1,28 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Layout from '@theme/Layout';
 import Head from '@docusaurus/Head';
 import Translate, { translate } from '@docusaurus/Translate';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { ChevronLeft, ChevronRight, X } from 'lucide-react';
 import clsx from 'clsx';
-import useBaseUrl from '@docusaurus/useBaseUrl';
+import { useBaseUrlUtils } from '@docusaurus/useBaseUrl';
 import { useHistory, useLocation } from '@docusaurus/router';
 
-import { artworks } from '../../data/galleryData';
+import { artworks, type Artwork } from '../../data/galleryData';
+import {
+  getArtworkDescription,
+  getArtworkSubtitle,
+  getArtworkTitle,
+} from '../../utils/galleryTranslations';
 
-// --- Constants ---
-const YUKARI_BASE_WIDTH_PX = 750; // Increased to match new artwork width (500px / 0.666)
+type BubblePosition = { top: string | number, left: string | number };
+type YukariHitMap = {
+  width: number;
+  height: number;
+  alphaData: Uint8ClampedArray;
+  minY: number;
+  maxX: number;
+};
 
 export default function MagicGallery() {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -21,9 +32,13 @@ export default function MagicGallery() {
 
   const history = useHistory();
   const location = useLocation();
+  const { withBaseUrl } = useBaseUrlUtils();
+  const shouldReduceMotion = useReducedMotion();
   const [isMobile, setIsMobile] = useState(false);
-  const imageRef = React.useRef<HTMLImageElement>(null);
-  const [bubblePosition, setBubblePosition] = useState<{ top: string | number, left: string | number } | null>(null);
+  const imageRef = useRef<HTMLImageElement>(null);
+  const hitMapRef = useRef<YukariHitMap | null>(null);
+  const [bubblePosition, setBubblePosition] = useState<BubblePosition | null>(null);
+  const motionDuration = shouldReduceMotion ? 0.01 : 1;
 
   useEffect(() => {
     const handleResize = () => {
@@ -48,80 +63,77 @@ export default function MagicGallery() {
     }
   }, [location, history]);
 
-  // Pixel-perfect click detection & Dynamic Positioning
+  const getYukariHitMap = (img: HTMLImageElement): YukariHitMap | null => {
+    const cached = hitMapRef.current;
+    if (cached && cached.width === img.naturalWidth && cached.height === img.naturalHeight) {
+      return cached;
+    }
+
+    // Cache a single alpha map so clicks don't re-scan the whole character image.
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d', { willReadFrequently: true });
+    if (!ctx) return null;
+
+    const width = img.naturalWidth;
+    const height = img.naturalHeight;
+    canvas.width = width;
+    canvas.height = height;
+    ctx.drawImage(img, 0, 0);
+
+    const alphaData = ctx.getImageData(0, 0, width, height).data;
+    let minY = 0;
+    let maxX = width;
+
+    topScan: for (let py = 0; py < height; py++) {
+      for (let px = 0; px < width; px++) {
+        if (alphaData[(py * width + px) * 4 + 3] > 10) {
+          minY = py;
+          break topScan;
+        }
+      }
+    }
+
+    rightScan: for (let px = width - 1; px >= 0; px--) {
+      for (let py = 0; py < height; py++) {
+        if (alphaData[(py * width + px) * 4 + 3] > 10) {
+          maxX = px;
+          break rightScan;
+        }
+      }
+    }
+
+    hitMapRef.current = { width, height, alphaData, minY, maxX };
+    return hitMapRef.current;
+  };
+
+  // Pixel-perfect click detection & dynamic positioning.
   const handleImageClick = (e: React.MouseEvent<HTMLImageElement>) => {
     const img = imageRef.current;
     if (!img) return;
 
-    // Create a canvas to check pixel transparency
-    const canvas = document.createElement('canvas');
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-
-    // Set canvas size to match the image's intrinsic size
-    const w = img.naturalWidth;
-    const h = img.naturalHeight;
-    canvas.width = w;
-    canvas.height = h;
-
-    // Draw the image onto the canvas
-    ctx.drawImage(img, 0, 0);
-
-    // Calculate click position relative to the image element
-    const rect = img.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-
-    // Scale coordinates to match intrinsic size
-    const scaleX = w / rect.width;
-    const scaleY = h / rect.height;
-    const pixelX = Math.floor(x * scaleX);
-    const pixelY = Math.floor(y * scaleY);
-
     try {
-      const pixelData = ctx.getImageData(0, 0, w, h).data;
+      const hitMap = getYukariHitMap(img);
+      if (!hitMap) return;
 
-      // Check clicked pixel alpha
-      const clickedPixelIndex = (pixelY * w + pixelX) * 4;
-      const alpha = pixelData[clickedPixelIndex + 3];
+      const rect = img.getBoundingClientRect();
+      const scaleX = hitMap.width / rect.width;
+      const scaleY = hitMap.height / rect.height;
+      const pixelX = Math.floor((e.clientX - rect.left) * scaleX);
+      const pixelY = Math.floor((e.clientY - rect.top) * scaleY);
+
+      if (pixelX < 0 || pixelX >= hitMap.width || pixelY < 0 || pixelY >= hitMap.height) {
+        return;
+      }
+
+      const clickedPixelIndex = (pixelY * hitMap.width + pixelX) * 4;
+      const alpha = hitMap.alphaData[clickedPixelIndex + 3];
 
       // If opaque enough (e.g., > 10), trigger the info
       if (alpha > 10) {
         e.stopPropagation();
 
-        // --- Calculate Dynamic Bounding Box for "Top Right" ---
-        let minY = 0;
-        let maxX = w;
-
-        // Find Top-most opaque pixel (minY)
-        // Scan each row
-        topScan: for (let py = 0; py < h; py++) {
-          for (let px = 0; px < w; px++) {
-            if (pixelData[(py * w + px) * 4 + 3] > 10) {
-              minY = py;
-              break topScan;
-            }
-          }
-        }
-
-        // Find Right-most opaque pixel (maxX)
-        // Scan each col from right
-        rightScan: for (let px = w - 1; px >= 0; px--) {
-          for (let py = 0; py < h; py++) {
-            if (pixelData[(py * w + px) * 4 + 3] > 10) {
-              maxX = px;
-              break rightScan;
-            }
-          }
-        }
-
-        // Convert intrinsic coords back to CSS display coords
-        // The container is relative, img is inside.
-        // We want the bubble at (maxX, minY) relative to the container.
-
-        // CSS Coordinates
-        const cssTop = (minY / scaleY);
-        const cssLeft = (maxX / scaleX);
+        const cssTop = hitMap.minY / scaleY;
+        const cssLeft = hitMap.maxX / scaleX;
 
         setBubblePosition({
           top: cssTop + (rect.height * 0.1),
@@ -147,7 +159,7 @@ export default function MagicGallery() {
         }
       }
     } catch (err) {
-      console.error("Failed to get pixel data:", err);
+      console.error('Failed to get pixel data:', err);
       e.stopPropagation();
       setShowInfo(prev => !prev);
     }
@@ -199,13 +211,8 @@ export default function MagicGallery() {
     history.push(centerItem.link);
   };
 
-  const toggleInfo = (e) => {
-    e.stopPropagation();
-    setShowInfo(!showInfo);
-  };
-
   // Helper to get key with generation
-  const getKey = (item: typeof centerItem) => `${item.id}-${generations[item.id] || 0}`;
+  const getKey = (item: Artwork) => `${item.id}-${generations[item.id] || 0}`;
 
   // Tuned variants for "Gallery Walk" - Responsive & Spatial
   const cardVariants = {
@@ -216,7 +223,7 @@ export default function MagicGallery() {
       opacity: 0,
       zIndex: 5,
       rotateY: dir > 0 ? -45 : 45,
-      transition: { duration: 1, ease: "easeInOut" as const }
+      transition: { duration: motionDuration, ease: "easeInOut" as const }
     }),
     center: {
       x: 0,
@@ -225,7 +232,7 @@ export default function MagicGallery() {
       zIndex: 30,
       filter: 'brightness(1)',
       rotateY: 0,
-      transition: { duration: 1, ease: "easeInOut" as const },
+      transition: { duration: motionDuration, ease: "easeInOut" as const },
     },
     left: {
       x: isMobile ? '-120%' : '-45vw',
@@ -234,7 +241,7 @@ export default function MagicGallery() {
       zIndex: 10,
       filter: 'brightness(0.5) blur(2px)',
       rotateY: isMobile ? 0 : 30,
-      transition: { duration: 1, ease: "easeInOut" as const },
+      transition: { duration: motionDuration, ease: "easeInOut" as const },
     },
     right: {
       x: isMobile ? '120%' : '45vw',
@@ -243,7 +250,7 @@ export default function MagicGallery() {
       zIndex: 10,
       filter: 'brightness(0.5) blur(2px)',
       rotateY: isMobile ? 0 : -30,
-      transition: { duration: 1, ease: "easeInOut" as const },
+      transition: { duration: motionDuration, ease: "easeInOut" as const },
     },
     // Exiting state for wrapping items
     exit: (dir: number) => ({
@@ -252,12 +259,20 @@ export default function MagicGallery() {
       opacity: 0,
       zIndex: 5,
       rotateY: dir > 0 ? 45 : -45,
-      transition: { duration: 1, ease: "easeInOut" as const }
+      transition: { duration: motionDuration, ease: "easeInOut" as const }
     })
   };
 
   // --- Sub-Component: The Realistic Frame ---
-  const GalleryFrame = ({ artwork, isActive = false, onClick }: { artwork: any, isActive?: boolean, onClick?: React.MouseEventHandler<HTMLDivElement> }) => (
+  const GalleryFrame = ({
+    artwork,
+    isActive = false,
+    onClick,
+  }: {
+    artwork: Artwork;
+    isActive?: boolean;
+    onClick?: React.MouseEventHandler<HTMLDivElement>;
+  }) => (
     <div
       onClick={onClick}
       className={clsx(
@@ -285,8 +300,14 @@ export default function MagicGallery() {
           {/* 4. The Artwork - Full height of container minus matting */}
           <div className="relative w-full h-full shadow-[inset_0_2px_6px_rgba(0,0,0,0.2)] bg-gray-200">
             <img
-              src={useBaseUrl(artwork.imagePath)}
-              alt={artwork.title}
+              src={withBaseUrl(artwork.imagePath)}
+              alt={getArtworkTitle(artwork)}
+              width={artwork.imageWidth}
+              height={artwork.imageHeight}
+              loading={isActive ? 'eager' : 'lazy'}
+              decoding={isActive ? 'sync' : 'async'}
+              fetchPriority={isActive ? 'high' : 'low'}
+              sizes="(max-width: 768px) 80vw, 500px"
               className="w-full h-full object-cover block"
             />
             <div className="absolute inset-0 shadow-[inset_0_0_30px_rgba(0,0,0,0.15)] pointer-events-none" />
@@ -309,16 +330,25 @@ export default function MagicGallery() {
 
   return (
     <Layout
-      title={translate({ id: 'gallery.title', message: 'Magic Gallery' })}
-      description={translate({ id: 'gallery.description', message: 'Explore our collection of Touhou Project characters merged with classic art masterpieces.' })}
+      title={translate({ id: 'gallery.title', message: '作品集' })}
+      description={translate({ id: 'gallery.description', message: '探索东方Project角色与世界名画相遇的艺术微喷作品集。' })}
     >
       <Head>
         <script type="application/ld+json">
           {JSON.stringify({
             "@context": "https://schema.org",
             "@type": "ImageGallery",
-            "name": "Magic Gallery",
-            "description": "A collection of Giclée art prints combining Touhou Project characters with classic masterpieces.",
+            "name": translate({ id: 'gallery.title', message: '作品集' }),
+            "url": withBaseUrl('/sukima-ml', { absolute: true }),
+            "description": translate({ id: 'gallery.description', message: '探索东方Project角色与世界名画相遇的艺术微喷作品集。' }),
+            "image": artworks.map((artwork) => withBaseUrl(artwork.imagePath, { absolute: true })),
+            "associatedMedia": artworks.map((artwork) => ({
+              "@type": "ImageObject",
+              "name": getArtworkTitle(artwork),
+              "caption": getArtworkDescription(artwork),
+              "contentUrl": withBaseUrl(artwork.imagePath, { absolute: true }),
+              "creator": artwork.artist,
+            })),
             "publisher": {
               "@type": "Organization",
               "name": "Sukima Moonlight"
@@ -328,7 +358,7 @@ export default function MagicGallery() {
       </Head>
       {/* Whiter background, less grey */}
       <main
-        className="relative w-full h-[100dvh] bg-[#fafafa] dark:bg-[#222] overflow-hidden flex flex-col items-center justify-center"
+        className="relative w-full h-[calc(100dvh-var(--ifm-navbar-height))] bg-[#fafafa] dark:bg-[#222] overflow-hidden flex flex-col items-center justify-center"
         onClick={() => setShowInfo(false)} // Close info if clicking background
       >
 
@@ -338,9 +368,10 @@ export default function MagicGallery() {
           style={{
             backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.2' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.5'/%3E%3C/svg%3E")`
           }}
+          aria-hidden="true"
         />
         {/* Subtle, softer spotlight */}
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_transparent_0%,_rgba(0,0,0,0.03)_60%,_rgba(0,0,0,0.1)_100%)] pointer-events-none" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_transparent_0%,_rgba(0,0,0,0.03)_60%,_rgba(0,0,0,0.1)_100%)] pointer-events-none" aria-hidden="true" />
 
 
         {/* REMOVED: Header */}
@@ -408,8 +439,13 @@ export default function MagicGallery() {
             {/* Character Image - PIXEL PERFECT CLICK DETECTION */}
             <img
               ref={imageRef}
-              src={useBaseUrl("/img/yukari.webp")}
-              alt="Yukari Yakumo"
+              src={withBaseUrl("/img/yukari.webp")}
+              alt={translate({ id: 'gallery.yukari.alt', message: 'Yukari Yakumo' })}
+              width={1200}
+              height={1569}
+              loading="eager"
+              decoding="sync"
+              fetchPriority="high"
               crossOrigin="anonymous"
               className="w-full h-auto drop-shadow-2xl transition-transform cursor-help"
               style={{
@@ -441,22 +477,23 @@ export default function MagicGallery() {
 
                   <div className="relative">
                     <button
+                      type="button"
                       onClick={() => setShowInfo(false)}
                       className="absolute -top-1 -right-1 text-black/30 hover:text-black transition-colors"
-                      aria-label="Close"
+                      aria-label={translate({ id: 'theme.common.close', message: 'Close' })}
                     >
-                      <X size={16} />
+                      <X size={16} aria-hidden="true" />
                     </button>
 
                     <h3 className="font-serif font-bold text-lg text-gray-900 mb-1 leading-tight tracking-tight">
-                      {translate({ id: centerItem.titleId, message: centerItem.title })}
+                      {getArtworkTitle(centerItem)}
                     </h3>
                     <div className="text-[10px] font-mono text-gray-400 uppercase tracking-widest mb-3 border-b border-gray-100 pb-2">
-                      {translate({ id: centerItem.subtitleId, message: centerItem.subtitle })}
+                      {getArtworkSubtitle(centerItem)}
                     </div>
 
                     <p className="font-serif text-[0.95rem] text-gray-700 leading-relaxed italic">
-                      “{translate({ id: centerItem.descId, message: centerItem.description })}”
+                      “{getArtworkDescription(centerItem)}”
                     </p>
 
                     <div className="mt-3 text-[10px] text-gray-400 font-medium text-right font-sans">
@@ -474,11 +511,21 @@ export default function MagicGallery() {
         {/* Navigation - Minimalist (Hidden on Desktop) */}
         <div className="absolute bottom-8 flex gap-20 z-50 md:hidden">
 
-          <button onClick={handlePrev} className="group p-4 transition-all">
-            <ChevronLeft className="w-8 h-8 text-black/40 group-hover:text-black dark:text-white/40 dark:group-hover:text-white transition-colors" />
+          <button
+            type="button"
+            onClick={handlePrev}
+            className="group p-4 transition-all"
+            aria-label={translate({ id: 'gallery.nav.prev', message: 'Previous artwork' })}
+          >
+            <ChevronLeft className="w-8 h-8 text-black/40 group-hover:text-black dark:text-white/40 dark:group-hover:text-white transition-colors" aria-hidden="true" />
           </button>
-          <button onClick={handleNext} className="group p-4 transition-all">
-            <ChevronRight className="w-8 h-8 text-black/40 group-hover:text-black dark:text-white/40 dark:group-hover:text-white transition-colors" />
+          <button
+            type="button"
+            onClick={handleNext}
+            className="group p-4 transition-all"
+            aria-label={translate({ id: 'gallery.nav.next', message: 'Next artwork' })}
+          >
+            <ChevronRight className="w-8 h-8 text-black/40 group-hover:text-black dark:text-white/40 dark:group-hover:text-white transition-colors" aria-hidden="true" />
           </button>
         </div>
 

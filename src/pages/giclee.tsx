@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import Layout from '@theme/Layout';
 import Translate, { translate } from '@docusaurus/Translate';
-import useBaseUrl from '@docusaurus/useBaseUrl';
+import { useBaseUrlUtils } from '@docusaurus/useBaseUrl';
 import styles from './giclee.module.css';
 
 export default function GicleePage() {
     const [selectedImage, setSelectedImage] = useState<string | null>(null);
+    const { withBaseUrl } = useBaseUrlUtils();
 
     const openImage = (src: string) => {
         setSelectedImage(src);
@@ -25,9 +26,13 @@ export default function GicleePage() {
 
                     <header className={styles.header}>
                         <img
-                            src={useBaseUrl("/img/sukima-ml.svg")}
+                            src={withBaseUrl("/img/sukima-ml.svg")}
                             alt={translate({ id: 'giclee.logo.alt', message: 'Sukima Moonlight' })}
                             className={styles.logo}
+                            width={200}
+                            height={120}
+                            loading="eager"
+                            decoding="sync"
                         />
                         <h1 className={styles.mainTitle}>
                             {translate({ id: 'giclee.header.part1', message: '不止是周边，' })}
@@ -99,12 +104,14 @@ export default function GicleePage() {
 
                         <div className={styles.imageWrapper}>
                             <img
-                                src={useBaseUrl("/img/epson9580_web.webp")}
+                                src={withBaseUrl("/img/epson9580_web.webp")}
                                 alt="Epson SureColor P9580"
                                 className={styles.image}
                                 width={1200}
                                 height={809}
-                                onClick={() => openImage(useBaseUrl("/img/epson9580_web.webp"))}
+                                loading="lazy"
+                                decoding="async"
+                                onClick={() => openImage(withBaseUrl("/img/epson9580_web.webp"))}
                             />
                             <div className={styles.caption}><Translate id="giclee.sec1.image.caption">Epson SureColor P9580 旗舰级大幅面打印机</Translate></div>
                         </div>
@@ -148,12 +155,14 @@ export default function GicleePage() {
 
                         <div className={styles.imageWrapper}>
                             <img
-                                src={useBaseUrl("/img/datasheet-PhotoRag308.webp")}
+                                src={withBaseUrl("/img/datasheet-PhotoRag308.webp")}
                                 alt={translate({ id: 'giclee.sec2.image.alt', message: 'Hahnemühle Photo Rag 308g' })}
                                 className={styles.image}
                                 width={1200}
                                 height={1697}
-                                onClick={() => openImage(useBaseUrl("/img/datasheet-PhotoRag308.webp"))}
+                                loading="lazy"
+                                decoding="async"
+                                onClick={() => openImage(withBaseUrl("/img/datasheet-PhotoRag308.webp"))}
                             />
                             <div className={styles.caption}><Translate id="giclee.sec2.image.caption">Hahnemühle Photo Rag® 308g 数据表</Translate></div>
                         </div>
@@ -198,9 +207,9 @@ export default function GicleePage() {
                             <Translate id="giclee.sec2.detailHint">为了让大家更直观地感受差异，我们拍摄了实际成品的细节图：</Translate>
                         </p>
                         <div className={styles.photoGrid}>
-                            <img src={useBaseUrl("/img/BaS-huaxin.webp")} alt={translate({ id: 'giclee.sec2.detail1.alt', message: 'Detail Shot 1' })} className={styles.gridImage} width={1200} height={1490} onClick={() => openImage(useBaseUrl("/img/BaS-huaxin.webp"))} />
-                            <img src={useBaseUrl("/img/IMG_0199.webp")} alt={translate({ id: 'giclee.sec2.detail2.alt', message: 'Detail Shot 2' })} className={styles.gridImage} width={1200} height={900} onClick={() => openImage(useBaseUrl("/img/IMG_0199.webp"))} />
-                            <img src={useBaseUrl("/img/IMG_0202.webp")} alt={translate({ id: 'giclee.sec2.detail3.alt', message: 'Detail Shot 3' })} className={styles.gridImage} width={1200} height={900} onClick={() => openImage(useBaseUrl("/img/IMG_0202.webp"))} />
+                            <img src={withBaseUrl("/img/BaS-huaxin.webp")} alt={translate({ id: 'giclee.sec2.detail1.alt', message: 'Detail Shot 1' })} className={styles.gridImage} width={1200} height={1490} loading="lazy" decoding="async" onClick={() => openImage(withBaseUrl("/img/BaS-huaxin.webp"))} />
+                            <img src={withBaseUrl("/img/IMG_0199.webp")} alt={translate({ id: 'giclee.sec2.detail2.alt', message: 'Detail Shot 2' })} className={styles.gridImage} width={1200} height={900} loading="lazy" decoding="async" onClick={() => openImage(withBaseUrl("/img/IMG_0199.webp"))} />
+                            <img src={withBaseUrl("/img/IMG_0202.webp")} alt={translate({ id: 'giclee.sec2.detail3.alt', message: 'Detail Shot 3' })} className={styles.gridImage} width={1200} height={900} loading="lazy" decoding="async" onClick={() => openImage(withBaseUrl("/img/IMG_0202.webp"))} />
 
                         </div>
                     </section>
@@ -227,10 +236,10 @@ export default function GicleePage() {
                         </ul>
 
                         <div className={styles.photoGrid}>
-                            <img src={useBaseUrl("/img/F253B61EBC19D9DF60101EEC6BAF2242.webp")} alt={translate({ id: 'giclee.sec3.detail1.alt', message: 'Framing Detail 1' })} className={styles.gridImage} width={1200} height={675} onClick={() => openImage(useBaseUrl("/img/F253B61EBC19D9DF60101EEC6BAF2242.webp"))} />
-                            <img src={useBaseUrl("/img/IMG_0195.webp")} alt={translate({ id: 'giclee.sec3.detail2.alt', message: 'Framing Detail 2' })} className={styles.gridImage} width={1200} height={900} onClick={() => openImage(useBaseUrl("/img/IMG_0195.webp"))} />
-                            <img src={useBaseUrl("/img/IMG_0196.webp")} alt={translate({ id: 'giclee.sec3.detail3.alt', message: 'Framing Detail 3' })} className={styles.gridImage} width={1200} height={900} onClick={() => openImage(useBaseUrl("/img/IMG_0196.webp"))} />
-                            <img src={useBaseUrl("/img/IMG_0197.webp")} alt={translate({ id: 'giclee.sec3.detail4.alt', message: 'Framing Detail 4' })} className={styles.gridImage} width={1200} height={900} onClick={() => openImage(useBaseUrl("/img/IMG_0197.webp"))} />
+                            <img src={withBaseUrl("/img/F253B61EBC19D9DF60101EEC6BAF2242.webp")} alt={translate({ id: 'giclee.sec3.detail1.alt', message: 'Framing Detail 1' })} className={styles.gridImage} width={1200} height={675} loading="lazy" decoding="async" onClick={() => openImage(withBaseUrl("/img/F253B61EBC19D9DF60101EEC6BAF2242.webp"))} />
+                            <img src={withBaseUrl("/img/IMG_0195.webp")} alt={translate({ id: 'giclee.sec3.detail2.alt', message: 'Framing Detail 2' })} className={styles.gridImage} width={1200} height={900} loading="lazy" decoding="async" onClick={() => openImage(withBaseUrl("/img/IMG_0195.webp"))} />
+                            <img src={withBaseUrl("/img/IMG_0196.webp")} alt={translate({ id: 'giclee.sec3.detail3.alt', message: 'Framing Detail 3' })} className={styles.gridImage} width={1200} height={900} loading="lazy" decoding="async" onClick={() => openImage(withBaseUrl("/img/IMG_0196.webp"))} />
+                            <img src={withBaseUrl("/img/IMG_0197.webp")} alt={translate({ id: 'giclee.sec3.detail4.alt', message: 'Framing Detail 4' })} className={styles.gridImage} width={1200} height={900} loading="lazy" decoding="async" onClick={() => openImage(withBaseUrl("/img/IMG_0197.webp"))} />
                         </div>
                     </section>
 

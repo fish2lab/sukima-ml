@@ -1,4 +1,5 @@
 .pageContainer {
+    box-sizing: border-box;
     width: 100%;
     background-color: #fff;
     color: #1a1a1a;
@@ -12,6 +13,7 @@
 }
 
 .visualColumn {
+    box-sizing: border-box;
     background-color: #f4f1ea;
     display: flex;
     flex-direction: column;
@@ -84,6 +86,7 @@
 }
 
 .infoColumn {
+    box-sizing: border-box;
     background-color: #ffffff;
     display: flex;
     flex-direction: column;
@@ -95,6 +98,8 @@
     max-width: 540px;
     margin: 0 auto;
     text-align: left;
+    width: 100%;
+    min-width: 0;
 }
 
 .mainTitle {
@@ -137,6 +142,15 @@
     margin-bottom: 2.5rem;
     color: #333;
     line-height: 1.8;
+    overflow-wrap: anywhere;
+}
+
+.descriptionBlock a {
+    display: inline-flex;
+    min-width: 44px;
+    min-height: 40px;
+    align-items: center;
+    vertical-align: middle;
 }
 
 .descriptionBlock h3 {
@@ -167,6 +181,7 @@
 }
 
 .quoteBlock {
+    box-sizing: border-box;
     text-align: left;
     background: #f9f9f9;
     padding: 24px;
@@ -199,6 +214,14 @@
 
     .infoColumn {
         padding: 40px 20px;
+    }
+
+    .mainTitle {
+        font-size: clamp(2rem, 9vw, 2.6rem);
+    }
+
+    .subTitleCn {
+        font-size: clamp(1.2rem, 5vw, 1.5rem);
     }
 
     .frameWrapper {

@@ -12,9 +12,14 @@ const FONT_URL = 'https://fonts.carolyn.sh/css2?family=Intel+One+Mono:ital,wght@
 export default function Root({ children }: { children: React.ReactNode }) {
     // 客户端加载字体
     useEffect(() => {
+        if (document.querySelector('link[data-sukima-fonts="true"]')) {
+            return;
+        }
+
         const link = document.createElement('link');
         link.rel = 'stylesheet';
         link.href = FONT_URL;
+        link.dataset.sukimaFonts = 'true';
         document.head.appendChild(link);
     }, []);
 
@@ -22,7 +27,9 @@ export default function Root({ children }: { children: React.ReactNode }) {
         <>
             <Head>
                 {/* Preconnect 提前建立连接 */}
+                <link rel="dns-prefetch" href="https://fonts.carolyn.sh" />
                 <link rel="preconnect" href="https://fonts.carolyn.sh" crossOrigin="anonymous" />
+                <link rel="preload" as="style" href={FONT_URL} />
             </Head>
             {children}
         </>

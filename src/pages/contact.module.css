@@ -1,4 +1,5 @@
 .pageContainer {
+  box-sizing: border-box;
   width: 100%;
   background-color: #fff;
   color: #1a1a1a;
@@ -12,6 +13,7 @@
 }
 
 .visualColumn {
+  box-sizing: border-box;
   background-color: #f4f1ea;
   display: flex;
   flex-direction: column;
@@ -26,6 +28,7 @@
 }
 
 .infoColumn {
+  box-sizing: border-box;
   background-color: #ffffff;
   display: flex;
   flex-direction: column;
@@ -39,6 +42,7 @@
   max-width: 540px;
   width: 100%;
   text-align: left;
+  min-width: 0;
 }
 
 .mainTitle {
@@ -110,6 +114,14 @@
   font-size: 1.1rem;
 }
 
+.plainList a {
+  display: inline-flex;
+  min-height: 40px;
+  align-items: center;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
+
 .plainList strong {
   font-family: "Courier New", monospace;
   color: #000;
@@ -117,15 +129,20 @@
 }
 
 .linkButton {
+  display: inline-flex;
+  min-height: 40px;
+  align-items: center;
   background: none;
   border: none;
   color: #000;
   cursor: pointer;
   font-size: inherit;
   font-family: inherit;
-  padding: 0;
+  padding: 6px 0;
   text-decoration: underline;
   transition: color 0.2s ease;
+  overflow-wrap: anywhere;
+  text-align: left;
 }
 
 .linkButton:hover {
@@ -133,6 +150,7 @@
 }
 
 .quoteBlock {
+  box-sizing: border-box;
   text-align: left;
   background: #f9f9f9;
   padding: 24px;
@@ -151,6 +169,7 @@
 }
 
 .tipsBlock {
+  box-sizing: border-box;
   background: #fafafa;
   padding: 1rem;
   border-radius: 4px;
@@ -164,6 +183,16 @@
   color: #666;
   margin: 0.5rem 0;
   font-family: "Courier New", monospace;
+  overflow-wrap: anywhere;
+}
+
+.tipText a,
+.imageHostTip a {
+  display: inline-flex;
+  min-width: 44px;
+  min-height: 40px;
+  align-items: center;
+  vertical-align: middle;
 }
 
 .commentsSection {
@@ -187,6 +216,26 @@
   .infoColumn {
     padding: 40px 20px;
     align-items: center;
+  }
+
+  .mainTitle {
+    font-size: clamp(2rem, 9vw, 2.6rem);
+  }
+
+  .subTitleCn {
+    font-size: clamp(1.2rem, 5vw, 1.5rem);
+  }
+
+  .sectionTitle {
+    font-size: clamp(1.65rem, 8vw, 2rem);
+  }
+
+  .quoteBlock {
+    padding: 20px;
+  }
+
+  .plainList li {
+    font-size: 1rem;
   }
 }
 

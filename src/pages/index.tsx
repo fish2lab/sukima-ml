@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react';
+import React, { useEffect, useState, type ReactNode } from 'react';
 import clsx from 'clsx';
 import Link from '@docusaurus/Link';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
@@ -6,7 +6,6 @@ import Layout from '@theme/Layout';
 import Translate, { translate } from '@docusaurus/Translate';
 import Head from '@docusaurus/Head';
 import useBaseUrl from '@docusaurus/useBaseUrl';
-import React, { useState, useEffect } from 'react';
 import MagicGalleryComponent from '../components/MagicGallery';
 
 
@@ -217,7 +216,11 @@ function ASCIIDemo() {
 }
 
 // 模块介绍砖块组件
-function ModuleBlock({ title, description, link, index }) {
+interface ModuleBlockProps extends NavigationItem {
+  index: number;
+}
+
+function ModuleBlock({ title, description, link, index }: ModuleBlockProps) {
   const formattedIndex = (index + 1).toString().padStart(2, '0');
 
   return (
@@ -233,24 +236,40 @@ function ModuleBlock({ title, description, link, index }) {
 // 主页组件
 export default function Home() {
   const { siteConfig } = useDocusaurusContext();
+  const heroLogoUrl = useBaseUrl("/img/sukima-ml.svg");
+  const organizationLogoUrl = useBaseUrl('/img/new.webp', { absolute: true });
+  const socialImageUrl = useBaseUrl('/img/artworks/Variant_B.webp', { absolute: true });
+  const homeDescription = translate({
+    id: 'home.description',
+    message: '隙间月影（Sukima Moonlight）以艺术微喷工艺，将东方Project角色与世界名画重新相遇。',
+  });
 
   return (
     <Layout
       title={`${siteConfig.title}`}
-      description="Gap of the Moon - Touhou Project x Classic Art Giclée Prints. Discover the fusion of world masterpieces and Touhou characters.">
+      description={homeDescription}>
       <Head>
+        <link rel="preload" as="image" href={heroLogoUrl} fetchPriority="high" />
         <script type="application/ld+json">
           {JSON.stringify({
             "@context": "https://schema.org",
             "@type": "WebSite",
             "name": "隙间月影 | Sukima Moonlight",
             "url": "https://sukima-ml.club",
-            "description": "Where Classic Art Meets Touhou. High-quality Gicleè art prints.",
-            "potentialAction": {
-              "@type": "SearchAction",
-              "target": "https://sukima-ml.club/search?q={search_term_string}",
-              "query-input": "required name=search_term_string"
-            }
+            "inLanguage": ["zh-Hans", "en"],
+            "description": homeDescription,
+            "publisher": {
+              "@type": "Organization",
+              "name": "Sukima Moonlight",
+              "url": "https://sukima-ml.club",
+              "logo": organizationLogoUrl,
+              "sameAs": [
+                "https://github.com/FinnClair-Su",
+                "https://space.bilibili.com/368984327",
+                "https://fcsu.dev"
+              ]
+            },
+            "image": socialImageUrl
           })}
         </script>
       </Head>
@@ -262,9 +281,14 @@ export default function Home() {
           <div className={styles.heroLeft}>
             <Link to="/giclee" className={styles.heroLogoWrapper}>
               <img
-                src={useBaseUrl("/img/sukima-ml.svg")}
+                src={heroLogoUrl}
                 alt="Gap of the Moon"
                 className={styles.heroLogo}
+                width={200}
+                height={120}
+                loading="eager"
+                decoding="sync"
+                fetchPriority="high"
               />
               <div className={styles.heroLogoCaption}>
                 <Translate id="home.hero.caption">我们选择的工艺——艺术微喷</Translate>

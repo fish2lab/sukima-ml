@@ -1,4 +1,5 @@
 .pageContainer {
+    box-sizing: border-box;
     width: 100%;
     background-color: #fff;
     color: #1a1a1a;
@@ -8,8 +9,10 @@
 }
 
 .contentWrapper {
+    box-sizing: border-box;
     max-width: 800px;
     margin: 0 auto;
+    width: 100%;
 }
 
 .title {
@@ -41,6 +44,7 @@
 }
 
 .qrCard {
+    box-sizing: border-box;
     text-align: center;
     background: #f9f9f9;
     padding: 20px;
@@ -59,9 +63,11 @@
     font-family: "Courier New", monospace;
     font-weight: bold;
     color: #555;
+    overflow-wrap: anywhere;
 }
 
 .contactInfo {
+    box-sizing: border-box;
     background: #f4f1ea;
     padding: 30px;
     border-radius: 4px;
@@ -77,6 +83,7 @@
     font-family: "Courier New", monospace;
     font-size: 1.1rem;
     margin-bottom: 0.5rem;
+    overflow-wrap: anywhere;
 }
 
 .primary {
@@ -89,11 +96,13 @@
 }
 
 .templateBox {
+    box-sizing: border-box;
     background: #fafafa;
     border: 1px dashed #ccc;
     padding: 30px;
     font-family: "Courier New", monospace;
     white-space: pre-wrap;
+    overflow-wrap: anywhere;
     line-height: 1.6;
     position: relative;
 }
@@ -123,13 +132,63 @@
 }
 
 @media (max-width: 600px) {
+    .pageContainer {
+        padding: 42px 16px;
+    }
+
+    .title {
+        font-size: clamp(2rem, 9vw, 2.4rem);
+        margin-bottom: 2.2rem;
+    }
+
+    .section {
+        margin-bottom: 3rem;
+    }
+
+    .sectionTitle {
+        font-size: 1.32rem;
+        margin-bottom: 1.5rem;
+    }
+
     .paymentMethods {
         gap: 20px;
+    }
+
+    .qrCard {
+        width: 100%;
+        max-width: 300px;
+        padding: 16px;
     }
 
     .qrImage {
         width: 100%;
         max-width: 250px;
+    }
+
+    .contactInfo {
+        padding: 22px;
+    }
+
+    .emailItem {
+        font-size: 0.95rem;
+        line-height: 1.6;
+    }
+
+    .templateBox {
+        padding: 44px 18px 22px;
+        font-size: 0.92rem;
+    }
+
+    .copyHint {
+        top: 12px;
+        right: 18px;
+        left: 18px;
+        text-align: right;
+    }
+
+    .signature {
+        margin-top: 42px;
+        font-size: 1.05rem;
     }
 }
 

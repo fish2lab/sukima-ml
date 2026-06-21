@@ -1,10 +1,17 @@
-import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronLeft, ChevronRight, X } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 import clsx from 'clsx';
 import { useHistory } from '@docusaurus/router';
-import useBaseUrl from '@docusaurus/useBaseUrl';
-import { artworks } from '../../data/galleryData'; // Import shared data
+import { translate } from '@docusaurus/Translate';
+import { useBaseUrlUtils } from '@docusaurus/useBaseUrl';
+import { artworks, type Artwork } from '../../data/galleryData';
+import {
+    getArtworkIntroOriginal,
+    getArtworkIntroTouhou,
+    getArtworkTitle,
+    getOriginalPaintingTitle,
+} from '../../utils/galleryTranslations';
 
 interface MagicGalleryProps {
     className?: string; // e.g., h-[80vh]
@@ -21,8 +28,11 @@ export default function MagicGallery({ className }: MagicGalleryProps) {
     const [dialogueStep, setDialogueStep] = useState<DialogueState>('idle');
 
     const history = useHistory();
+    const { withBaseUrl } = useBaseUrlUtils();
+    const shouldReduceMotion = useReducedMotion();
     const [isMobile, setIsMobile] = useState(false);
     const imageRef = React.useRef<HTMLImageElement>(null);
+    const motionDuration = shouldReduceMotion ? 0.01 : 0.8;
 
     useEffect(() => {
         const handleResize = () => {
@@ -77,7 +87,7 @@ export default function MagicGallery({ className }: MagicGalleryProps) {
     const leftItem = artworks[getIndex(currentIndex - 1)];
     const rightItem = artworks[getIndex(currentIndex + 1)];
 
-    const getKey = (item: typeof centerItem) => `${item.id}-${generations[item.id] || 0}`;
+    const getKey = (item: Artwork) => `${item.id}-${generations[item.id] || 0}`;
 
     // Tuned variants for "Gallery Walk"
     // Desktop: Frame width is 950px, so we offset by ~(50vw - 475px) + 45% of frame width to peek
@@ -88,7 +98,25 @@ export default function MagicGallery({ className }: MagicGalleryProps) {
     // CSS Paddings (relative to container width):
     // Frame: 1/40 = 2.5%
     // Mat: 4/40 = 10%
-    const GalleryFrame = ({ src, label, width, height, color = "bg-[#1a1a1a]" }: { src: string, label: string, width?: number, height?: number, color?: string }) => (
+    const GalleryFrame = ({
+        src,
+        label,
+        tone,
+        alt,
+        width,
+        height,
+        color = "bg-[#1a1a1a]",
+        priority = false,
+    }: {
+        src: string;
+        label: string;
+        tone: 'original' | 'fanwork';
+        alt: string;
+        width?: number;
+        height?: number;
+        color?: string;
+        priority?: boolean;
+    }) => (
         <div className={clsx(
             "relative w-full aspect-[40/45] flex items-center justify-center transition-transform duration-300 hover:scale-[1.01] shadow-2xl",
             color,
@@ -97,7 +125,7 @@ export default function MagicGallery({ className }: MagicGalleryProps) {
             {/* Label Tag */}
             <div className={clsx(
                 "absolute -top-[5%] left-1/2 -translate-x-1/2 text-white text-[2.5cqw] md:text-[0.6vw] font-serif uppercase tracking-widest px-[4%] py-[1%] shadow-sm opacity-60 group-hover:opacity-100 transition-opacity z-20",
-                label === "原作名画" ? "bg-white/90 text-black" : "bg-[#b71c1c]/90"
+                tone === "original" ? "bg-white/90 text-black" : "bg-[#b71c1c]/90"
             )}>
                 {label}
             </div>
@@ -111,9 +139,13 @@ export default function MagicGallery({ className }: MagicGalleryProps) {
                 <div className="relative z-10 w-full h-full flex items-center justify-center bg-white overflow-hidden">
                     <img
                         src={src}
-                        alt="Artwork"
+                        alt={alt}
                         width={width}
                         height={height}
+                        loading={priority ? 'eager' : 'lazy'}
+                        decoding={priority ? 'sync' : 'async'}
+                        fetchPriority={priority ? 'high' : 'low'}
+                        sizes={isMobile ? '90vw' : '25vw'}
                         className="w-full h-full object-cover" // Crop to fit 30:35 ratio
                     />
                 </div>
@@ -125,7 +157,7 @@ export default function MagicGallery({ className }: MagicGalleryProps) {
         enter: (dir: number) => ({
             x: dir > 0 ? '130vw' : '-130vw',
             zIndex: 5,
-            transition: { duration: 0.8, ease: "easeInOut" as const }
+            transition: { duration: motionDuration, ease: "easeInOut" as const }
         }),
         center: {
             x: 0,
@@ -134,7 +166,7 @@ export default function MagicGallery({ className }: MagicGalleryProps) {
             zIndex: 30,
             filter: 'none',
             rotateY: 0,
-            transition: { duration: 0.8, ease: "easeInOut" as const },
+            transition: { duration: motionDuration, ease: "easeInOut" as const },
         },
         left: {
             // Mobile: Hide/Exit to left? Actually user said "Don't show original".
@@ -146,7 +178,7 @@ export default function MagicGallery({ className }: MagicGalleryProps) {
             zIndex: 10,
             filter: 'none',
             rotateY: 0,
-            transition: { duration: 0.8, ease: "easeInOut" as const },
+            transition: { duration: motionDuration, ease: "easeInOut" as const },
         },
         right: {
             x: isMobile ? '100vw' : '65vw',
@@ -155,27 +187,34 @@ export default function MagicGallery({ className }: MagicGalleryProps) {
             zIndex: 10,
             filter: 'none',
             rotateY: 0,
-            transition: { duration: 0.8, ease: "easeInOut" as const },
+            transition: { duration: motionDuration, ease: "easeInOut" as const },
         },
         exit: (dir: number) => ({
             x: dir > 0 ? '-130vw' : '130vw',
             zIndex: 5,
-            transition: { duration: 0.8, ease: "easeInOut" as const }
+            transition: { duration: motionDuration, ease: "easeInOut" as const }
         })
     };
 
     // --- Sub-Component: Art Group ---
     // Adapts to Mobile (Single) vs Desktop (Dual)
-    const ArtGroup = ({ artwork, isActive = false }: { artwork: any, isActive?: boolean }) => {
+    const ArtGroup = ({ artwork, isActive = false }: { artwork: Artwork, isActive?: boolean }) => {
+        const artworkTitle = getArtworkTitle(artwork);
+        const originalLabel = translate({ id: 'gallery.label.original', message: '原作名画' });
+        const fanworkLabel = translate({ id: 'gallery.label.fanwork', message: '东方Project同人' });
+
         if (isMobile) {
             // Mobile: Single Touhou Frame, 90vw total width
             return (
                 <div className="w-[90vw] flex items-center justify-center">
                     <GalleryFrame
-                        src={useBaseUrl(artwork.imagePath)}
-                        label="东方Project同人"
+                        src={withBaseUrl(artwork.imagePath)}
+                        label={fanworkLabel}
+                        tone="fanwork"
+                        alt={`${artworkTitle} - ${fanworkLabel}`}
                         width={artwork.imageWidth}
                         height={artwork.imageHeight}
+                        priority={isActive}
                     />
                 </div>
             );
@@ -186,18 +225,24 @@ export default function MagicGallery({ className }: MagicGalleryProps) {
             <div className="w-[50vw] flex items-center justify-between gap-4 md:gap-8 px-4 md:px-0">
                 <div className="flex-1">
                     <GalleryFrame
-                        src={useBaseUrl(artwork.originalImagePath)}
-                        label="原作名画"
+                        src={withBaseUrl(artwork.originalImagePath)}
+                        label={originalLabel}
+                        tone="original"
+                        alt={`${getOriginalPaintingTitle(artwork)} - ${originalLabel}`}
                         width={artwork.originalImageWidth}
                         height={artwork.originalImageHeight}
+                        priority={isActive}
                     />
                 </div>
                 <div className="flex-1">
                     <GalleryFrame
-                        src={useBaseUrl(artwork.imagePath)}
-                        label="东方Project同人"
+                        src={withBaseUrl(artwork.imagePath)}
+                        label={fanworkLabel}
+                        tone="fanwork"
+                        alt={`${artworkTitle} - ${fanworkLabel}`}
                         width={artwork.imageWidth}
                         height={artwork.imageHeight}
+                        priority={isActive}
                     />
                 </div>
             </div>
@@ -216,6 +261,7 @@ export default function MagicGallery({ className }: MagicGalleryProps) {
             {/* Background Atmosphere */}
             <div className="absolute inset-0 pointer-events-none opacity-[0.1] mix-blend-multiply"
                 style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.2' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.5'/%3E%3C/svg%3E")` }}
+                aria-hidden="true"
             />
 
             {/* Seamless Gradient removed - was causing visual issues in dark mode */}
@@ -264,10 +310,24 @@ export default function MagicGallery({ className }: MagicGalleryProps) {
 
                 {/* Navigation Buttons (Mobile) - Positioned higher now */}
                 <div className="absolute top-1/2 -translate-y-1/2 left-4 z-50 md:hidden">
-                    <button onClick={handlePrev} className="group p-2 bg-white/20 rounded-full backdrop-blur"><ChevronLeft className="text-black/60" /></button>
+                    <button
+                        type="button"
+                        onClick={handlePrev}
+                        className="group p-2 bg-white/20 rounded-full backdrop-blur"
+                        aria-label={translate({ id: 'gallery.nav.prev', message: 'Previous artwork' })}
+                    >
+                        <ChevronLeft className="text-black/60" aria-hidden="true" />
+                    </button>
                 </div>
                 <div className="absolute top-1/2 -translate-y-1/2 right-4 z-50 md:hidden">
-                    <button onClick={handleNext} className="group p-2 bg-white/20 rounded-full backdrop-blur"><ChevronRight className="text-black/60" /></button>
+                    <button
+                        type="button"
+                        onClick={handleNext}
+                        className="group p-2 bg-white/20 rounded-full backdrop-blur"
+                        aria-label={translate({ id: 'gallery.nav.next', message: 'Next artwork' })}
+                    >
+                        <ChevronRight className="text-black/60" aria-hidden="true" />
+                    </button>
                 </div>
 
             </div>
@@ -277,8 +337,12 @@ export default function MagicGallery({ className }: MagicGalleryProps) {
             <div className="absolute inset-0 z-40 pointer-events-none flex items-end justify-center overflow-hidden">
                 <img
                     ref={imageRef}
-                    src={useBaseUrl("/img/yukari.webp")}
-                    alt="Yukari Yakumo"
+                    src={withBaseUrl("/img/yukari.webp")}
+                    alt={translate({ id: 'gallery.yukari.alt', message: 'Yukari Yakumo' })}
+                    width={1200}
+                    height={1569}
+                    loading="lazy"
+                    decoding="async"
                     crossOrigin="anonymous"
                     className={clsx(
                         "w-auto h-[60vh] md:h-[95vh] object-contain transition-all duration-500 cursor-pointer origin-bottom",
@@ -299,7 +363,16 @@ export default function MagicGallery({ className }: MagicGalleryProps) {
             {/* Mobile Trigger Zone (Bottom 1/3) */}
             <div
                 className="absolute bottom-0 left-0 right-0 h-[35%] z-40 cursor-pointer md:hidden"
+                role="button"
+                tabIndex={0}
+                aria-label={translate({ id: 'gallery.dialogue.open', message: 'Open Yukari dialogue' })}
                 onClick={handleImageClick}
+                onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        setDialogueStep('intro_original');
+                    }
+                }}
             />
 
             {/* LAYER 3: Galgame Dialogue Box - FIXED Bottom Overlay */}
@@ -316,7 +389,9 @@ export default function MagicGallery({ className }: MagicGalleryProps) {
 
                             {/* Character Name Tag */}
                             <div className="absolute -top-5 left-8 bg-[#b71c1c] text-white px-8 py-1 text-xl font-bold font-serif shadow-lg skew-x-[-15deg] border border-white/20">
-                                <span className="skew-x-[15deg] block">八云 紫</span>
+                                <span className="skew-x-[15deg] block">
+                                    {translate({ id: 'gallery.yukari.name', message: '八云 紫' })}
+                                </span>
                             </div>
 
                             <div className="flex flex-col h-full justify-between" onClick={advanceDialogue}>
@@ -324,32 +399,40 @@ export default function MagicGallery({ className }: MagicGalleryProps) {
                                 <div className="text-white/90 font-serif text-xl leading-relaxed mt-2 min-h-[80px]">
                                     {dialogueStep === 'intro_original' && (
                                         <motion.p initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }}>
-                                            {centerItem.introOriginal || `这是 "${centerItem.originalPainting}"。一幅超越时代的经典之作。`}
+                                            {getArtworkIntroOriginal(centerItem)}
                                         </motion.p>
                                     )}
                                     {dialogueStep === 'intro_touhou' && (
                                         <motion.p initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }}>
-                                            {centerItem.introTouhou || `而在我们的幻想乡，它变成了 "${centerItem.touhouCharacter}"。这是幻想与现实的隙间。`}
+                                            {getArtworkIntroTouhou(centerItem)}
                                         </motion.p>
                                     )}
                                     {dialogueStep === 'options' && (
                                         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex flex-col gap-2">
-                                            <p className="text-gray-300">接下来怎么做？</p>
+                                            <p className="text-gray-300">
+                                                {translate({ id: 'gallery.dialogue.nextAction', message: '接下来怎么做？' })}
+                                            </p>
                                             <div className="flex flex-col md:flex-row flex-wrap gap-4 mt-2">
-                                                <button className="flex-1 min-w-[200px] bg-white/10 hover:bg-[#b71c1c] border border-white/30 px-4 py-3 rounded text-left transition-colors flex items-center gap-3 group text-white"
+                                                <button type="button" className="flex-1 min-w-[200px] bg-white/10 hover:bg-[#b71c1c] border border-white/30 px-4 py-3 rounded text-left transition-colors flex items-center gap-3 group text-white"
                                                     onClick={() => history.push('/giclee')}>
                                                     <span className="bg-white/20 w-6 h-6 flex items-center justify-center rounded-full text-xs font-bold">A</span>
-                                                    <span className="group-hover:translate-x-1 transition-transform">鉴赏“再现”的魔术 (Giclee)</span>
+                                                    <span className="group-hover:translate-x-1 transition-transform">
+                                                        {translate({ id: 'gallery.dialogue.option.giclee', message: '鉴赏“再现”的魔术 (Giclee)' })}
+                                                    </span>
                                                 </button>
-                                                <button className="flex-1 min-w-[200px] bg-white/10 hover:bg-[#b71c1c] border border-white/30 px-4 py-3 rounded text-left transition-colors flex items-center gap-3 group text-white"
+                                                <button type="button" className="flex-1 min-w-[200px] bg-white/10 hover:bg-[#b71c1c] border border-white/30 px-4 py-3 rounded text-left transition-colors flex items-center gap-3 group text-white"
                                                     onClick={() => history.push(centerItem.link)}>
                                                     <span className="bg-white/20 w-6 h-6 flex items-center justify-center rounded-full text-xs font-bold">B</span>
-                                                    <span className="group-hover:translate-x-1 transition-transform">收藏这份“境界” (Purchase)</span>
+                                                    <span className="group-hover:translate-x-1 transition-transform">
+                                                        {translate({ id: 'gallery.dialogue.option.purchase', message: '收藏这份“境界” (Purchase)' })}
+                                                    </span>
                                                 </button>
-                                                <button className="flex-1 min-w-[200px] bg-white/10 hover:bg-gray-800 border border-white/30 px-4 py-3 rounded text-left transition-colors flex items-center gap-3 group text-white"
+                                                <button type="button" className="flex-1 min-w-[200px] bg-white/10 hover:bg-gray-800 border border-white/30 px-4 py-3 rounded text-left transition-colors flex items-center gap-3 group text-white"
                                                     onClick={() => setDialogueStep('idle')}>
                                                     <span className="bg-white/20 w-6 h-6 flex items-center justify-center rounded-full text-xs font-bold">C</span>
-                                                    <span className="group-hover:translate-x-1 transition-transform">假装无事发生 (Close)</span>
+                                                    <span className="group-hover:translate-x-1 transition-transform">
+                                                        {translate({ id: 'gallery.dialogue.option.close', message: '假装无事发生 (Close)' })}
+                                                    </span>
                                                 </button>
                                             </div>
                                         </motion.div>
@@ -359,7 +442,7 @@ export default function MagicGallery({ className }: MagicGalleryProps) {
                                 {/* Prompt */}
                                 {dialogueStep !== 'options' && (
                                     <div className="text-right text-sm text-gray-500 animate-pulse">
-                                        ▶ 点击继续
+                                        {translate({ id: 'gallery.dialogue.continue', message: '▶ 点击继续' })}
                                     </div>
                                 )}
                             </div>

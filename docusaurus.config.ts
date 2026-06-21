@@ -26,7 +26,11 @@ const config: Config = {
   trailingSlash: false,
 
   onBrokenLinks: 'throw',
-  onBrokenMarkdownLinks: 'warn',
+  markdown: {
+    hooks: {
+      onBrokenMarkdownLinks: 'warn',
+    },
+  },
 
   // Even if you don't use internationalization, you can use this field to set
   // useful metadata like html lang. For example, if your site is Chinese, you
@@ -35,8 +39,8 @@ const config: Config = {
     defaultLocale: 'zh-Hans',
     locales: ['zh-Hans', 'en'],
     localeConfigs: {
-      'zh-Hans': { label: 'CN' },
-      'en': { label: 'EN' },
+      'zh-Hans': { label: 'CN', htmlLang: 'zh-Hans' },
+      'en': { label: 'EN', htmlLang: 'en-US' },
     },
   },
 
@@ -67,6 +71,11 @@ const config: Config = {
         theme: {
           customCss: './src/css/custom.css',
         },
+        sitemap: {
+          changefreq: 'weekly',
+          priority: 0.7,
+          filename: 'sitemap.xml',
+        },
       } satisfies Preset.Options,
     ],
   ],
@@ -76,17 +85,26 @@ const config: Config = {
   ],
 
   themeConfig: {
-    // Replace with your project's social card
-    image: 'img/social-card.jpg',
+    image: 'img/artworks/Variant_B.webp',
     metadata: [
-      { name: 'keywords', content: '隙间月影, 东方Project, 名画同人, Touhou, Touhou Project, Classic Art, Gicleè, Art Prints, Fischer Su' },
+      { name: 'keywords', content: '隙间月影, 东方Project, 名画同人, Touhou, Touhou Project, Classic Art, Giclée, Art Prints, Fischer Su' },
       { name: 'author', content: 'Fischer Su (苏心贤)' },
-      { name: 'description', content: '隙间月影 (Sukima Moonlight) - Where Classic Art Meets Touhou. Discover high-quality Gicleè art prints combining world masterpieces with characters from the Touhou Project.' },
+      { name: 'description', content: '隙间月影 (Sukima Moonlight) - Where Classic Art Meets Touhou. Discover high-quality Giclée art prints combining world masterpieces with characters from the Touhou Project.' },
       { name: 'license', content: 'Copyright © 2026 Fischer Su. All Rights Reserved.' },
+      { name: 'format-detection', content: 'telephone=no' },
       { property: 'og:title', content: '隙间月影 | Sukima Moonlight' },
-      { property: 'og:description', content: '隙间月影 (Sukima Moonlight) - Where Classic Art Meets Touhou. Discover high-quality Gicleè art prints combining world masterpieces with characters from the Touhou Project.' },
+      { property: 'og:description', content: '隙间月影 (Sukima Moonlight) - Where Classic Art Meets Touhou. Discover high-quality Giclée art prints combining world masterpieces with characters from the Touhou Project.' },
       { property: 'og:type', content: 'website' },
-      { property: 'og:image', content: 'https://sukima-ml.club/img/artworks/The%20Bookworm%20to%20The%20Pachouli-sama.webp' },
+      { property: 'og:url', content: 'https://sukima-ml.club/' },
+      { property: 'og:site_name', content: '隙间月影 | Sukima Moonlight' },
+      { property: 'og:locale', content: 'zh_CN' },
+      { property: 'og:locale:alternate', content: 'en_US' },
+      { property: 'og:image', content: 'https://sukima-ml.club/img/artworks/Variant_B.webp' },
+      { property: 'og:image:alt', content: 'The Bookworm × The Unmoving Library artwork by Sukima Moonlight' },
+      { name: 'twitter:card', content: 'summary_large_image' },
+      { name: 'twitter:title', content: '隙间月影 | Sukima Moonlight' },
+      { name: 'twitter:description', content: 'Where Classic Art Meets Touhou. Giclée art prints and Touhou Project fan art.' },
+      { name: 'twitter:image', content: 'https://sukima-ml.club/img/artworks/Variant_B.webp' },
     ],
     navbar: {
       // 标题由自定义 Logo 组件处理

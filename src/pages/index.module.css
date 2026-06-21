@@ -25,6 +25,9 @@
 }
 
 .heroLeft {
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
   padding: 30px;
   display: flex;
   flex-direction: column;
@@ -37,6 +40,9 @@
 }
 
 .heroRight {
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -145,12 +151,15 @@
   /* Red accent */
   padding-left: 10px;
   text-align: left;
+  overflow-wrap: anywhere;
 }
 
 /* ASCII Container */
 .asciiContainer {
+  box-sizing: border-box;
   width: 100%;
   max-width: 500px;
+  min-width: 0;
   padding: 20px;
   border: 1px solid #000;
   /* Square border */
@@ -205,6 +214,9 @@
 }
 
 .moduleBlock {
+  box-sizing: border-box;
+  position: relative;
+  min-width: 0;
   aspect-ratio: 1;
   border-right: 1px solid #000;
   padding: 40px;
@@ -240,6 +252,7 @@
   font-weight: 400;
   margin: 0;
   line-height: 1.2;
+  overflow-wrap: anywhere;
 }
 
 .moduleDesc {
@@ -250,6 +263,7 @@
   opacity: 0;
   transform: translateY(10px);
   transition: all 0.3s ease;
+  overflow-wrap: anywhere;
 }
 
 .moduleBlock:hover .moduleDesc {
@@ -393,6 +407,7 @@
 
 /* --- Footer --- */
 .homeFooter {
+  box-sizing: border-box;
   padding: 60px 40px;
   text-align: center;
   background: #fff;
@@ -413,6 +428,7 @@
 .socialLinks {
   display: flex;
   justify-content: center;
+  flex-wrap: wrap;
   gap: 30px;
   font-family: "Courier New", monospace;
   text-transform: uppercase;
@@ -420,6 +436,12 @@
 }
 
 .socialLinks a {
+  box-sizing: border-box;
+  display: inline-flex;
+  min-width: 44px;
+  min-height: 44px;
+  align-items: center;
+  justify-content: center;
   color: #000;
   text-decoration: none;
   border-bottom: 1px solid transparent;
@@ -444,6 +466,7 @@
   line-height: 1.4;
   color: #000;
   /* Black text */
+  overflow-wrap: anywhere;
 }
 
 .currentCharInfo {
@@ -453,8 +476,10 @@
   background: #f5f5f5;
   padding: 4px 12px;
   display: inline-block;
+  max-width: 100%;
   margin-bottom: 20px;
   border: 1px solid #e0e0e0;
+  overflow-wrap: anywhere;
 }
 
 /* Counter Styles */
@@ -536,11 +561,11 @@
   .heroLeft {
     border-right: none;
     border-bottom: 1px solid #000;
-    padding: 60px 40px;
+    padding: clamp(36px, 8vw, 60px) clamp(18px, 6vw, 40px);
   }
 
   .heroRight {
-    padding: 60px 40px;
+    padding: clamp(36px, 8vw, 60px) clamp(18px, 6vw, 40px);
   }
 
   .modulesSection {
@@ -558,6 +583,56 @@
 }
 
 @media (max-width: 576px) {
+  .heroLogo {
+    width: min(85%, 420px);
+  }
+
+  .heroSubtitle {
+    font-size: 0.85rem;
+  }
+
+  .asciiContainer {
+    max-width: calc(100vw - 32px);
+    padding: 16px;
+    box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.1);
+  }
+
+  .asciiText {
+    font-size: clamp(1.15rem, 6vw, 1.5rem);
+  }
+
+  .currentCharInfo {
+    font-size: 0.78rem;
+    padding: 4px 8px;
+  }
+
+  .counterContainer {
+    margin: 24px 0;
+  }
+
+  .counterValue {
+    width: 100%;
+    justify-content: center;
+    gap: clamp(5px, 2vw, 8px);
+  }
+
+  .counterDigit {
+    min-width: clamp(38px, 13vw, 48px);
+    padding: 8px clamp(8px, 2.5vw, 12px);
+    font-size: clamp(1.85rem, 9vw, 2.5rem);
+  }
+
+  .counterLabel {
+    font-size: 0.68rem;
+    letter-spacing: 1px;
+    text-align: center;
+  }
+
+  .interimMessage,
+  .completeMessage {
+    font-size: 0.72rem;
+  }
+
   .modulesSection {
     grid-template-columns: 1fr;
   }
@@ -578,10 +653,28 @@
     gap: 15px;
   }
 
+  .moduleTitle {
+    font-size: 1.55rem;
+  }
+
   .moduleDesc {
     margin-top: 5px;
     opacity: 1;
     /* Always show desc on mobile */
     transform: none;
+  }
+
+  .arrowIcon {
+    right: 24px;
+    bottom: 24px;
+    opacity: 1;
+  }
+
+  .homeFooter {
+    padding: 42px 20px;
+  }
+
+  .socialLinks {
+    gap: 12px 24px;
   }
 }

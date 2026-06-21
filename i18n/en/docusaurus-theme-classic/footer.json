@@ -13,7 +13,7 @@
   },
   "link.item.label.作品集": {
     "message": "Gallery",
-    "description": "The label of footer link with label=作品集 linking to /gallery"
+    "description": "The label of footer link with label=作品集 linking to /sukima-ml"
   },
   "link.item.label.关于我们": {
     "message": "About",
@@ -30,10 +30,6 @@
   "link.item.label.Bilibili": {
     "message": "Bilibili",
     "description": "The label of footer link with label=Bilibili linking to https://space.bilibili.com/368984327"
-  },
-  "link.item.label.Pixiv": {
-    "message": "Pixiv",
-    "description": "The label of footer link with label=Pixiv linking to https://www.pixiv.net/users/placeholder"
   },
   "link.item.label.QQ群": {
     "message": "QQ Group",

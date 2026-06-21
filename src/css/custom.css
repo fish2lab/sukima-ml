@@ -369,6 +369,30 @@ li {
   text-transform: uppercase;
 }
 
+.navbar__toggle {
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0;
+}
+
+.navbar-sidebar__close,
+.navbar-sidebar__back,
+.navbar-sidebar .menu__caret,
+.navbar-sidebar [class*='toggleButton'] {
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  min-height: 44px;
+}
+
+.navbar-sidebar .menu__link {
+  display: flex;
+  min-height: 44px;
+  align-items: center;
+}
+
 /* Footer Styling - Minimalist */
 .footer {
   background: #f4f1ea;
@@ -397,6 +421,10 @@ li {
 
 .footer__link-item {
   /* font-family: "Courier New", monospace; -> REMOVED per request */
+  display: inline-flex;
+  min-width: 44px;
+  min-height: 40px;
+  align-items: center;
   font-size: 0.9rem;
   color: #000000;
   font-weight: 500;
@@ -413,6 +441,12 @@ li {
 
 [data-theme='dark'] .footer__link-item:hover {
   color: #fff;
+}
+
+@media (max-width: 996px) {
+  .footer__link-item {
+    min-height: 44px;
+  }
 }
 
 /* Button Styling - Sharp & Elegant */
@@ -539,4 +573,15 @@ li {
 [data-theme='dark'] .navbar-phantasm-item .navbar__link:hover {
   background: rgba(239, 83, 80, 0.15);
   color: #ef5350 !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
 }

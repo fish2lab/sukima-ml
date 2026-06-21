@@ -17,3 +17,23 @@
   label: 名画同人
   permalink: /名画同人
   description: 名画同人创作相关内容
+
+发展:
+  label: 发展
+  permalink: /发展
+  description: 隙间月影的发展记录
+
+技术:
+  label: 技术
+  permalink: /技术
+  description: 技术分析与工程记录
+
+算法:
+  label: 算法
+  permalink: /算法
+  description: 算法拆解与实现分析
+
+逆向工程:
+  label: 逆向工程
+  permalink: /逆向工程
+  description: 逆向工程与代码分析
