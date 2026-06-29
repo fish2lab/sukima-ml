@@ -1,8 +1,4 @@
 {
-  "title": {
-    "message": "隙间月影 | Sukima Moonlight",
-    "description": "The title in the navbar"
-  },
   "logo.alt": {
     "message": "Sukima Moonlight Logo",
     "description": "The alt text of navbar logo"
@@ -22,5 +18,9 @@
   "item.label.联系方式": {
     "message": "Contact",
     "description": "Navbar item with label 联系方式"
+  },
+  "item.label.摄影作品": {
+    "message": "Photography",
+    "description": "Navbar item with label 摄影作品"
   }
 }

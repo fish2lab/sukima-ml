@@ -1,5 +1,6 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useHistory } from '@docusaurus/router';
+import { translate } from '@docusaurus/Translate';
 import Layout from '@theme/Layout';
 import QRCodeModal from '../components/QRCodeModal';
 
@@ -15,13 +16,14 @@ export default function QQGroup() {
 
   return (
     <Layout
-      title="加入QQ群"
-      description="扫描二维码加入隙间月影社团QQ群">
+      title={translate({ id: 'qr.qq.page.title', message: '加入QQ群' })}
+      description={translate({ id: 'qr.qq.page.description', message: '扫描二维码加入隙间月影社团QQ群' })}>
       <QRCodeModal 
         isOpen={isModalOpen}
         onClose={handleClose}
         imageSrc="/img/groupQRcode.webp"
-        title="扫码加入QQ群"
+        title={translate({ id: 'qr.qq.title', message: '扫码加入QQ群' })}
+        imageAlt={translate({ id: 'qr.qq.alt', message: '隙间月影 QQ 群二维码' })}
       />
     </Layout>
   );

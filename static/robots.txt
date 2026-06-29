@@ -2,3 +2,4 @@ User-agent: *
 Allow: /
 
 Sitemap: https://sukima-ml.club/sitemap.xml
+Sitemap: https://sukima-ml.club/en/sitemap.xml

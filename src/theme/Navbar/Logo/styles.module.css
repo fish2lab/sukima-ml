@@ -2,11 +2,16 @@
     display: flex;
     align-items: center;
     gap: 0.75rem;
+    min-width: 0;
 }
 
 .logoLink {
     display: flex;
     align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    flex: 0 0 auto;
 }
 
 .logoImage {
@@ -21,10 +26,14 @@
     align-items: center;
     gap: 0.4rem;
     font-size: 1rem;
+    min-width: 0;
 }
 
 /* 隙间月影 - 经典优雅风格 */
 .sukimaLink {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
     font-family: "Noto Serif SC", "Songti SC", serif;
     font-weight: 500;
     color: var(--ifm-color-content) !important;
@@ -49,6 +58,9 @@
 
 /* Studio Phantasm - 现代简约风格 */
 .phantasmLink {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
     font-family: "Courier New", monospace;
     font-weight: 400;
     font-size: 0.85rem;
@@ -92,5 +104,12 @@
 
     .brandContainer {
         gap: 0;
+    }
+
+    .sukimaLink {
+        max-width: min(52vw, 8rem);
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
     }
 }

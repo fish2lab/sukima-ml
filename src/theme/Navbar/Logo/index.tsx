@@ -1,5 +1,6 @@
 import React, { type ReactNode } from 'react';
 import Link from '@docusaurus/Link';
+import { translate } from '@docusaurus/Translate';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 
 import styles from './styles.module.css';
@@ -18,15 +19,19 @@ export default function Logo(): ReactNode {
             <Link to={logoLink} className={styles.logoLink}>
                 <img
                     src={logoImageUrl}
-                    alt="Sukima Moonlight Logo"
+                    alt={translate({ id: 'navbar.logo.alt', message: 'Sukima Moonlight Logo' })}
                     className={styles.logoImage}
+                    width={512}
+                    height={512}
+                    loading="eager"
+                    decoding="async"
                 />
             </Link>
 
             {/* 双品牌标题 */}
             <div className={styles.brandContainer}>
                 <Link to={logoLink} className={styles.sukimaLink}>
-                    隙间月影
+                    {translate({ id: 'navbar.brand.sukima', message: '隙间月影' })}
                 </Link>
                 <span className={styles.separator}>&</span>
                 <Link to="https://fcsu.dev" className={styles.phantasmLink}>

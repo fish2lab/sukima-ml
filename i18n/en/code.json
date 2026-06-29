@@ -1,22 +1,4 @@
 {
-  "gallery.clickToSee": {
-    "message": "Click to see"
-  },
-  "chaoyang.title": {
-    "message": "Chaoyang² | Phantasm"
-  },
-  "chaoyang.heading": {
-    "message": "Chaoyang²"
-  },
-  "chaoyang.intro": {
-    "message": "From Chaoyang, Beijing to Chaoyang City, Liaoning. Although the name suggests facing the sun twice, from a temporal dimension, the G3691 I took was actually heading towards the dusk. The scenery I saw was mostly brown earth and dim skies. Chaoyang², perhaps it's a case of two positives making a negative."
-  },
-  "chaoyang.mobileHint": {
-    "message": "This page is best viewed on desktop."
-  },
-  "chaoyang.back": {
-    "message": "BACK TO PHANTASM"
-  },
   "copyright.title": {
     "message": "Copyright Declaration",
     "description": "The title of the copyright page"
@@ -89,81 +71,6 @@
   },
   "footer.text": {
     "message": "Sukima Moonlight - Bringing more cultural depth to Touhou products"
-  },
-  "phantasm.term.phantom": {
-    "message": "Phantom"
-  },
-  "phantasm.subtitle.physical": {
-    "message": "Physical Level"
-  },
-  "phantasm.explanation.phantom": {
-    "message": "Digital photos, arranged by algorithms from storage media, disguised as holographic projections of the material world on a screen."
-  },
-  "phantasm.term.ghost": {
-    "message": "Ghost"
-  },
-  "phantasm.subtitle.depictive": {
-    "message": "Depictive Level"
-  },
-  "phantasm.explanation.ghost": {
-    "message": "A photo is a 'this-has-been' where the passing moment is stripped away by the shutter and lingers in a static frame."
-  },
-  "phantasm.term.mental": {
-    "message": "Mental Image"
-  },
-  "phantasm.subtitle.mental": {
-    "message": "Mental Level"
-  },
-  "phantasm.explanation.mental": {
-    "message": "Surpassing the thinness of the physical level, it builds a memory palace deep in consciousness that is more solid than reality."
-  },
-  "modal.fullFrame": {
-    "message": "Full Frame 36×24mm"
-  },
-  "modal.mediumFormat": {
-    "message": "Medium Format 44×33mm"
-  },
-  "modal.vsFullFrame": {
-    "message": "vs Full Frame"
-  },
-  "modal.aspectRatio.title": {
-    "message": "4:3 Aspect Ratio"
-  },
-  "modal.aspectRatio.text": {
-    "message": "Compared to the 3:2 of full frame, the 4:3 aspect ratio of medium format allows for framing more of the sky or the ground."
-  },
-  "modal.focalLength.title": {
-    "message": "Equivalent 36mm Focal Length"
-  },
-  "modal.focalLength.text": {
-    "message": "GF45mm f/2.8 is equivalent to approximately a 36mm full-frame focal length on medium format, providing a gentle perspective similar to the human eye. Neither exaggerated nor cramped, it is an ideal choice for recording the real world."
-  },
-  "modal.ultimateTruth.text": {
-    "message": "102 million pixels, combined with the excellent dynamic range and color depth of the medium format sensor, record the ultimate truth—not just the visible details in the frame, but the emotional connection between reality and memory. But photos are fake after all, where is the boundary between reality and illusion? That is the question."
-  },
-  "module.gallery.desc": {
-    "message": "Touhou Project × Masterpiece Fanart Collection"
-  },
-  "module.giclee.desc": {
-    "message": "Learn about the 'reproduction' magic of Giclée"
-  },
-  "module.about.desc": {
-    "message": "About Sukima Moonlight Circle"
-  },
-  "module.blog.desc": {
-    "message": "Circle updates and creative notes"
-  },
-  "phantasm.title": {
-    "message": "Phantasm | Stage Phantasm"
-  },
-  "gallery.series.chaoyang2.title": {
-    "message": "Chaoyang²"
-  },
-  "gallery.series.chaoyang2.desc": {
-    "message": "From Chaoyang, Beijing to Chaoyang City · 3 Photos"
-  },
-  "gallery.clickToView": {
-    "message": "CLICK TO VIEW SERIES →"
   },
   "theme.ErrorPageContent.title": {
     "message": "This page crashed.",
@@ -497,9 +404,6 @@
   "about.creator.caption": {
     "message": "Fig 1. The Creator, 2025."
   },
-  "about.link.giclee": {
-    "message": "Our Chosen Craft — Giclée"
-  },
   "about.organizer.title": {
     "message": "About the Organizer｜关于主催"
   },
@@ -591,7 +495,7 @@
     "message": "💡 Tip: Supports Markdown; you can use image hosting links to insert images"
   },
   "contact.feedback.imageHost": {
-    "message": "📷 推荐图床："
+    "message": "Recommended image host:"
   },
   "contact.feedback.imageHost.detail": {
     "message": "(Free and no registration required)"
@@ -606,7 +510,7 @@
     "message": "Magic Gallery"
   },
   "gallery.description": {
-    "message": "Where Art Meets Magic"
+    "message": "Explore Touhou Project characters reimagined through classic masterpieces and Giclée art prints."
   },
   "giclee.title": {
     "message": "Introduction to Giclée Process"
@@ -678,16 +582,16 @@
     "message": "exclusive orange, green, and violet"
   },
   "giclee.sec1.item2.title": {
-    "message": "极致的黑"
+    "message": "The Deepest Black"
   },
   "giclee.sec1.item2.desc": {
-    "message": "拥有4种不同浓度的黑色墨水。它印出的黑色不是死黑，而是像夜空一样有层次、有质感的黑。"
+    "message": "With four different black inks, the blacks are not flat and dead, but layered and textured like the night sky."
   },
   "giclee.sec1.item3.title": {
-    "message": "微米级精度"
+    "message": "Micron-Level Precision"
   },
   "giclee.sec1.item3.desc": {
-    "message": "2400dpi 分辨率 + 3.5pl 极微墨滴。你需要拿着放大镜，才能惊叹于角色的睫毛和发丝竟如此清晰，肉眼完全看不到任何噪点。"
+    "message": "With 2400 dpi resolution and 3.5 pl micro-droplets, the eyelashes and strands of hair remain so clear that no visible dot pattern appears to the naked eye."
   },
   "giclee.sec2.title": {
     "message": "📜 'Masterpiece' Touch within Reach"
@@ -702,37 +606,37 @@
     "message": "Hahnemühle Photo Rag 308g"
   },
   "giclee.sec2.image.caption": {
-    "message": "Hahnemühle Photo Rag® 308g 数据表"
+    "message": "Hahnemühle Photo Rag® 308g data sheet"
   },
   "giclee.sec2.desc2": {
-    "message": "我们使用的是他们最经典的 {model}{purpleNote}："
+    "message": "We use their classic {model}{purpleNote}:"
   },
   "giclee.sec2.purpleNote": {
-    "message": "（紫妈那幅比较特殊，因为黑色面积太大选用了更贵的硫化钡纯棉纸）"
+    "message": " (Yukari’s print is special; because of its large dark areas, it uses a more expensive barium sulfate cotton paper.)"
   },
   "giclee.sec2.item1.title": {
-    "message": "100% 纯棉制造"
+    "message": "100% Cotton"
   },
   "giclee.sec2.item1.desc": {
-    "message": "指尖划过，你能感受到如同古籍、水彩纸那样的温润棉质纹理，绝非普通纸浆可比。"
+    "message": "Run a fingertip over it and you can feel the warm cotton texture of old books and watercolor paper, nothing like ordinary pulp paper."
   },
   "giclee.sec2.item2.title": {
-    "message": "厚重 308gsm"
+    "message": "Heavy 308 gsm Weight"
   },
   "giclee.sec2.item2.desc": {
-    "message": "拿在手里沉甸甸的分量感，挺括厚实，不会像普通海报那样软塌塌。"
+    "message": "It feels substantial in the hand: firm, thick, and nothing like a limp ordinary poster."
   },
   "giclee.sec2.item3.title": {
-    "message": "高级哑光面"
+    "message": "Premium Matte Surface"
   },
   "giclee.sec2.item3.desc": {
-    "message": "{focus} 它完全不反光。无论你宿舍或房间的灯光如何照射，任何角度都能完美欣赏画面，没有刺眼的白斑。"
+    "message": "{focus} It is completely non-reflective. No matter how your room light hits it, the image stays viewable from every angle without harsh glare."
   },
   "giclee.sec2.focus": {
-    "message": "这是重点！"
+    "message": "This matters:"
   },
   "giclee.sec2.detailHint": {
-    "message": "为了让大家更直观地感受差异，我们拍摄了实际成品的细节图："
+    "message": "To make the difference easier to see, we photographed actual finished details:"
   },
   "giclee.sec2.detail1.alt": {
     "message": "Detail Shot 1"
@@ -744,28 +648,28 @@
     "message": "Detail Shot 3"
   },
   "giclee.sec3.title": {
-    "message": "🖼️ 最后的加冕：画廊级装裱"
+    "message": "The Final Coronation: Gallery-Grade Framing"
   },
   "giclee.sec3.desc": {
-    "message": "好马配好鞍。为了保护这幅作品，我们在装裱上也近乎强迫症："
+    "message": "A good print deserves a good frame. We are almost obsessive about protecting the work:"
   },
   "giclee.sec3.item1.title": {
-    "message": "影像级高透亚克力"
+    "message": "Imaging-Grade High-Transparency Acrylic"
   },
   "giclee.sec3.item1.desc": {
-    "message": "比玻璃更透、更轻、更安全。"
+    "message": "Clearer, lighter, and safer than glass."
   },
   "giclee.sec3.item2.title": {
-    "message": "铝合金画框 & 铝皮背板"
+    "message": "Aluminum Frame and Aluminum-Backed Panel"
   },
   "giclee.sec3.item2.desc": {
-    "message": "防潮防变形，给画作最坚实的支撑。"
+    "message": "Moisture-resistant and warp-resistant, giving the artwork a firm structure."
   },
   "giclee.sec3.item3.title": {
-    "message": "博物馆级无酸卡纸"
+    "message": "Museum-Grade Acid-Free Mat Board"
   },
   "giclee.sec3.item3.desc": {
-    "message": "确保画芯不会因为接触酸性物质而发黄。"
+    "message": "Keeps the print from yellowing due to contact with acidic materials."
   },
   "giclee.sec3.detail1.alt": {
     "message": "Framing Detail 1"
@@ -780,28 +684,28 @@
     "message": "Framing Detail 4"
   },
   "giclee.sec4.title": {
-    "message": "⏳ 时间的礼物"
+    "message": "A Gift of Time"
   },
   "giclee.sec4.q": {
-    "message": "为什么要选择艺术微喷？"
+    "message": "Why choose Giclée printing?"
   },
   "giclee.sec4.desc1.part1": {
-    "message": "普通的印刷品，挂一年就会在阳光下褪色。"
+    "message": "Ordinary prints fade after a year in sunlight."
   },
   "giclee.sec4.desc1.part2": {
-    "message": "但得益于{paper}与{ink}的结合，这幅作品达到了{standard}。"
+    "message": "But thanks to the combination of {paper} and {ink}, this work reaches a {standard}."
   },
   "giclee.sec4.paper": {
-    "message": "无酸纯棉纸张"
+    "message": "acid-free cotton paper"
   },
   "giclee.sec4.ink": {
-    "message": "颜料墨水"
+    "message": "pigment ink"
   },
   "giclee.sec4.standard": {
-    "message": "“收藏级”标准"
+    "message": "collector-grade standard"
   },
   "giclee.sec4.desc2": {
-    "message": "它可以陪伴你读完高中、大学，甚至当你步入社会、组建家庭，回头看时，墙上的她们依然一如初见。"
+    "message": "It can accompany you through high school, university, and even into adult life. When you look back, the girls on the wall will still feel as vivid as the first day."
   },
   "giclee.conclusion": {
     "message": "We hope that what we sell is not just a print, but a piece of love that can transcend time and is worth cherishing."
@@ -809,46 +713,254 @@
   "giclee.lightbox.alt": {
     "message": "Full size"
   },
-  "gallery.art-001.title": {
-    "message": "Yakumo Yukari · Masterpiece in the Gap"
+  "about.giclee.link": {
+    "message": "Our Chosen Craft — Giclée"
   },
-  "gallery.art-001.subtitle": {
-    "message": "Yakumo Yukari × Classic Art"
+  "buy.title": {
+    "message": "Purchase Guide"
   },
-  "gallery.art-001.desc": {
-    "message": "A world-class masterpiece manifesting within the gap."
+  "buy.description": {
+    "message": "Purchase instructions and payment methods for Sukima Moonlight products."
   },
-  "gallery.art-002.title": {
-    "message": "Hakurei Reimu · Shrine Maiden of Paradise"
+  "buy.heading": {
+    "message": "Offer Faith"
   },
-  "gallery.art-002.subtitle": {
-    "message": "Hakurei Reimu × Classic Art"
+  "buy.payment.title": {
+    "message": "1. Payment"
   },
-  "gallery.art-002.desc": {
-    "message": "The guardian of Gensokyo, harmonized with classical aesthetics."
+  "buy.payment.alipay.alt": {
+    "message": "Alipay payment QR code"
   },
-  "gallery.art-003.title": {
-    "message": "Kirisame Marisa · Ordinary Magician"
+  "buy.payment.alipay": {
+    "message": "Alipay"
   },
-  "gallery.art-003.subtitle": {
-    "message": "Kirisame Marisa × Classic Art"
+  "buy.payment.wechat.alt": {
+    "message": "WeChat Pay payment QR code"
   },
-  "gallery.art-003.desc": {
-    "message": "The ordinary magician, surrounded by the echoes of master painters."
+  "buy.payment.wechat": {
+    "message": "WeChat Pay"
   },
-  "flyingSeimei.title": {
-    "message": "Flying Seimei | Phantasm"
+  "buy.payment.amount": {
+    "message": "Amount due: ¥{price}.00"
   },
-  "flyingSeimei.heading": {
-    "message": "Flying Seimei"
+  "buy.contact.title": {
+    "message": "2. Contact"
   },
-  "flyingSeimei.intro": {
-    "message": "Glass is not merely a medium, but a new origin point for light. The light atop the mountain is flying Seimei, while the light behind the glass curtain wall becomes a captured specimen. When the sun's energy is reconstructed into geometric slices, the light itself grows heavy with the colors of artificial media."
+  "buy.contact.emailFirst": {
+    "message": "Email is recommended. You can use any mailbox, including QQ Mail; confirmations and tracking numbers will be sent by reply email."
   },
-  "gallery.series.flyingSeimei.title": {
-    "message": "Flying Seimei"
+  "buy.contact.afterPayment": {
+    "message": "After sending the purchase email, please join the circle QQ group. I will confirm the order by email and provide shipping information. If anything goes wrong, contact me by email or private message in the group."
   },
-  "gallery.series.flyingSeimei.desc": {
-    "message": "Glass is not merely a medium, but a new origin point for light"
+  "buy.contact.to": {
+    "message": "To: kanade271828@icloud.com (Recommended)"
+  },
+  "buy.contact.cc": {
+    "message": "Cc: kanade271828@gmail.com (Backup)"
+  },
+  "buy.template.title": {
+    "message": "3. Email Template"
+  },
+  "buy.template.copyHint": {
+    "message": "Copy below"
+  },
+  "buy.template.subjectLabel": {
+    "message": "Subject:"
+  },
+  "buy.template.prefill.subject": {
+    "message": "[{product} Purchase] your QQ number + {spec}"
+  },
+  "buy.template.bodyLabel": {
+    "message": "Body:"
+  },
+  "buy.template.specs": {
+    "message": "Purchase details"
+  },
+  "buy.template.product": {
+    "message": "Artwork: {product}"
+  },
+  "buy.template.variant": {
+    "message": "Variant: {variant}"
+  },
+  "buy.template.spec": {
+    "message": "Spec: {spec}"
+  },
+  "buy.template.quantityOne": {
+    "message": "Quantity: 1"
+  },
+  "buy.template.shipping": {
+    "message": "Shipping information:"
+  },
+  "buy.template.name": {
+    "message": "Name:"
+  },
+  "buy.template.phone": {
+    "message": "Phone:"
+  },
+  "buy.template.address": {
+    "message": "Address:"
+  },
+  "buy.template.default.subject": {
+    "message": "[Product Purchase] your QQ number + size"
+  },
+  "buy.template.size": {
+    "message": "Size: (for example, 14-inch)"
+  },
+  "buy.template.style": {
+    "message": "Style: (mat border / full-bleed borderless)"
+  },
+  "buy.template.quantity": {
+    "message": "Quantity:"
+  },
+  "buy.template.contactLine": {
+    "message": "Name, phone number, and shipping address"
+  },
+  "buy.template.note.payment": {
+    "message": "* Please attach a payment screenshot. The screenshot must clearly show the merchant order number or transaction/order ID so the organizer can verify the payment."
+  },
+  "buy.template.note.dm": {
+    "message": "* If you choose to buy by private message, please provide the same information above."
+  },
+  "buy.signature.sincerely": {
+    "message": "Sincerely,"
+  },
+  "buy.signature.name": {
+    "message": "Su Xinxian (Organizer)"
+  },
+  "qr.qq.alt": {
+    "message": "Sukima Moonlight QQ group QR code"
+  },
+  "home.description": {
+    "message": "Sukima Moonlight brings Touhou Project characters and world masterpieces together through museum-grade Giclée printing."
+  },
+  "qr.qq.page.title": {
+    "message": "Join the QQ Group"
+  },
+  "qr.qq.page.description": {
+    "message": "Scan the QR code to join the Sukima Moonlight QQ group."
+  },
+  "qr.qq.title": {
+    "message": "Scan to Join the QQ Group"
+  },
+  "gallery.label.original": {
+    "message": "Original Masterpiece"
+  },
+  "gallery.label.fanwork": {
+    "message": "Touhou Project Fan Art"
+  },
+  "gallery.nav.prev": {
+    "message": "Previous artwork"
+  },
+  "gallery.nav.next": {
+    "message": "Next artwork"
+  },
+  "gallery.yukari.alt": {
+    "message": "Yukari Yakumo"
+  },
+  "gallery.dialogue.open": {
+    "message": "Open Yukari dialogue"
+  },
+  "gallery.yukari.name": {
+    "message": "Yukari Yakumo"
+  },
+  "gallery.dialogue.nextAction": {
+    "message": "What should we do next?"
+  },
+  "gallery.dialogue.option.giclee": {
+    "message": "View the magic of reproduction (Giclée)"
+  },
+  "gallery.dialogue.option.purchase": {
+    "message": "Collect this boundary (Purchase)"
+  },
+  "gallery.dialogue.option.close": {
+    "message": "Pretend nothing happened (Close)"
+  },
+  "gallery.dialogue.continue": {
+    "message": "Continue"
+  },
+  "theme.common.close": {
+    "message": "Close"
+  },
+  "navbar.logo.alt": {
+    "message": "Sukima Moonlight Logo"
+  },
+  "navbar.brand.sukima": {
+    "message": "Sukima Moonlight"
+  },
+  "theme.IconExternalLink.ariaLabel": {
+    "message": "(opens in new tab)",
+    "description": "The ARIA label for the external link icon"
+  },
+  "gallery.art.004.title": {
+    "message": "The Swing on Youkai Mountain"
+  },
+  "gallery.art.001.title": {
+    "message": "The 17-Year-Old Girl with a Pearl Earring"
+  },
+  "gallery.art.003.title": {
+    "message": "The Hourai Court Ladies"
+  },
+  "gallery.art.002.title": {
+    "message": "The Unmoving Great Library"
+  },
+  "gallery.art.004.subtitle": {
+    "message": "The Swing × Mountain of Faith"
+  },
+  "gallery.art.001.subtitle": {
+    "message": "The Girl with a Pearl Earring (Age 17)"
+  },
+  "gallery.art.003.subtitle": {
+    "message": "Las Meninas: The Eternal Court"
+  },
+  "gallery.art.002.subtitle": {
+    "message": "The Bookworm × The Unmoving Library"
+  },
+  "gallery.art.004.desc": {
+    "message": "Why is Sanae sitting on the swing, stretching out white stockings with such theatrical charm? Why is Aya hiding in the lower-left corner to catch the decisive moment? Fragonard’s The Swing has slipped into Youkai Mountain."
+  },
+  "gallery.art.001.desc": {
+    "message": "“Oh my, traveler from the outside world, lost all the way here. A pleasure. This portrait caught a true glimpse of me outside the gaps. If you hang it on the wall of your heart and look at it often, perhaps that too is a kind of offering to my existence.”"
+  },
+  "gallery.art.003.desc": {
+    "message": "A slice of everyday life at Eientei. Compared with the solemn Spanish court of the original painting, the air here feels ready to erupt into a spell-card incident at any moment. Notice the figure secretly photographing from the doorway."
+  },
+  "gallery.art.002.desc": {
+    "message": "Is this the weight of knowledge? To reach truth, someone must become the foundation, such as the poor little devil trembling beneath Lady Patchouli’s feet right now."
+  },
+  "gallery.art.004.introOriginal": {
+    "message": "Fragonard’s Rococo masterpiece shows a young woman sweeping upward on a swing while a hidden lover watches below, capturing the frivolous pleasure of 18th-century French court life."
+  },
+  "gallery.art.001.introOriginal": {
+    "message": "Vermeer’s celebrated portrait turns a half-spoken glance, luminous lips, and the glow of a pearl earring into one of art history’s most mysterious moments, often called the Mona Lisa of the North."
+  },
+  "gallery.art.003.introOriginal": {
+    "message": "Velázquez’s masterpiece uses complex perspective, mirrored reflections, and the painter’s own presence to blur reality and illusion, becoming one of art history’s great riddles about seeing."
+  },
+  "gallery.art.002.introOriginal": {
+    "message": "Carl Spitzweg’s classic figure shows a scholar on a ladder, completely absorbed in books and oblivious to reality, embodying the Biedermeier era’s eccentric hunger for knowledge."
+  },
+  "gallery.art.004.introTouhou": {
+    "message": "Move the scene to Youkai Mountain and the girl on the swing becomes Sanae, while the hidden observer catching the decisive moment is no aristocratic lover but Aya the reporter. Perhaps this is Gensokyo’s version of tabloid photography."
+  },
+  "gallery.art.001.introTouhou": {
+    "message": "In Gensokyo, the sitter becomes this eternally 17-year-old girl. Compared with the pearl’s gentle glow, Yukari’s all-seeing gaze and the cracked, timeworn texture feel even more like a charm that crosses boundaries."
+  },
+  "gallery.art.003.introTouhou": {
+    "message": "In the Eientei version, the proud Princess Kaguya becomes the visual center. Eirin serves tea with ceremony, while Mokou seems forced into public relations. Less court etiquette, more grand cosplay born from immortal boredom."
+  },
+  "gallery.art.002.introTouhou": {
+    "message": "The witch of the Scarlet Devil Mansion perfectly recreates that devotion to books. But the ladder has become a very unfortunate familiar. For asthmatic Patchouli, reading ten thousand volumes without moving may be the ultimate magic."
+  },
+  "gallery.art.004.originalPainting": {
+    "message": "The Swing"
+  },
+  "gallery.art.001.originalPainting": {
+    "message": "Girl with a Pearl Earring"
+  },
+  "gallery.art.003.originalPainting": {
+    "message": "Las Meninas"
+  },
+  "gallery.art.002.originalPainting": {
+    "message": "The Bookworm"
   }
 }

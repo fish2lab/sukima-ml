@@ -1,4 +1,5 @@
 import React from 'react';
+import Link from '@docusaurus/Link';
 import Layout from '@theme/Layout';
 import Translate, { translate } from '@docusaurus/Translate';
 import useBaseUrl from '@docusaurus/useBaseUrl';
@@ -21,15 +22,17 @@ export default function About() {
                                 className={styles.profileImage}
                                 width={1000}
                                 height={1000}
+                                loading="eager"
+                                decoding="async"
                             />
                         </div>
                         <div className={styles.captionText}>
                             <Translate id="about.creator.caption">Fig 1. The Creator, 2025.</Translate>
                         </div>
                         <div className={styles.gicleeLinkWrapper}>
-                            <a href="/giclee" className={styles.gicleeLink}>
+                            <Link to="/giclee" className={styles.gicleeLink}>
                                 <Translate id="about.giclee.link">我们选择的工艺——Giclée</Translate>
-                            </a>
+                            </Link>
                         </div>
                     </div>
 

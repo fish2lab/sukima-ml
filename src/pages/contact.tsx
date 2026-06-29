@@ -100,6 +100,7 @@ export default function Contact() {
         onClose={() => setIsModalOpen(false)}
         imageSrc="/img/groupQRcode.webp"
         title={translate({ id: 'contact.modal.title', message: '扫码加入QQ群' })}
+        imageAlt={translate({ id: 'qr.qq.alt', message: '隙间月影 QQ 群二维码' })}
       />
     </Layout>
   );
