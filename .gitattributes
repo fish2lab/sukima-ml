@@ -1,21 +1,27 @@
-# Git LFS 配置 - 大文件使用 LFS 存储
+# 二进制资源标记为 binary（禁用文本/行尾/diff 处理）。
+#
+# 本仓库不使用 Git LFS：历史中所有图片均以普通二进制提交，
+# 站点部署在 Cloudflare Pages，直接消费 static/ 下的原始二进制。
+# 此前 .gitattributes 曾声明图片走 LFS，但从未实际迁移
+# （git lfs ls-files 为空），导致全部图片永远显示为 modified。
+# 现统一改为 binary，与提交历史和部署方式保持一致。
 
 # 图片文件
-*.jpg filter=lfs diff=lfs merge=lfs -text
-*.jpeg filter=lfs diff=lfs merge=lfs -text
-*.JPG filter=lfs diff=lfs merge=lfs -text
-*.JPEG filter=lfs diff=lfs merge=lfs -text
-*.png filter=lfs diff=lfs merge=lfs -text
-*.PNG filter=lfs diff=lfs merge=lfs -text
-*.webp filter=lfs diff=lfs merge=lfs -text
-*.gif filter=lfs diff=lfs merge=lfs -text
+*.jpg binary
+*.jpeg binary
+*.JPG binary
+*.JPEG binary
+*.png binary
+*.PNG binary
+*.webp binary
+*.gif binary
 
 # 视频文件
-*.mp4 filter=lfs diff=lfs merge=lfs -text
-*.mov filter=lfs diff=lfs merge=lfs -text
-*.avi filter=lfs diff=lfs merge=lfs -text
+*.mp4 binary
+*.mov binary
+*.avi binary
 
 # 其他大文件
-*.zip filter=lfs diff=lfs merge=lfs -text
-*.tar.gz filter=lfs diff=lfs merge=lfs -text
-*.pdf filter=lfs diff=lfs merge=lfs -text
+*.zip binary
+*.tar.gz binary
+*.pdf binary
