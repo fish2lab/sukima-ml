@@ -93,6 +93,33 @@
 
   /* Borders (Kept) */
   --ifm-border-color: #e0e0e0;
+
+  /* ================================================================= */
+  /* Shared Art-Gallery Design Tokens                                  */
+  /* One palette for every custom page (home/about/contact/buy/giclee/ */
+  /* friends/copyright/artwork). Use these instead of hardcoded hex.   */
+  /* ================================================================= */
+  --art-bg: #ffffff;
+  --art-surface: #f9f9f9;
+  --art-surface-2: #fafafa;
+  --art-beige: #f4f1ea;
+  --art-ink: #1a1a1a;
+  --art-ink-soft: #555555;
+  --art-muted: #888888;
+  --art-faint: #999999;
+  --art-line: #000000;          /* hard structural line */
+  --art-line-soft: #e0e0e0;     /* hairline divider */
+  --art-accent: #b71c1c;        /* shrine red */
+  --art-accent-soft: rgba(183, 28, 28, 0.06);
+  --art-purple: #6a1b9a;        /* Yukari purple */
+
+  --art-font-display: "Times New Roman", "Noto Serif SC", "Songti SC", serif;
+  --art-font-serif: "Noto Serif SC", "Songti SC", "Times New Roman", serif;
+  --art-font-mono: "Courier New", "Intel One Mono", SFMono-Regular, monospace;
+
+  --art-shadow-hard: 6px 6px 0 rgba(0, 0, 0, 0.1);
+  --art-shadow-soft: 0 4px 20px rgba(0, 0, 0, 0.05);
+  --art-shadow-lift: 0 10px 30px rgba(0, 0, 0, 0.1);
 }
 
 /* Dark Mode */
@@ -122,6 +149,25 @@
 
   --dark-font-color: #e3e3e3;
   --font-color: #e3e3e3;
+
+  /* Art-Gallery tokens — dark overrides */
+  --art-bg: #121212;
+  --art-surface: #1e1e1e;
+  --art-surface-2: #1a1a1a;
+  --art-beige: #1e1e1e;
+  --art-ink: #e0e0e0;
+  --art-ink-soft: #a0a0a0;
+  --art-muted: #777777;
+  --art-faint: #666666;
+  --art-line: #333333;
+  --art-line-soft: #333333;
+  --art-accent: #ff8a80;
+  --art-accent-soft: rgba(255, 138, 128, 0.12);
+  --art-purple: #ce93d8;
+
+  --art-shadow-hard: 6px 6px 0 rgba(255, 255, 255, 0.05);
+  --art-shadow-soft: 0 4px 20px rgba(0, 0, 0, 0.3);
+  --art-shadow-lift: 0 10px 30px rgba(0, 0, 0, 0.5);
 }
 
 /* New User Provided Styles */

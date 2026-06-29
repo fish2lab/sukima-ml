@@ -193,7 +193,7 @@
   flex-direction: column;
   padding: 16px;
   border: 1px solid #e0e0e0;
-  border-radius: 4px;
+  border-radius: 0;
   cursor: pointer;
   transition: all 0.2s ease;
   background-color: #fff;
@@ -252,7 +252,7 @@
   background: #e65100;
   color: white;
   padding: 3px 8px;
-  border-radius: 4px;
+  border-radius: 0;
   font-family: sans-serif;
   text-transform: uppercase;
   letter-spacing: 0.5px;
@@ -356,7 +356,7 @@
   max-width: 800px;
   max-height: 90vh;
   overflow-y: auto;
-  border-radius: 8px;
+  border-radius: 0;
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
   position: relative;
   padding: 0;

@@ -46,10 +46,15 @@
 .qrCard {
     box-sizing: border-box;
     text-align: center;
-    background: #f9f9f9;
+    background: var(--art-beige);
     padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    border: 1px solid var(--art-line);
+    box-shadow: var(--art-shadow-hard);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.qrCard:hover {
+    transform: translateY(-3px);
 }
 
 .qrImage {
@@ -70,7 +75,7 @@
     box-sizing: border-box;
     background: #f4f1ea;
     padding: 30px;
-    border-radius: 4px;
+    border-radius: 0;
     line-height: 1.8;
 }
 

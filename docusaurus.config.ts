@@ -215,6 +215,10 @@ const config: Config = {
               label: 'Email',
               href: 'mailto:kanade271828@gmail.com',
             },
+            {
+              label: '版权声明',
+              to: '/copyright',
+            },
           ],
         },
       ],

@@ -324,17 +324,13 @@ export default function Home() {
           ))}
         </div>
 
-        {/* 4. Footer */}
+        {/* 4. Brand sign-off — slim band that transitions into the global footer */}
         <footer className={styles.homeFooter}>
           <div className={styles.footerContent}>
+            <div className={styles.footerMark}>隙間月影 · SUKIMA MOONLIGHT</div>
             <p className={styles.footerText}>
-              🌟 <Translate id="footer.text">隙间月影 Sukima Moonlight - 为东方带来更有文化底蕴的制品</Translate>
+              <Translate id="footer.text">隙间月影 Sukima Moonlight - 为东方带来更有文化底蕴的制品</Translate>
             </p>
-            <div className={styles.socialLinks}>
-              <Link to="https://fcsu.dev">Leader's Site</Link>
-              <Link to="https://github.com/FinnClair-Su">GitHub</Link>
-              <Link to="/about">About</Link>
-            </div>
           </div>
         </footer>
 

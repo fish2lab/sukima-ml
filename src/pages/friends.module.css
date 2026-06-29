@@ -1,34 +1,40 @@
 .friendsContainer {
-  max-width: 1400px;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 1080px;
   margin: 0 auto;
-  padding: 3rem 2rem;
+  padding: 4rem 2rem 5rem;
   min-height: calc(100vh - 60px);
+  font-family: var(--art-font-display);
 }
 
 .header {
-  margin-bottom: 3rem;
+  margin-bottom: 3.5rem;
   text-align: center;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid var(--art-line);
 }
 
 .title {
-  font-size: 2.5rem;
+  font-size: 2.6rem;
   font-weight: 400;
-  margin-bottom: 1rem;
-  font-family: "Times New Roman", "Songti SC", serif;
-  letter-spacing: -0.02em;
+  letter-spacing: 0.02em;
+  margin-bottom: 0.75rem;
+  color: var(--art-ink);
 }
 
 .subtitle {
-  font-size: 1.1rem;
-  color: var(--ifm-color-emphasis-600);
-  font-family: "Georgia", serif;
-  font-style: italic;
+  font-size: 0.95rem;
+  color: var(--art-faint);
+  font-family: var(--art-font-mono);
+  letter-spacing: 1px;
+  text-transform: uppercase;
 }
 
 .friendList {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-  gap: 2rem;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1.5rem;
 }
 
 .friendCardLink {
@@ -38,21 +44,22 @@
   height: 100%;
 }
 
+/* Sharp gallery card — hard border, square corners */
 .friendCard {
+  box-sizing: border-box;
   display: flex;
   align-items: flex-start;
-  gap: 1.5rem;
+  gap: 1.25rem;
   padding: 1.5rem;
-  border-radius: 16px;
-  background: var(--ifm-background-surface-color);
-  border: 1px solid rgba(0, 0, 0, 0.05);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  background: var(--art-bg);
+  border: 1px solid var(--art-line);
+  transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
   height: 100%;
   position: relative;
   overflow: hidden;
 }
 
+/* Accent rail slides in on hover */
 .friendCard::before {
   content: '';
   position: absolute;
@@ -60,40 +67,39 @@
   left: 0;
   width: 4px;
   height: 100%;
-  background: var(--ifm-color-primary);
-  opacity: 0;
-  transition: opacity 0.3s ease;
+  background: var(--art-accent);
+  transform: scaleY(0);
+  transform-origin: top;
+  transition: transform 0.3s ease;
 }
 
 .friendCardLink:hover .friendCard {
   transform: translateY(-4px);
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
-  border-color: rgba(0, 0, 0, 0.1);
+  background: var(--art-beige);
+  box-shadow: var(--art-shadow-hard);
 }
 
 .friendCardLink:hover .friendCard::before {
-  opacity: 1;
+  transform: scaleY(1);
 }
 
 .avatarContainer {
   flex-shrink: 0;
-  width: 72px;
-  height: 72px;
-  border-radius: 50%;
+  width: 64px;
+  height: 64px;
   overflow: hidden;
-  background-color: var(--ifm-color-emphasis-100);
+  background-color: var(--art-beige);
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 2px solid #fff;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  border: 1px solid var(--art-line);
 }
 
 .avatarText {
-  font-size: 2rem;
-  font-weight: 600;
-  color: var(--ifm-color-primary);
-  font-family: "Courier New", monospace;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--art-ink);
+  font-family: var(--art-font-mono);
 }
 
 .avatarImage {
@@ -104,62 +110,46 @@
 }
 
 .friendCardLink:hover .avatarImage {
-  transform: scale(1.1);
+  transform: scale(1.08);
 }
 
 .infoContainer {
   flex: 1;
+  min-width: 0;
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.4rem;
 }
 
 .friendName {
   font-size: 1.25rem;
   font-weight: 600;
   margin: 0;
-  color: var(--ifm-heading-color);
-  font-family: "Songti SC", serif;
-  letter-spacing: 0.5px;
+  color: var(--art-ink);
+  font-family: var(--art-font-serif);
+  letter-spacing: 0.3px;
 }
 
 .friendLinkText {
   margin: 0;
-  color: var(--ifm-color-primary);
-  font-size: 0.85rem;
-  font-family: "Courier New", monospace;
-  opacity: 0.8;
+  color: var(--art-accent);
+  font-size: 0.8rem;
+  font-family: var(--art-font-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  overflow-wrap: anywhere;
 }
 
 .friendDescription {
   margin: 0;
-  color: var(--ifm-font-color-base);
+  color: var(--art-ink-soft);
   font-size: 0.95rem;
   line-height: 1.6;
-  opacity: 0.9;
-}
-
-/* Dark mode adjustments */
-[data-theme='dark'] .friendCard {
-  background: #1e1e1e;
-  border-color: #333;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-}
-
-[data-theme='dark'] .avatarContainer {
-  border-color: #444;
-  background-color: #2a2a2a;
-}
-
-[data-theme='dark'] .friendCardLink:hover .friendCard {
-  background: #252525;
-  border-color: #555;
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5);
 }
 
 @media (max-width: 768px) {
   .friendsContainer {
-    padding: 2rem 1rem;
+    padding: 2.5rem 1.25rem 3.5rem;
   }
 
   .friendList {
@@ -167,6 +157,6 @@
   }
 
   .title {
-    font-size: 2rem;
+    font-size: 2.1rem;
   }
 }

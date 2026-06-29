@@ -1,0 +1,161 @@
+.pageContainer {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 100vh;
+  background-color: var(--art-bg);
+  color: var(--art-ink);
+  font-family: var(--art-font-display);
+  padding: 60px 20px 80px;
+}
+
+.contentWrapper {
+  box-sizing: border-box;
+  max-width: 800px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* Header */
+.header {
+  text-align: center;
+  margin-bottom: 3.5rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid var(--art-line);
+}
+
+.title {
+  font-size: 2.5rem;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  margin: 0 0 0.75rem;
+  line-height: 1.2;
+}
+
+.lastUpdated {
+  font-family: var(--art-font-mono);
+  font-size: 0.85rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--art-faint);
+}
+
+/* Sharp bordered section */
+.section {
+  box-sizing: border-box;
+  border: 1px solid var(--art-line);
+  background: var(--art-bg);
+  padding: 32px 36px;
+  margin-bottom: 2rem;
+  line-height: 1.8;
+}
+
+.sectionTitle {
+  font-size: 1.3rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin: 0 0 1.25rem;
+  padding-bottom: 0.6rem;
+  border-bottom: 1px solid var(--art-line-soft);
+}
+
+.section p {
+  color: var(--art-ink-soft);
+  margin-bottom: 1rem;
+}
+
+.ownerList {
+  list-style: none;
+  padding: 0;
+  margin: 1rem 0;
+}
+
+.ownerList li {
+  position: relative;
+  padding-left: 1.5rem;
+  margin-bottom: 0.75rem;
+  color: var(--art-ink-soft);
+}
+
+.ownerList li::before {
+  content: "—";
+  position: absolute;
+  left: 0;
+  color: var(--art-accent);
+  font-weight: bold;
+}
+
+.ownerList strong {
+  font-family: var(--art-font-mono);
+  color: var(--art-ink);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-size: 0.9rem;
+  margin-right: 0.4rem;
+}
+
+/* Emphasis declaration block — red accent rail */
+.declaration {
+  border-left: 4px solid var(--art-accent);
+  background: var(--art-accent-soft);
+}
+
+.declaration .sectionTitle {
+  color: var(--art-accent);
+  border-bottom-color: var(--art-accent);
+}
+
+.declaration hr {
+  border: none;
+  border-top: 1px dashed var(--art-line-soft);
+  margin: 1.5rem 0;
+}
+
+.declaration em {
+  color: var(--art-muted);
+  font-size: 0.95rem;
+}
+
+/* Back button — sharp gallery style */
+.backRow {
+  text-align: center;
+  margin-top: 3rem;
+}
+
+.backButton {
+  display: inline-block;
+  padding: 16px 40px;
+  border: 1px solid var(--art-line);
+  background: transparent;
+  color: var(--art-ink);
+  font-family: var(--art-font-mono);
+  font-size: 0.9rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: all 0.25s ease;
+}
+
+.backButton:hover {
+  background: var(--art-ink);
+  color: var(--art-bg);
+  text-decoration: none;
+}
+
+@media (max-width: 600px) {
+  .pageContainer {
+    padding: 42px 16px 60px;
+  }
+
+  .title {
+    font-size: clamp(1.9rem, 8vw, 2.3rem);
+  }
+
+  .section {
+    padding: 24px 22px;
+  }
+
+  .sectionTitle {
+    font-size: 1.15rem;
+  }
+}
