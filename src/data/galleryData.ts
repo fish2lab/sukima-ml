@@ -48,7 +48,7 @@ export const artworks: Artwork[] = [
         originalImageHeight: 1200,
         link: '/sukima-ml/artwork-001',
         artist: 'Sukima-ML Official',
-        description: '"哎呀，迷路至此的外界旅人，初次见面。这幅肖像画捕捉了我流落在隙间之外的一瞬真容。若你将其悬挂于心墙之上时刻注视，或许……也是一种对我\'存在\'的供奉呢。"',
+        description: '哎呀，迷路至此的外界旅人，初次见面。这幅肖像画捕捉了我流落在隙间之外的一瞬真容。若你将其悬挂于心墙之上时刻注视，或许……也是一种对我\'存在\'的供奉呢。',
         originalPainting: '戴珍珠耳环的少女 (Girl with a Pearl Earring)',
         touhouCharacter: '八云紫 (Yukari Yakumo)',
         introOriginal: '维米尔（Johannes Vermeer）的传世之作。少女那欲言又止的回眸、嘴唇的一抹亮色以及耳畔珍珠的温润光泽，构成了艺术史上最著名的神秘瞬间，常被称为"北方的蒙娜丽莎"。',

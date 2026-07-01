@@ -63,7 +63,7 @@ const config: Config = {
           blogDescription: '隙间月影社团的最新活动和创作进展',
           blogSidebarTitle: '所有文章',
           blogSidebarCount: 'ALL',
-          editUrl: 'https://github.com/FinnClair-Su/sukima-ml/tree/main/',
+          editUrl: 'https://github.com/fish2lab/sukima-ml/tree/main/',
           onInlineTags: 'warn',
           onInlineAuthors: 'warn',
           onUntruncatedBlogPosts: 'warn',

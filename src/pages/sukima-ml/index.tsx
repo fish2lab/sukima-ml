@@ -7,6 +7,7 @@ import { ChevronLeft, ChevronRight, X } from 'lucide-react';
 import clsx from 'clsx';
 import { useBaseUrlUtils } from '@docusaurus/useBaseUrl';
 import { useHistory, useLocation } from '@docusaurus/router';
+import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 
 import { artworks, type Artwork } from '../../data/galleryData';
 import {
@@ -33,6 +34,7 @@ export default function MagicGallery() {
   const history = useHistory();
   const location = useLocation();
   const { withBaseUrl } = useBaseUrlUtils();
+  const { siteConfig: { baseUrl } } = useDocusaurusContext();
   const shouldReduceMotion = useReducedMotion();
   const [isMobile, setIsMobile] = useState(false);
   const imageRef = useRef<HTMLImageElement>(null);
@@ -208,7 +210,11 @@ export default function MagicGallery() {
   const rightItem = artworks[getIndex(currentIndex + 1)];
 
   const handleCenterClick = () => {
-    history.push(centerItem.link);
+    // centerItem.link is always the zh-Hans path (e.g. /sukima-ml/artwork-004).
+    // Prepend the current locale's baseUrl (e.g. /en/) so EN locale navigates
+    // to /en/sukima-ml/artwork-004 instead of /sukima-ml/artwork-004.
+    const localePrefix = baseUrl.endsWith('/') ? baseUrl.slice(0, -1) : baseUrl;
+    history.push(`${localePrefix}${centerItem.link}`);
   };
 
   // Helper to get key with generation
