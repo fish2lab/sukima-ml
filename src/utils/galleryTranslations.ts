@@ -41,7 +41,7 @@ export function getArtworkDescription(artwork: Artwork): string {
         case '001':
             return translate({
                 id: 'gallery.art.001.desc',
-                message: '"哎呀，迷路至此的外界旅人，初次见面。这幅肖像画捕捉了我流落在隙间之外的一瞬真容。若你将其悬挂于心墙之上时刻注视，或许……也是一种对我\'存在\'的供奉呢。"',
+                message: '哎呀，迷路至此的外界旅人，初次见面。这幅肖像画捕捉了我流落在隙间之外的一瞬真容。若你将其悬挂于心墙之上时刻注视，或许……也是一种对我\'存在\'的供奉呢。',
             });
         case '003':
             return translate({
