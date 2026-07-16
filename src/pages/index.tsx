@@ -1,5 +1,6 @@
-import React, { useEffect, useState, type ReactNode } from 'react';
+import React, { useEffect, useRef, useState, type ReactNode } from 'react';
 import clsx from 'clsx';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import Link from '@docusaurus/Link';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import Layout from '@theme/Layout';
@@ -215,6 +216,90 @@ function ASCIIDemo() {
   );
 }
 
+// 开门式 Hero + 画廊：
+// 桌面端（h）左右门板向两侧划开；移动端（v）上下门板向上下划开，露出后方画廊
+// prefers-reduced-motion 用户保持静态堆叠布局（由 CSS 媒体查询控制）
+type DoorMode = 'off' | 'h' | 'v';
+
+function HeroGalleryDoors({ heroLogoUrl }: { heroLogoUrl: string }) {
+  const zoneRef = useRef<HTMLDivElement>(null);
+  const [doorMode, setDoorMode] = useState<DoorMode>('off');
+
+  useEffect(() => {
+    // 与 index.module.css 中门板布局的媒体查询保持一致
+    const motionMq = window.matchMedia('(prefers-reduced-motion: no-preference)');
+    const desktopMq = window.matchMedia('(min-width: 993px)');
+    const update = () =>
+      setDoorMode(!motionMq.matches ? 'off' : desktopMq.matches ? 'h' : 'v');
+    update();
+    motionMq.addEventListener('change', update);
+    desktopMq.addEventListener('change', update);
+    return () => {
+      motionMq.removeEventListener('change', update);
+      desktopMq.removeEventListener('change', update);
+    };
+  }, []);
+
+  const { scrollYProgress } = useScroll({
+    target: zoneRef,
+    offset: ['start start', 'end end'],
+  });
+  // 滚动前 85% 行程内完全打开，留一段停顿让画廊完整亮相
+  // 负向：桌面=左门向左 / 移动=上门向上；正向：桌面=右门向右 / 移动=下门向下
+  const doorOutNeg = useTransform(scrollYProgress, [0, 0.85], ['0%', '-100%']);
+  const doorOutPos = useTransform(scrollYProgress, [0, 0.85], ['0%', '100%']);
+  const hintOpacity = useTransform(scrollYProgress, [0, 0.15], [1, 0]);
+
+  const doorStyle = (offset: typeof doorOutNeg) =>
+    doorMode === 'h' ? { x: offset } : doorMode === 'v' ? { y: offset } : undefined;
+
+  return (
+    <div ref={zoneRef} className={styles.doorZone}>
+      <div className={styles.doorViewport}>
+        <motion.div
+          className={clsx(styles.heroLeft, styles.doorLeft)}
+          style={doorStyle(doorOutNeg)}
+        >
+          <Link to="/giclee" className={styles.heroLogoWrapper}>
+            <img
+              src={heroLogoUrl}
+              alt="Gap of the Moon"
+              className={styles.heroLogo}
+              width={200}
+              height={120}
+              loading="eager"
+              decoding="sync"
+              fetchPriority="high"
+            />
+            <div className={styles.heroLogoCaption}>
+              <Translate id="home.hero.caption">我们选择的工艺——艺术微喷</Translate>
+            </div>
+          </Link>
+        </motion.div>
+
+        <motion.div
+          className={clsx(styles.heroRight, styles.doorRight)}
+          style={doorStyle(doorOutPos)}
+        >
+          <div className={styles.asciiContainer}>
+            <ASCIIDemo />
+          </div>
+        </motion.div>
+
+        <div className={styles.galleryLayer}>
+          <MagicGalleryComponent className={styles.galleryFill} />
+        </div>
+
+        {doorMode !== 'off' && (
+          <motion.div className={styles.scrollHint} style={{ opacity: hintOpacity }} aria-hidden="true">
+            <Translate id="home.hero.scrollHint">SCROLL</Translate> ▼
+          </motion.div>
+        )}
+      </div>
+    </div>
+  );
+}
+
 // 模块介绍砖块组件
 interface ModuleBlockProps extends NavigationItem {
   index: number;
@@ -276,40 +361,8 @@ export default function Home() {
 
       <main className={styles.mainContainer}>
 
-        {/* 1. Hero Section: Split Screen */}
-        <div className={styles.heroSection}>
-          <div className={styles.heroLeft}>
-            <Link to="/giclee" className={styles.heroLogoWrapper}>
-              <img
-                src={heroLogoUrl}
-                alt="Gap of the Moon"
-                className={styles.heroLogo}
-                width={200}
-                height={120}
-                loading="eager"
-                decoding="sync"
-                fetchPriority="high"
-              />
-              <div className={styles.heroLogoCaption}>
-                <Translate id="home.hero.caption">我们选择的工艺——艺术微喷</Translate>
-              </div>
-            </Link>
-          </div>
-
-          <div className={styles.heroRight}>
-            <div className={styles.asciiContainer}>
-              <ASCIIDemo />
-            </div>
-          </div>
-        </div>
-
-        {/* 2. Gallery Section: Full Width */}
-        <div className={styles.gallerySection}>
-          <div className={styles.galleryContainer}>
-            {/* Replaced old carousel with MagicGallery */}
-            <MagicGalleryComponent className="h-[80vh]" />
-          </div>
-        </div>
+        {/* 1+2. Hero doors + Gallery reveal */}
+        <HeroGalleryDoors heroLogoUrl={heroLogoUrl} />
 
         {/* 3. Navigation Modules: Grid */}
         <div className={styles.modulesSection}>

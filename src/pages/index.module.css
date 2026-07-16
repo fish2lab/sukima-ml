@@ -13,15 +13,114 @@
   flex-direction: column;
 }
 
-/* --- Hero Section --- */
-.heroSection {
+/* --- Hero Doors + Gallery Reveal --- */
+/* 静态布局（移动端 / reduced-motion）：两块门板并排，画廊在下方整行 */
+.doorZone {
+  width: 100%;
+  border-bottom: 1px solid #000;
+}
+
+.doorViewport {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  /* Fit content but keep it reasonably tight */
-  min-height: auto;
   width: 100%;
-  border-bottom: none;
-  /* Removed border using 'none' instead of deleting property to be explicit, but deleting is cleaner. Let's delete it. */
+}
+
+.doorLeft {
+  order: 1;
+}
+
+.doorRight {
+  order: 2;
+}
+
+.galleryLayer {
+  order: 3;
+  grid-column: 1 / -1;
+}
+
+.galleryFill {
+  height: 80vh;
+}
+
+.scrollHint {
+  display: none;
+}
+
+/* 门板模式：Hero 占满视口并 sticky，滚动时左右划开露出后方画廊 */
+@media (min-width: 993px) and (prefers-reduced-motion: no-preference) {
+  .doorZone {
+    /* 视口高度 1 倍作展示 + 1 倍作开门滚动行程 */
+    height: 200vh;
+  }
+
+  .doorViewport {
+    position: sticky;
+    top: var(--ifm-navbar-height, 60px);
+    height: calc(100vh - var(--ifm-navbar-height, 60px));
+    display: block;
+    overflow: hidden;
+  }
+
+  .doorViewport .galleryLayer {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+  }
+
+  .doorViewport .galleryFill {
+    height: 100%;
+  }
+
+  /* 用后代选择器提高优先级，覆盖文件后方 .heroLeft/.heroRight 的 width/position */
+  .doorViewport .doorLeft,
+  .doorViewport .doorRight {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 50%;
+    z-index: 2;
+    will-change: transform;
+  }
+
+  .doorViewport .doorLeft {
+    left: 0;
+    box-shadow: 6px 0 24px rgba(0, 0, 0, 0.15);
+  }
+
+  .doorViewport .doorRight {
+    right: 0;
+    border-left: 1px solid #000;
+    box-shadow: -6px 0 24px rgba(0, 0, 0, 0.15);
+  }
+
+  .scrollHint {
+    display: block;
+    position: absolute;
+    bottom: 24px;
+    left: 50%;
+    transform: translate(-50%, 0);
+    z-index: 3;
+    font-family: "Courier New", monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: #666;
+    pointer-events: none;
+    animation: hintBob 2s ease-in-out infinite;
+  }
+}
+
+@keyframes hintBob {
+
+  0%,
+  100% {
+    transform: translate(-50%, 0);
+  }
+
+  50% {
+    transform: translate(-50%, 6px);
+  }
 }
 
 .heroLeft {
@@ -167,15 +266,6 @@
   box-shadow: 6px 6px 0 rgba(0, 0, 0, 0.1);
 }
 
-/* --- Gallery Section --- */
-.gallerySection {
-  width: 100%;
-  padding: 0;
-  background: #fff;
-  border-bottom: 1px solid #000;
-  overflow: hidden;
-}
-
 .sectionHeader {
   display: none;
 }
@@ -194,15 +284,6 @@
   font-size: 1.1rem;
   color: #666;
   font-style: italic;
-}
-
-.galleryContainer {
-  width: 100%;
-  max-width: none;
-  /* No max width */
-  margin: 0;
-  padding: 0;
-  /* No padding */
 }
 
 /* --- Navigation Modules --- */
@@ -320,8 +401,16 @@
   border-bottom-color: #333;
 }
 
-[data-theme='dark'] .heroSection {
+[data-theme='dark'] .doorZone {
   border-bottom-color: #333;
+}
+
+[data-theme='dark'] .doorRight {
+  border-left-color: #333;
+}
+
+[data-theme='dark'] .scrollHint {
+  color: #888;
 }
 
 [data-theme='dark'] .gicleeEntryBtn {
@@ -365,11 +454,6 @@
   background: #1e1e1e;
   color: #ff8a80;
   border-color: #ff8a80;
-}
-
-[data-theme='dark'] .gallerySection {
-  background: #121212;
-  border-bottom-color: #333;
 }
 
 [data-theme='dark'] .sectionTitle {
@@ -556,7 +640,7 @@
 
 /* Responsive */
 @media (max-width: 992px) {
-  .heroSection {
+  .doorViewport {
     grid-template-columns: 1fr;
   }
 
@@ -679,4 +763,103 @@
   .socialLinks {
     gap: 12px 24px;
   }
+}
+
+/* --- 移动端门板模式：上门向上、下门向下划开（竖向隙间） --- */
+/* 用 .doorViewport 后代选择器压过上方 ≤992px 块里同名类的规则 */
+@media (max-width: 992px) and (prefers-reduced-motion: no-preference) {
+  .doorZone {
+    /* 视口 1 倍展示 + 0.9 倍开门行程；dvh 适配移动端地址栏伸缩 */
+    height: 190vh;
+    height: 190dvh;
+  }
+
+  .doorZone .doorViewport {
+    position: sticky;
+    top: var(--ifm-navbar-height, 60px);
+    height: calc(100vh - var(--ifm-navbar-height, 60px));
+    height: calc(100dvh - var(--ifm-navbar-height, 60px));
+    display: block;
+    overflow: hidden;
+  }
+
+  .doorViewport .galleryLayer {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+  }
+
+  .doorViewport .galleryFill {
+    height: 100%;
+  }
+
+  .doorViewport .doorLeft,
+  .doorViewport .doorRight {
+    position: absolute;
+    left: 0;
+    right: 0;
+    width: 100%;
+    z-index: 2;
+    will-change: transform;
+  }
+
+  /* 上门（logo 卡）：内容较矮，占 45%；下缝黑线沿用 ≤992px 的 border-bottom */
+  .doorViewport .doorLeft {
+    top: 0;
+    height: 45%;
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.15);
+  }
+
+  /* 下门（ASCII 卡）：占 55% */
+  .doorViewport .doorRight {
+    bottom: 0;
+    height: 55%;
+    border-top: 1px solid #000;
+    box-shadow: 0 -6px 24px rgba(0, 0, 0, 0.15);
+  }
+
+  .doorViewport .scrollHint {
+    display: block;
+    position: absolute;
+    bottom: 18px;
+    left: 50%;
+    transform: translate(-50%, 0);
+    z-index: 3;
+    font-family: "Courier New", monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: #666;
+    pointer-events: none;
+    animation: hintBob 2s ease-in-out infinite;
+  }
+
+  /* 紧凑化 ASCII 卡内部间距，保证半屏高度内放得下 */
+  .doorRight .asciiText {
+    margin-bottom: 10px;
+  }
+
+  .doorRight .currentCharInfo {
+    margin-bottom: 10px;
+  }
+
+  .doorRight .counterContainer {
+    margin: 14px 0;
+  }
+
+  .doorRight .asciiComplete {
+    margin-top: 6px;
+    min-height: 32px;
+  }
+}
+
+/* 矮屏兜底：整体缩小 ASCII 卡，避免在小手机上被裁切 */
+@media (max-width: 992px) and (max-height: 700px) and (prefers-reduced-motion: no-preference) {
+  .doorRight .asciiContainer {
+    transform: scale(0.85);
+  }
+}
+
+[data-theme='dark'] .doorViewport .doorRight {
+  border-top-color: #333;
 }
