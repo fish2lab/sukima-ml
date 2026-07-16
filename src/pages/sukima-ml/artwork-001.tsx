@@ -48,7 +48,7 @@ const products = [
   },
   {
     id: 'planB',
-    size: '[16寸] 30.5 x 40.6 cm + 35x40cm 专业装裱',
+    size: '[16寸] 30.5 x 40.6 cm + 40x50cm 专业装裱',
     price: 298,
     tag: '艺术感强',
     description: '卡纸宽5cm，更有艺术品装裱的感觉',
