@@ -6,9 +6,18 @@
  * 字体通过 src/theme/Root.tsx 以非阻塞方式加载
  */
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/* Tailwind CSS v4 (CSS-first config, replaces tailwind.config.js).
+ * Preflight is intentionally NOT imported — it would fight Infima's resets. */
+@layer theme, base, components, utilities;
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/utilities.css" layer(utilities);
+
+/* Match Docusaurus color mode: dark: utilities follow [data-theme="dark"] */
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+/* Explicit content sources (v4 auto-detection kept deterministic) */
+@source "../../src";
+@source "../../blog";
 
 
 /* Elegant Art Gallery Theme - Updated Typography */

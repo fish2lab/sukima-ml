@@ -24,7 +24,12 @@ export interface GalleryCarouselProps {
 }
 
 // Reusable Frame Component
-const FramedImage = ({ src, alt, onError, isLoading = false }) => (
+const FramedImage = ({ src, alt, onError, isLoading = false }: {
+  src: string;
+  alt: string;
+  onError?: React.ReactEventHandler<HTMLImageElement>;
+  isLoading?: boolean;
+}) => (
   <div className="w-full h-full bg-[#111] p-[3%] flex ring-1 ring-white/10 ring-inset shadow-md">
     <div className="w-full h-full bg-[#fdfbf7] p-[10%] shadow-[inset_0_1px_4px_rgba(0,0,0,0.4)] flex flex-col relative overflow-hidden">
       <div className="relative w-full h-full shadow-[inset_0_2px_6px_rgba(0,0,0,0.2)] bg-gray-200">

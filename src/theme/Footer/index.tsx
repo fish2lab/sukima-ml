@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import Footer from '@theme-original/Footer';
+import type FooterType from '@theme/Footer';
+import type { WrapperProps } from '@docusaurus/types';
 import { translate } from '@docusaurus/Translate';
 import QRCodeModal from '../../components/QRCodeModal';
 
-export default function FooterWrapper(props) {
+export default function FooterWrapper(props: WrapperProps<typeof FooterType>) {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   // 拦截 QQ群链接的点击事件

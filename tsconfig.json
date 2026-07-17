@@ -1,16 +1,25 @@
 {
   // This file is not used in compilation. It is here just for a nice editor experience.
-  "extends": "@docusaurus/tsconfig",
+  // TypeScript 7 (Go-native compiler): no longer extends @docusaurus/tsconfig,
+  // which still sets the removed `baseUrl` option. Mirrors its settings inline.
   "compilerOptions": {
-    "baseUrl": ".",
+    "allowJs": true,
+    "esModuleInterop": true,
     "jsx": "react-jsx",
-    "lib": [
-      "ES2015",
-      "DOM"
-    ]
+    "target": "ES2022",
+    "lib": ["ES2022", "DOM"],
+    "moduleResolution": "bundler",
+    "module": "esnext",
+    "noEmit": true,
+    "paths": {
+      "@site/*": ["./*"]
+    },
+    "skipLibCheck": true,
+    // TS7 default; kept explicit so the intent survives future config edits.
+    "strict": true,
+    // TS7 defaults to types:[] — explicitly load Docusaurus ambient module
+    // declarations (@theme/*, *.module.css, @docusaurus/*).
+    "types": ["@docusaurus/module-type-aliases", "@docusaurus/theme-classic"]
   },
-  "exclude": [
-    ".docusaurus",
-    "build"
-  ]
+  "exclude": [".docusaurus", "build", "node_modules", "scripts"]
 }

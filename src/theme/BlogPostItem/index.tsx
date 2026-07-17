@@ -1,9 +1,15 @@
 import React from 'react';
 import OriginalBlogPostItem from '@theme-original/BlogPostItem';
+import type BlogPostItemType from '@theme/BlogPostItem';
+import type { WrapperProps } from '@docusaurus/types';
 import { useLocation } from '@docusaurus/router';
 import CommentsSection from '../../components/CommentsSection';
 
-export default function BlogPostItem(props) {
+type Props = WrapperProps<typeof BlogPostItemType> & {
+  frontMatter?: { comments?: boolean };
+};
+
+export default function BlogPostItem(props: Props) {
   const location = useLocation();
   
   // 检查是否是完整的博客文章页面
