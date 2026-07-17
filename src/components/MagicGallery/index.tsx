@@ -19,6 +19,139 @@ interface MagicGalleryProps {
 
 type DialogueState = 'idle' | 'intro_original' | 'intro_touhou' | 'options';
 
+// Tuned variants for "Gallery Walk"
+// Desktop: Frame width is 950px, so we offset by ~(50vw - 475px) + 45% of frame width to peek
+// This ensures adjacent cards peek regardless of viewport width
+// Unified Proportional Gallery Frame
+// Physical Ratio: 30(w) x 35(h) Canvas + 4 Mat + 1 Frame
+// Total: 40(w) x 45(h). Ratio: 40/45 (~0.888)
+// CSS Paddings (relative to container width):
+// Frame: 1/40 = 2.5%
+// Mat: 4/40 = 10%
+// 注：以下两个子组件定义在模块级——若定义在组件内部，每次渲染都会生成新的组件类型，
+// 导致 React 卸载并重建整个画廊子树（所有 <img> 重挂载、动画重放）。
+interface GalleryFrameProps {
+    src: string;
+    label: string;
+    tone: 'original' | 'fanwork';
+    alt: string;
+    width?: number;
+    height?: number;
+    color?: string;
+    priority?: boolean;
+    isMobile: boolean;
+}
+
+const GalleryFrame = ({
+    src,
+    label,
+    tone,
+    alt,
+    width,
+    height,
+    color = "bg-[#1a1a1a]",
+    priority = false,
+    isMobile,
+}: GalleryFrameProps) => (
+    <div className={clsx(
+        "relative w-full aspect-[40/45] flex items-center justify-center transition-transform duration-300 hover:scale-[1.01] shadow-2xl",
+        color,
+        "p-[2.5%]" // The Frame
+    )}>
+        {/* Label Tag */}
+        <div className={clsx(
+            "absolute -top-[5%] left-1/2 -translate-x-1/2 text-white text-[2.5cqw] md:text-[0.6vw] font-serif uppercase tracking-widest px-[4%] py-[1%] shadow-sm opacity-60 group-hover:opacity-100 transition-opacity z-20",
+            tone === "original" ? "bg-white/90 text-black" : "bg-[#b71c1c]/90"
+        )}>
+            {label}
+        </div>
+
+        {/* Matting */}
+        <div className="relative w-full h-full bg-[#fdfbf7] p-[10%] shadow-[inset_0_0_10px_rgba(0,0,0,0.2)]">
+            {/* Inner Bevel Shadow */}
+            <div className="absolute inset-0 z-20 pointer-events-none shadow-[inset_0_0_20px_rgba(0,0,0,0.15)]" />
+
+            {/* The Art */}
+            <div className="relative z-10 w-full h-full flex items-center justify-center bg-white overflow-hidden">
+                <img
+                    src={src}
+                    alt={alt}
+                    width={width}
+                    height={height}
+                    loading={priority ? 'eager' : 'lazy'}
+                    decoding={priority ? 'sync' : 'async'}
+                    fetchPriority={priority ? 'high' : 'low'}
+                    sizes={isMobile ? '90vw' : '25vw'}
+                    className="w-full h-full object-cover" // Crop to fit 30:35 ratio
+                />
+            </div>
+        </div>
+    </div>
+);
+
+// --- Sub-Component: Art Group ---
+// Adapts to Mobile (Single) vs Desktop (Dual)
+interface ArtGroupProps {
+    artwork: Artwork;
+    isActive?: boolean;
+    isMobile: boolean;
+    withBaseUrl: (url: string) => string;
+}
+
+const ArtGroup = ({ artwork, isActive = false, isMobile, withBaseUrl }: ArtGroupProps) => {
+    const artworkTitle = getArtworkTitle(artwork);
+    const originalLabel = translate({ id: 'gallery.label.original', message: '原作名画' });
+    const fanworkLabel = translate({ id: 'gallery.label.fanwork', message: '东方Project同人' });
+
+    if (isMobile) {
+        // Mobile: Single Touhou Frame, 90vw total width
+        return (
+            <div className="w-[90vw] flex items-center justify-center">
+                <GalleryFrame
+                    src={withBaseUrl(artwork.imagePath)}
+                    label={fanworkLabel}
+                    tone="fanwork"
+                    alt={`${artworkTitle} - ${fanworkLabel}`}
+                    width={artwork.imageWidth}
+                    height={artwork.imageHeight}
+                    priority={isActive}
+                    isMobile={isMobile}
+                />
+            </div>
+        );
+    }
+
+    // Desktop: Dual Frame, 50vw total width
+    return (
+        <div className="w-[50vw] flex items-center justify-between gap-4 md:gap-8 px-4 md:px-0">
+            <div className="flex-1">
+                <GalleryFrame
+                    src={withBaseUrl(artwork.originalImagePath)}
+                    label={originalLabel}
+                    tone="original"
+                    alt={`${getOriginalPaintingTitle(artwork)} - ${originalLabel}`}
+                    width={artwork.originalImageWidth}
+                    height={artwork.originalImageHeight}
+                    priority={isActive}
+                    isMobile={isMobile}
+                />
+            </div>
+            <div className="flex-1">
+                <GalleryFrame
+                    src={withBaseUrl(artwork.imagePath)}
+                    label={fanworkLabel}
+                    tone="fanwork"
+                    alt={`${artworkTitle} - ${fanworkLabel}`}
+                    width={artwork.imageWidth}
+                    height={artwork.imageHeight}
+                    priority={isActive}
+                    isMobile={isMobile}
+                />
+            </div>
+        </div>
+    );
+};
+
 export default function MagicGallery({ className }: MagicGalleryProps) {
     const [currentIndex, setCurrentIndex] = useState(1);
     const [direction, setDirection] = useState(0);
@@ -89,70 +222,6 @@ export default function MagicGallery({ className }: MagicGalleryProps) {
 
     const getKey = (item: Artwork) => `${item.id}-${generations[item.id] || 0}`;
 
-    // Tuned variants for "Gallery Walk"
-    // Desktop: Frame width is 950px, so we offset by ~(50vw - 475px) + 45% of frame width to peek
-    // This ensures adjacent cards peek regardless of viewport width
-    // Unified Proportional Gallery Frame
-    // Physical Ratio: 30(w) x 35(h) Canvas + 4 Mat + 1 Frame
-    // Total: 40(w) x 45(h). Ratio: 40/45 (~0.888)
-    // CSS Paddings (relative to container width):
-    // Frame: 1/40 = 2.5%
-    // Mat: 4/40 = 10%
-    const GalleryFrame = ({
-        src,
-        label,
-        tone,
-        alt,
-        width,
-        height,
-        color = "bg-[#1a1a1a]",
-        priority = false,
-    }: {
-        src: string;
-        label: string;
-        tone: 'original' | 'fanwork';
-        alt: string;
-        width?: number;
-        height?: number;
-        color?: string;
-        priority?: boolean;
-    }) => (
-        <div className={clsx(
-            "relative w-full aspect-[40/45] flex items-center justify-center transition-transform duration-300 hover:scale-[1.01] shadow-2xl",
-            color,
-            "p-[2.5%]" // The Frame
-        )}>
-            {/* Label Tag */}
-            <div className={clsx(
-                "absolute -top-[5%] left-1/2 -translate-x-1/2 text-white text-[2.5cqw] md:text-[0.6vw] font-serif uppercase tracking-widest px-[4%] py-[1%] shadow-sm opacity-60 group-hover:opacity-100 transition-opacity z-20",
-                tone === "original" ? "bg-white/90 text-black" : "bg-[#b71c1c]/90"
-            )}>
-                {label}
-            </div>
-
-            {/* Matting */}
-            <div className="relative w-full h-full bg-[#fdfbf7] p-[10%] shadow-[inset_0_0_10px_rgba(0,0,0,0.2)]">
-                {/* Inner Bevel Shadow */}
-                <div className="absolute inset-0 z-20 pointer-events-none shadow-[inset_0_0_20px_rgba(0,0,0,0.15)]" />
-
-                {/* The Art */}
-                <div className="relative z-10 w-full h-full flex items-center justify-center bg-white overflow-hidden">
-                    <img
-                        src={src}
-                        alt={alt}
-                        width={width}
-                        height={height}
-                        loading={priority ? 'eager' : 'lazy'}
-                        decoding={priority ? 'sync' : 'async'}
-                        fetchPriority={priority ? 'high' : 'low'}
-                        sizes={isMobile ? '90vw' : '25vw'}
-                        className="w-full h-full object-cover" // Crop to fit 30:35 ratio
-                    />
-                </div>
-            </div>
-        </div>
-    );
-
     const cardVariants = {
         enter: (dir: number) => ({
             x: dir > 0 ? '130vw' : '-130vw',
@@ -196,59 +265,6 @@ export default function MagicGallery({ className }: MagicGalleryProps) {
         })
     };
 
-    // --- Sub-Component: Art Group ---
-    // Adapts to Mobile (Single) vs Desktop (Dual)
-    const ArtGroup = ({ artwork, isActive = false }: { artwork: Artwork, isActive?: boolean }) => {
-        const artworkTitle = getArtworkTitle(artwork);
-        const originalLabel = translate({ id: 'gallery.label.original', message: '原作名画' });
-        const fanworkLabel = translate({ id: 'gallery.label.fanwork', message: '东方Project同人' });
-
-        if (isMobile) {
-            // Mobile: Single Touhou Frame, 90vw total width
-            return (
-                <div className="w-[90vw] flex items-center justify-center">
-                    <GalleryFrame
-                        src={withBaseUrl(artwork.imagePath)}
-                        label={fanworkLabel}
-                        tone="fanwork"
-                        alt={`${artworkTitle} - ${fanworkLabel}`}
-                        width={artwork.imageWidth}
-                        height={artwork.imageHeight}
-                        priority={isActive}
-                    />
-                </div>
-            );
-        }
-
-        // Desktop: Dual Frame, 50vw total width
-        return (
-            <div className="w-[50vw] flex items-center justify-between gap-4 md:gap-8 px-4 md:px-0">
-                <div className="flex-1">
-                    <GalleryFrame
-                        src={withBaseUrl(artwork.originalImagePath)}
-                        label={originalLabel}
-                        tone="original"
-                        alt={`${getOriginalPaintingTitle(artwork)} - ${originalLabel}`}
-                        width={artwork.originalImageWidth}
-                        height={artwork.originalImageHeight}
-                        priority={isActive}
-                    />
-                </div>
-                <div className="flex-1">
-                    <GalleryFrame
-                        src={withBaseUrl(artwork.imagePath)}
-                        label={fanworkLabel}
-                        tone="fanwork"
-                        alt={`${artworkTitle} - ${fanworkLabel}`}
-                        width={artwork.imageWidth}
-                        height={artwork.imageHeight}
-                        priority={isActive}
-                    />
-                </div>
-            </div>
-        );
-    };
-
     return (
         <div
             className={clsx(
@@ -280,7 +296,7 @@ export default function MagicGallery({ className }: MagicGalleryProps) {
                             initial="enter" animate="left" exit="exit"
                             onClick={(e) => { e.stopPropagation(); handlePrev(); }}
                         >
-                            <ArtGroup artwork={leftItem} />
+                            <ArtGroup artwork={leftItem} isMobile={isMobile} withBaseUrl={withBaseUrl} />
                         </motion.div>
 
                         {/* RIGHT */}
@@ -291,7 +307,7 @@ export default function MagicGallery({ className }: MagicGalleryProps) {
                             initial="enter" animate="right" exit="exit"
                             onClick={(e) => { e.stopPropagation(); handleNext(); }}
                         >
-                            <ArtGroup artwork={rightItem} />
+                            <ArtGroup artwork={rightItem} isMobile={isMobile} withBaseUrl={withBaseUrl} />
                         </motion.div>
 
                         {/* CENTER */}
@@ -301,7 +317,7 @@ export default function MagicGallery({ className }: MagicGalleryProps) {
                             variants={cardVariants}
                             initial="enter" animate="center" exit="exit"
                         >
-                            <ArtGroup artwork={centerItem} isActive={true} />
+                            <ArtGroup artwork={centerItem} isActive={true} isMobile={isMobile} withBaseUrl={withBaseUrl} />
                         </motion.div>
                     </AnimatePresence>
                 </div>

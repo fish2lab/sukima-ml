@@ -25,6 +25,77 @@ type YukariHitMap = {
   maxX: number;
 };
 
+// --- Sub-Component: The Realistic Frame ---
+// 定义在模块级：若定义在页面组件内部，每次 state 变化都会生成新组件类型，
+// 导致 React 卸载并重建画廊子树（<img> 重挂载、framer-motion 动画重放）。
+interface GalleryFrameProps {
+  artwork: Artwork;
+  isActive?: boolean;
+  onClick?: React.MouseEventHandler<HTMLDivElement>;
+  withBaseUrl: (url: string) => string;
+}
+
+const GalleryFrame = ({
+  artwork,
+  isActive = false,
+  onClick,
+  withBaseUrl,
+}: GalleryFrameProps) => (
+  <div
+    onClick={onClick}
+    className={clsx(
+      "relative bg-white transition-all duration-500",
+      "w-[80vw] h-[108vw] md:w-[500px] md:h-[675px]", // Responsive Dimensions
+      isActive ? "cursor-pointer" : ""
+    )}>
+
+    {/* 1. Wall Drop Shadow */}
+    <div
+      className="absolute inset-0 z-[-1]"
+      style={{
+        boxShadow: isActive
+          ? '0 30px 60px -10px rgba(0, 0, 0, 0.6), 0 15px 25px -5px rgba(0, 0, 0, 0.4)'
+          : '0 10px 25px -5px rgba(0, 0, 0, 0.3)'
+      }}
+    />
+
+    {/* 2. Black Aluminum Frame */}
+    <div className="w-full h-full bg-[#111] p-[2%] md:p-[10px] flex ring-1 ring-white/10 ring-inset">
+
+      {/* 3. The White Matting - Adaptive Padding */}
+      <div className="w-full h-full bg-[#fdfbf7] p-[8%] md:p-[45px] shadow-[inset_0_1px_4px_rgba(0,0,0,0.4)] flex flex-col relative overflow-hidden">
+
+        {/* 4. The Artwork - Full height of container minus matting */}
+        <div className="relative w-full h-full shadow-[inset_0_2px_6px_rgba(0,0,0,0.2)] bg-gray-200">
+          <img
+            src={withBaseUrl(artwork.imagePath)}
+            alt={getArtworkTitle(artwork)}
+            width={artwork.imageWidth}
+            height={artwork.imageHeight}
+            loading={isActive ? 'eager' : 'lazy'}
+            decoding={isActive ? 'sync' : 'async'}
+            fetchPriority={isActive ? 'high' : 'low'}
+            sizes="(max-width: 768px) 80vw, 500px"
+            className="w-full h-full object-cover block"
+          />
+          <div className="absolute inset-0 shadow-[inset_0_0_30px_rgba(0,0,0,0.15)] pointer-events-none" />
+
+          {/* Click Hint Overlay (Only on Hover of Active) */}
+          {isActive && (
+            <div className="absolute inset-0 bg-black/0 hover:bg-black/10 transition-colors flex items-center justify-center opacity-0 hover:opacity-100">
+              <span className="bg-black/70 text-white px-4 py-2 rounded-full text-sm tracking-widest uppercase backdrop-blur-md hidden md:block">
+                <Translate id="gallery.viewDetails">View Details</Translate>
+              </span>
+            </div>
+          )}
+        </div>
+
+        {/* REMOVED: Label text to maximize space */}
+      </div>
+    </div>
+  </div>
+);
+
 export default function MagicGallery() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [showInfo, setShowInfo] = useState(false);
@@ -269,71 +340,6 @@ export default function MagicGallery() {
     })
   };
 
-  // --- Sub-Component: The Realistic Frame ---
-  const GalleryFrame = ({
-    artwork,
-    isActive = false,
-    onClick,
-  }: {
-    artwork: Artwork;
-    isActive?: boolean;
-    onClick?: React.MouseEventHandler<HTMLDivElement>;
-  }) => (
-    <div
-      onClick={onClick}
-      className={clsx(
-        "relative bg-white transition-all duration-500",
-        "w-[80vw] h-[108vw] md:w-[500px] md:h-[675px]", // Responsive Dimensions
-        isActive ? "cursor-pointer" : ""
-      )}>
-
-      {/* 1. Wall Drop Shadow */}
-      <div
-        className="absolute inset-0 z-[-1]"
-        style={{
-          boxShadow: isActive
-            ? '0 30px 60px -10px rgba(0, 0, 0, 0.6), 0 15px 25px -5px rgba(0, 0, 0, 0.4)'
-            : '0 10px 25px -5px rgba(0, 0, 0, 0.3)'
-        }}
-      />
-
-      {/* 2. Black Aluminum Frame */}
-      <div className="w-full h-full bg-[#111] p-[2%] md:p-[10px] flex ring-1 ring-white/10 ring-inset">
-
-        {/* 3. The White Matting - Adaptive Padding */}
-        <div className="w-full h-full bg-[#fdfbf7] p-[8%] md:p-[45px] shadow-[inset_0_1px_4px_rgba(0,0,0,0.4)] flex flex-col relative overflow-hidden">
-
-          {/* 4. The Artwork - Full height of container minus matting */}
-          <div className="relative w-full h-full shadow-[inset_0_2px_6px_rgba(0,0,0,0.2)] bg-gray-200">
-            <img
-              src={withBaseUrl(artwork.imagePath)}
-              alt={getArtworkTitle(artwork)}
-              width={artwork.imageWidth}
-              height={artwork.imageHeight}
-              loading={isActive ? 'eager' : 'lazy'}
-              decoding={isActive ? 'sync' : 'async'}
-              fetchPriority={isActive ? 'high' : 'low'}
-              sizes="(max-width: 768px) 80vw, 500px"
-              className="w-full h-full object-cover block"
-            />
-            <div className="absolute inset-0 shadow-[inset_0_0_30px_rgba(0,0,0,0.15)] pointer-events-none" />
-
-            {/* Click Hint Overlay (Only on Hover of Active) */}
-            {isActive && (
-              <div className="absolute inset-0 bg-black/0 hover:bg-black/10 transition-colors flex items-center justify-center opacity-0 hover:opacity-100">
-                <span className="bg-black/70 text-white px-4 py-2 rounded-full text-sm tracking-widest uppercase backdrop-blur-md hidden md:block">
-                  <Translate id="gallery.viewDetails">View Details</Translate>
-                </span>
-              </div>
-            )}
-          </div>
-
-          {/* REMOVED: Label text to maximize space */}
-        </div>
-      </div>
-    </div>
-  );
-
   return (
     <Layout
       title={translate({ id: 'gallery.title', message: '作品集' })}
@@ -401,7 +407,7 @@ export default function MagicGallery() {
                 initial="enter" animate="left" exit="exit"
                 onClick={(e) => { e.stopPropagation(); handlePrev(); }}
               >
-                <GalleryFrame artwork={leftItem} />
+                <GalleryFrame artwork={leftItem} withBaseUrl={withBaseUrl} />
               </motion.div>
 
               {/* RIGHT */}
@@ -413,7 +419,7 @@ export default function MagicGallery() {
                 initial="enter" animate="right" exit="exit"
                 onClick={(e) => { e.stopPropagation(); handleNext(); }}
               >
-                <GalleryFrame artwork={rightItem} />
+                <GalleryFrame artwork={rightItem} withBaseUrl={withBaseUrl} />
               </motion.div>
 
               {/* CENTER */}
@@ -427,6 +433,7 @@ export default function MagicGallery() {
                 <GalleryFrame
                   artwork={centerItem}
                   isActive={true}
+                  withBaseUrl={withBaseUrl}
                   onClick={(e) => { e.stopPropagation(); handleCenterClick(); }}
                 />
               </motion.div>

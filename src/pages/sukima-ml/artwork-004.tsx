@@ -102,6 +102,10 @@ export default function Artwork004() {
                                     <img
                                         src={currentImage}
                                         alt="妖怪之山的秋千"
+                                        width={1063}
+                                        height={1417}
+                                        fetchPriority="high"
+                                        decoding="async"
                                         className={styles.artworkImage}
                                     />
                                 </div>
@@ -205,7 +209,7 @@ export default function Artwork004() {
                             <button className={styles.modalCloseBtn} onClick={handleCloseModal}>×</button>
                             <div className={styles.modalGrid}>
                                 <div className={styles.modalImageSection}>
-                                    <img src={currentImage} alt="妖怪之山的秋千" className={styles.modalImage} />
+                                    <img src={currentImage} alt="妖怪之山的秋千" width={1063} height={1417} loading="lazy" decoding="async" className={styles.modalImage} />
                                 </div>
                                 <div className={styles.modalInfoSection}>
                                     <div>

@@ -21,15 +21,15 @@ export default function DigitalDownload002() {
                     {/* Preview Grid */}
                     <div className={styles.previewGrid}>
                         <div className={styles.previewCard}>
-                            <img src="/img/artworks/Variant_A.webp" alt="Variant A" className={styles.previewImage} />
+                            <img src="/img/artworks/Variant_A.webp" alt="Variant A" width={1200} height={1600} fetchPriority="high" decoding="async" className={styles.previewImage} />
                             <div className={styles.cardLabel}>Variant A: The Weight of Knowledge</div>
                         </div>
                         <div className={styles.previewCard}>
-                            <img src="/img/artworks/Variant_B.webp" alt="Variant B" className={styles.previewImage} />
+                            <img src="/img/artworks/Variant_B.webp" alt="Variant B" width={1200} height={1607} fetchPriority="high" decoding="async" className={styles.previewImage} />
                             <div className={styles.cardLabel}>Variant B: The Forbidden Knowledge</div>
                         </div>
                         <div className={styles.previewCard}>
-                            <img src="/img/artworks/Variant_special.webp" alt="Special" className={styles.previewImage} />
+                            <img src="/img/artworks/Variant_special.webp" alt="Special" width={1200} height={1607} fetchPriority="high" decoding="async" className={styles.previewImage} />
                             <div className={styles.cardLabel}>Special: Barefoot Version</div>
                         </div>
                     </div>
@@ -100,11 +100,11 @@ export default function DigitalDownload002() {
 
                         <div className={styles.qrContainer}>
                             <div className={styles.qrCard}>
-                                <img src="/img/alipay_receiveMoney.webp" alt="Alipay" className={styles.qrImage} />
+                                <img src="/img/alipay_receiveMoney.webp" alt="Alipay" width={922} height={964} loading="lazy" decoding="async" className={styles.qrImage} />
                                 <div className={styles.qrLabel}>支付宝 (Alipay)</div>
                             </div>
                             <div className={styles.qrCard}>
-                                <img src="/img/wechat_receiveMoney.webp" alt="WeChat" className={styles.qrImage} />
+                                <img src="/img/wechat_receiveMoney.webp" alt="WeChat" width={924} height={966} loading="lazy" decoding="async" className={styles.qrImage} />
                                 <div className={styles.qrLabel}>微信支付 (WeChat)</div>
                             </div>
                         </div>

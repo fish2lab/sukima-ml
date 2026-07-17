@@ -32,13 +32,6 @@
   /* Giscus 内容区域 */
 }
 
-/* 修复 Giscus 底部文字在深色模式下的显示 */
-.commentsContent :global(.gsc-reactions-count),
-.commentsContent :global(.gsc-comments-count),
-.commentsContent :global(.color-text-secondary) {
-  color: var(--ifm-color-emphasis-700) !important;
-}
-
 /* 深色模式 */
 [data-theme='dark'] .commentsWrapper {
   background: rgba(30, 41, 59, 0.9);
@@ -48,12 +41,6 @@
 
 [data-theme='dark'] .commentsHeader {
   border-bottom-color: rgba(255, 255, 255, 0.1);
-}
-
-[data-theme='dark'] .commentsContent :global(.gsc-reactions-count),
-[data-theme='dark'] .commentsContent :global(.gsc-comments-count),
-[data-theme='dark'] .commentsContent :global(.color-text-secondary) {
-  color: var(--ifm-color-emphasis-600) !important;
 }
 
 /* 响应式设计 */

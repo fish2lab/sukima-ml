@@ -21,7 +21,7 @@ export default function DigitalDownload001() {
                     {/* Preview Grid */}
                     <div className={styles.previewGrid}>
                         <div className={styles.previewCard}>
-                            <img src="/img/digital_Resource/artwork-001.webp" alt="Portrait of the Gap Sage" className={styles.previewImage} />
+                            <img src="/img/digital_Resource/artwork-001.webp" alt="Portrait of the Gap Sage" width={1200} height={1404} fetchPriority="high" decoding="async" className={styles.previewImage} />
                             <div className={styles.cardLabel}>Portrait of the Gap Sage</div>
                         </div>
                     </div>
@@ -85,11 +85,11 @@ export default function DigitalDownload001() {
 
                         <div className={styles.qrContainer}>
                             <div className={styles.qrCard}>
-                                <img src="/img/alipay_receiveMoney.webp" alt="Alipay" className={styles.qrImage} />
+                                <img src="/img/alipay_receiveMoney.webp" alt="Alipay" width={922} height={964} loading="lazy" decoding="async" className={styles.qrImage} />
                                 <div className={styles.qrLabel}>支付宝 (Alipay)</div>
                             </div>
                             <div className={styles.qrCard}>
-                                <img src="/img/wechat_receiveMoney.webp" alt="WeChat" className={styles.qrImage} />
+                                <img src="/img/wechat_receiveMoney.webp" alt="WeChat" width={924} height={966} loading="lazy" decoding="async" className={styles.qrImage} />
                                 <div className={styles.qrLabel}>微信支付 (WeChat)</div>
                             </div>
                         </div>

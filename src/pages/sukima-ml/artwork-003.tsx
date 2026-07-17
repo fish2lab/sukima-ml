@@ -89,6 +89,10 @@ export default function Artwork003() {
                                     <img
                                         src={currentImage}
                                         alt="蓬莱宫娥"
+                                        width={1200}
+                                        height={1404}
+                                        fetchPriority="high"
+                                        decoding="async"
                                         className={styles.artworkImage}
                                     />
                                 </div>
@@ -188,7 +192,7 @@ export default function Artwork003() {
                             <button className={styles.modalCloseBtn} onClick={handleCloseModal}>×</button>
                             <div className={styles.modalGrid}>
                                 <div className={styles.modalImageSection}>
-                                    <img src={currentImage} alt="蓬莱宫娥" className={styles.modalImage} />
+                                    <img src={currentImage} alt="蓬莱宫娥" width={1200} height={1404} loading="lazy" decoding="async" className={styles.modalImage} />
                                 </div>
                                 <div className={styles.modalInfoSection}>
                                     <div>

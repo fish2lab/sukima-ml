@@ -98,6 +98,10 @@ export default function Artwork001() {
               <img
                 src="/img/artworks/yukari_v0.5.webp"
                 alt="戴珍珠耳环的八云紫"
+                width={1200}
+                height={1405}
+                fetchPriority="high"
+                decoding="async"
                 className={styles.artworkImage}
               />
             </div>
@@ -202,7 +206,7 @@ export default function Artwork001() {
               <button className={styles.modalCloseBtn} onClick={handleCloseModal}>×</button>
               <div className={styles.modalGrid}>
                 <div className={styles.modalImageSection}>
-                  <img src="/img/artworks/yukari_v0.5.webp" alt="戴珍珠耳环的八云紫" className={styles.modalImage} />
+                  <img src="/img/artworks/yukari_v0.5.webp" alt="戴珍珠耳环的八云紫" width={1200} height={1405} loading="lazy" decoding="async" className={styles.modalImage} />
                 </div>
                 <div className={styles.modalInfoSection}>
                   <div>

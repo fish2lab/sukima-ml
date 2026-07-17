@@ -2,32 +2,23 @@ import React from 'react';
 import OriginalBlogPostItem from '@theme-original/BlogPostItem';
 import type BlogPostItemType from '@theme/BlogPostItem';
 import type { WrapperProps } from '@docusaurus/types';
-import { useLocation } from '@docusaurus/router';
+import { useBlogPost } from '@docusaurus/plugin-content-blog/client';
 import CommentsSection from '../../components/CommentsSection';
 
-type Props = WrapperProps<typeof BlogPostItemType> & {
-  frontMatter?: { comments?: boolean };
-};
+type Props = WrapperProps<typeof BlogPostItemType>;
 
 export default function BlogPostItem(props: Props) {
-  const location = useLocation();
-  
-  // 检查是否是完整的博客文章页面
-  // 博客文章页面路径格式: /blog/slug 或 /blog/YYYY/MM/DD/slug
-  // 排除: /blog, /blog/, /blog/tags, /blog/archive 等
-  const isBlogPostPage = 
-    location.pathname.startsWith('/blog/') && 
-    !location.pathname.match(/\/(tags|archive)\/?/) &&
-    location.pathname.split('/').filter(Boolean).length >= 2;
-  
-  // 可以通过 frontMatter 禁用评论
-  const commentsEnabled = props.frontMatter?.comments !== false;
+  // isBlogPostPage 由 BlogPostProvider 提供（文章页为 true，列表/标签页为 false），
+  // 替代原先基于路径正则的判断（会误伤 /blog/tags-xxx 这类 slug）。
+  // frontMatter 来自当前文章上下文，支持在文章头部配置 comments: false 关闭评论。
+  const { frontMatter, isBlogPostPage } = useBlogPost();
+  const commentsEnabled = (frontMatter as { comments?: boolean } | undefined)?.comments !== false;
 
   return (
     <>
       <OriginalBlogPostItem {...props} />
       {isBlogPostPage && commentsEnabled && (
-        <CommentsSection 
+        <CommentsSection
           title="文章评论"
           description="欢迎分享你的想法和见解"
         />

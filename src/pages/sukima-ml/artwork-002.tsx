@@ -147,6 +147,10 @@ export default function Artwork002() {
                                     <img
                                         src="/img/artworks/Variant_A.webp"
                                         alt="The Weight of Knowledge"
+                                        width={1200}
+                                        height={1600}
+                                        fetchPriority="high"
+                                        decoding="async"
                                         className={styles.artworkImage}
                                     />
                                 </div>
@@ -163,6 +167,10 @@ export default function Artwork002() {
                                     <img
                                         src={variantBImage}
                                         alt={variantBName}
+                                        width={1200}
+                                        height={1607}
+                                        fetchPriority="high"
+                                        decoding="async"
                                         className={styles.artworkImage}
                                     />
                                 </div>
@@ -302,11 +310,11 @@ export default function Artwork002() {
                                 <div className={styles.modalImageSection}>
                                     {isSet ? (
                                         <div style={{ display: 'flex', gap: '10px' }}>
-                                            <img src="/img/artworks/Variant_A.webp" alt="Variant A" className={styles.modalImage} style={{ width: '50%' }} />
-                                            <img src={variantBImage} alt="Variant B" className={styles.modalImage} style={{ width: '50%' }} />
+                                            <img src="/img/artworks/Variant_A.webp" alt="Variant A" width={1200} height={1600} loading="lazy" decoding="async" className={styles.modalImage} style={{ width: '50%' }} />
+                                            <img src={variantBImage} alt="Variant B" width={1200} height={1607} loading="lazy" decoding="async" className={styles.modalImage} style={{ width: '50%' }} />
                                         </div>
                                     ) : (
-                                        <img src={currentImage} alt={displayVariantName} className={styles.modalImage} />
+                                        <img src={currentImage} alt={displayVariantName} loading="lazy" decoding="async" className={styles.modalImage} />
                                     )}
                                 </div>
                                 <div className={styles.modalInfoSection}>
