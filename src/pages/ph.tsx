@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Head from '@docusaurus/Head';
 import Link from '@docusaurus/Link';
+import useBrokenLinks from '@docusaurus/useBrokenLinks';
 import Layout from '@theme/Layout';
 
 import StudioContactPanel from '../components/StudioContactPanel';
@@ -31,6 +32,8 @@ function BehindScenesReveal() {
 
 export default function StudioPhantasm() {
   const [shifted, setShifted] = useState(false);
+  // 场地页和联系页链到 /ph#spaces；手写的 id 不会被 Docusaurus 的锚点检查收录，要自己登记
+  useBrokenLinks().collectAnchor('spaces');
 
   return (
     <Layout noFooter wrapperClassName="phantasmPage" title="Studio Phantasm | 摄影棚与场地出租" description="Studio Phantasm 摄影棚与场地出租。五种可切换的拍摄空间。">
