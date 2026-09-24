@@ -408,7 +408,7 @@
     "message": "About the Organizer｜关于主催"
   },
   "about.organizer.name": {
-    "message": "Su Xinxian (Fischer)"
+    "message": "Su Xinxian (Silas)"
   },
   "about.organizer.role": {
     "message": "Founder & Chief Developer · Photographer"
@@ -419,23 +419,35 @@
   "about.profile.site": {
     "message": "Organizer's Personal Site"
   },
+  "about.profile.research": {
+    "message": "Research"
+  },
+  "about.profile.portfolio": {
+    "message": "Film portfolio"
+  },
+  "about.profile.blog": {
+    "message": "Blog"
+  },
   "about.profile.bio": {
-    "message": "BJTU Incoming PhD Student, Computer Science ➡️ Cybersecurity. I study software supply chain vulnerabilities and constitutional AI in multicultural contexts. I care deeply about learning science and cognitive security."
+    "message": "PhD student at Beijing Jiaotong University, working on LLM security and agent harnesses: how an agent system tells the model who said what, and what breaks when it cannot. I also shoot medium-format film, study mathematics, and care about learning science and cognitive security."
   },
   "about.recently.title": {
     "message": "Recently"
   },
-  "about.recently.agent": {
-    "message": "Software Supply Chain Vulnerability Detection Agent"
+  "about.recently.research": {
+    "message": "Researching provenance inside the context window: why prompt injection works"
   },
-  "about.recently.products": {
-    "message": "Touhou Project Product Preparation"
+  "about.recently.paper": {
+    "message": "Writing a position paper: the agent harness does not disappear under scaling, it shrinks to a kernel"
   },
-  "about.recently.thoughts": {
-    "message": "Reflections on self-optimization and relationships"
+  "about.recently.dscodex": {
+    "message": ": DeepSeek inside the stock Codex / ChatGPT desktop app"
   },
-  "about.recently.reading": {
-    "message": "Reading"
+  "about.recently.booth": {
+    "message": "The BJTU Touhou booth film (Baixiao Tianze 2026)"
+  },
+  "about.recently.film": {
+    "message": "Medium-format film, and a Touhou fan game in the works"
   },
   "about.quote.ml": {
     "message": "\"sukima-ml stands for Sukima Moonlight, but Machine Learning? I can do that too 😉\""
@@ -741,7 +753,7 @@
     "message": "WeChat Pay"
   },
   "buy.payment.amount": {
-    "message": "Amount due: ¥{price}.00"
+    "message": "Amount due: ¥{price}"
   },
   "buy.contact.title": {
     "message": "2. Contact"

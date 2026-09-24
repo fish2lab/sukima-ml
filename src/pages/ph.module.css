@@ -176,7 +176,13 @@
 .spaceCard:hover { transform: translateY(-6px); }
 .spaceCard.advanceCard { cursor: e-resize; opacity: .34; }
 .spaceCard.returnCard { cursor: w-resize; opacity: .34; }
-.spaceCard.hiddenCard { pointer-events: none; opacity: 0; }
+.spaceCard.hiddenCard {
+  pointer-events: none;
+  opacity: 0;
+  /* 看不见的卡也不该被 Tab 到、被读屏读出；visibility 等淡出结束再切 */
+  visibility: hidden;
+  transition: opacity 550ms ease, transform 550ms ease, visibility 0s linear 550ms;
+}
 .cardImageWrap {
   position: relative;
   overflow: hidden;
@@ -349,7 +355,7 @@
     scroll-snap-align: center;
     scroll-snap-stop: always;
   }
-  .spaceCard.advanceCard, .spaceCard.returnCard, .spaceCard.hiddenCard { pointer-events: auto; opacity: 1; }
+  .spaceCard.advanceCard, .spaceCard.returnCard, .spaceCard.hiddenCard { pointer-events: auto; opacity: 1; visibility: visible; }
   .cardImageWrap > b { display: none; }
   .revealImage img { object-position: 58% center; }
   .booking { grid-template-columns: 1fr; }

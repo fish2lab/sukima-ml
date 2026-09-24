@@ -167,6 +167,11 @@
   animation: dim 11s linear both;
 }
 
+.ticket[data-running][data-paused][data-phase='counting'] .dim {
+  /* 和计数一起暂停，回到视口时变淡进度仍对得上已经数到的字 */
+  animation-play-state: paused;
+}
+
 .ticket[data-phase='complete'] .dim {
   opacity: 0.2;
 }

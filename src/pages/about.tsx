@@ -2,6 +2,7 @@ import React from 'react';
 import Layout from '@theme/Layout';
 import Translate, { translate } from '@docusaurus/Translate';
 import useBaseUrl from '@docusaurus/useBaseUrl';
+import Link from '@docusaurus/Link';
 import { Caption, HandTitle, InkButton, InkFrame, InkRule, LabelCard, PaperSection } from '../components/woodcut';
 import InkQuote from '../components/pages/InkQuote';
 import styles from './about.module.css';
@@ -60,13 +61,21 @@ export default function About() {
                         <section className={styles.block}>
                             <h2 className={styles.blockTitle}><Translate id="about.profile.title">Profile</Translate></h2>
                             <p>
-                                <strong><Translate id="about.profile.site">Organizer's Personal Site</Translate></strong>: <a href="https://fcsu.dev" target="_blank" rel="noopener noreferrer">fcsu.dev</a>
+                                <strong><Translate id="about.profile.site">Organizer's Personal Site</Translate></strong>: <a href="https://fish2lab.com" target="_blank" rel="noopener noreferrer">fish2lab.com</a>
+                            </p>
+                            <p>
+                                <a href="https://research.fish2lab.com" target="_blank" rel="noopener noreferrer"><Translate id="about.profile.research">研究</Translate></a>
+                                {' / '}
+                                <a href="https://portfolio.fish2lab.com" target="_blank" rel="noopener noreferrer"><Translate id="about.profile.portfolio">胶片作品集</Translate></a>
+                                {' / '}
+                                <a href="https://blog.fish2lab.com" target="_blank" rel="noopener noreferrer"><Translate id="about.profile.blog">博客</Translate></a>
+                                {' / '}
+                                <a href="https://github.com/fish2lab" target="_blank" rel="noopener noreferrer">GitHub</a>
                             </p>
                             <p>
                                 <Translate id="about.profile.bio">
-                                    BJTU Incoming PhD Student, Computer Science ➡️ Cybersecurity.
-                                    I study software supply chain vulnerabilities and constitutional AI in multicultural contexts.
-                                    I care deeply about learning science and cognitive security.
+                                    北京交通大学博士生，做 LLM 安全与 agent harness：系统怎样告诉模型「这段话是谁说的」，这件事失灵时会发生什么。
+                                    也拍中画幅胶片、学数学，关心学习科学和认知安全。
                                 </Translate>
                             </p>
                         </section>
@@ -76,10 +85,16 @@ export default function About() {
                         <section className={styles.block}>
                             <h2 className={styles.blockTitle}><Translate id="about.recently.title">Recently</Translate></h2>
                             <ul className={styles.plainList}>
-                                <li><Translate id="about.recently.agent">软件供应链漏洞检测 Agent</Translate></li>
-                                <li><Translate id="about.recently.products">东方Project制品筹备</Translate></li>
-                                <li><Translate id="about.recently.thoughts">身心调优与亲密关系思考</Translate></li>
-                                <li><Translate id="about.recently.reading">读书</Translate></li>
+                                <li><Translate id="about.recently.research">研究上下文窗口里的「来源」：prompt injection 为什么能得手</Translate></li>
+                                <li><Translate id="about.recently.paper">写一篇立场论文：agent harness 不会被 scaling 吃掉，只会缩成一个内核</Translate></li>
+                                <li>
+                                    <a href="https://github.com/fish2lab/DSCodex" target="_blank" rel="noopener noreferrer">DSCodex</a>
+                                    <Translate id="about.recently.dscodex">：在原版 Codex / ChatGPT 桌面端里用 DeepSeek</Translate>
+                                </li>
+                                <li>
+                                    <Link to="/blog/bjtu-touhou-booth-film"><Translate id="about.recently.booth">北交东方摊位短片（百校天则 2026）</Translate></Link>
+                                </li>
+                                <li><Translate id="about.recently.film">中画幅胶片，和一个东方同人游戏的坑</Translate></li>
                             </ul>
                         </section>
 

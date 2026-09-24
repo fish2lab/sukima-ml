@@ -1,4 +1,5 @@
 import React from 'react';
+import useBrokenLinks from '@docusaurus/useBrokenLinks';
 
 import { formatPrice, studioPricing } from '../data/studioSpaces';
 import styles from './StudioPricing.module.css';
@@ -14,6 +15,8 @@ const { offer, priceRows, rules, contact } = studioPricing;
 export default function StudioPricing({ id, highlightSlug }: Props) {
   const space = highlightSlug ? studioPricing.spaces.find((item) => item.slug === highlightSlug) : undefined;
   const titleId = `${id ?? 'studio'}-pricing-title`;
+  const brokenLinks = useBrokenLinks();
+  if (id) brokenLinks.collectAnchor(id);
   const subject = encodeURIComponent(space ? `Studio Phantasm ${space.name}预约` : 'Studio Phantasm 场地预约');
 
   return (

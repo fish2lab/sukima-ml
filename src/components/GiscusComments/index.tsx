@@ -16,6 +16,9 @@ export default function GiscusComments({ forceTheme }: GiscusCommentsProps = {})
   const [frameReady, setFrameReady] = useState(false);
   const giscusLang = i18n.currentLocale === 'en' ? 'en' : 'zh-CN';
   const theme = forceTheme || (colorMode === 'dark' ? 'dark' : 'light');
+  // 脚本在滚动到评论区时才注入，那时要用当下的主题和语言，而不是挂载时的
+  const configRef = useRef({ theme, giscusLang });
+  configRef.current = { theme, giscusLang };
 
   // 懒加载：评论区滚动到视口附近时才注入 giscus 脚本（仅注入一次；
   // 之后的主题/语言变化走 postMessage，避免销毁 iframe 丢失草稿）
@@ -38,8 +41,8 @@ export default function GiscusComments({ forceTheme }: GiscusCommentsProps = {})
       script.setAttribute('data-reactions-enabled', '1');
       script.setAttribute('data-emit-metadata', '0');
       script.setAttribute('data-input-position', 'top');
-      script.setAttribute('data-theme', theme);
-      script.setAttribute('data-lang', giscusLang);
+      script.setAttribute('data-theme', configRef.current.theme);
+      script.setAttribute('data-lang', configRef.current.giscusLang);
       script.setAttribute('crossorigin', 'anonymous');
       script.async = true;
       container.appendChild(script);

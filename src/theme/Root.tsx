@@ -10,7 +10,7 @@ import 'lxgw-wenkai-screen-webfont/lxgwwenkaiscreenr.css';
  */
 
 // 字体 URL（已包含 display=swap）。Studio Phantasm（/ph）和导航栏 Logo 用这一套，东方部分改用上面的霞鹜文楷
-const FONT_URL = 'https://fonts.carolyn.sh/css2?family=Intel+One+Mono:ital,wght@0,300..700;1,300..700&family=Noto+Color+Emoji&family=Noto+Sans+SC:wght@100..900&family=Noto+Sans+TC:wght@100..900&family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Noto+Serif+SC:wght@200..900&family=Noto+Serif+TC&family=Noto+Serif:ital,wght@0,100..900;1,100..900&family=Material+Symbols+Outlined&display=swap';
+const FONT_URL = 'https://fonts.carolyn.sh/css2?family=Intel+One+Mono:ital,wght@0,300..700;1,300..700&family=Noto+Color+Emoji&family=Noto+Sans+SC:wght@100..900&family=Noto+Sans+TC:wght@100..900&family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Noto+Serif+SC:wght@200..900&family=Noto+Serif+TC&family=Noto+Serif:ital,wght@0,100..900;1,100..900&display=swap';
 
 export default function Root({ children }: { children: React.ReactNode }) {
     // 客户端加载字体
@@ -31,7 +31,9 @@ export default function Root({ children }: { children: React.ReactNode }) {
             <Head>
                 {/* Preconnect 提前建立连接 */}
                 <link rel="dns-prefetch" href="https://fonts.carolyn.sh" />
+                {/* 字体文件走 CORS 连接，样式表走非 CORS 连接，两条都要预热 */}
                 <link rel="preconnect" href="https://fonts.carolyn.sh" crossOrigin="anonymous" />
+                <link rel="preconnect" href="https://fonts.carolyn.sh" />
                 <link rel="preload" as="style" href={FONT_URL} />
             </Head>
             {children}
