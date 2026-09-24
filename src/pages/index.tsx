@@ -1,20 +1,19 @@
-import React, { useEffect, useRef, useState, type ReactNode } from 'react';
+import React, { type ReactNode } from 'react';
 import clsx from 'clsx';
-import { motion, useScroll, useTransform } from 'framer-motion';
 import Link from '@docusaurus/Link';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import Layout from '@theme/Layout';
 import Translate, { translate } from '@docusaurus/Translate';
 import Head from '@docusaurus/Head';
 import useBaseUrl from '@docusaurus/useBaseUrl';
-import MagicGalleryComponent from '../components/MagicGallery';
-
+import { InkRule, LabelCard } from '../components/woodcut';
+import HomeHero from '../components/home/HomeHero';
+import GalleryWall from '../components/home/GalleryWall';
+import EndlesslyTicket from '../components/home/EndlesslyTicket';
 
 import styles from './index.module.css';
 
-
-
-// 占位数据：导航按钮
+// 四个入口
 interface NavigationItem {
   title: string;
   description: ReactNode;
@@ -44,284 +43,31 @@ const navigationItems: NavigationItem[] = [
   },
 ];
 
-// ASCII码动态展示组件 + Phase Phantasm 入口
-type ASCIIPhase = 'counting' | 'complete' | 'phantasm';
-
-function ASCIIDemo() {
-  const text = "Endlessly 17 year old~";
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [cumulativeSum, setCumulativeSum] = useState(0);
-  const [currentCharASCII, setCurrentCharASCII] = useState(0);
-  const [phase, setPhase] = useState<ASCIIPhase>('counting');
-
-  // Counting Effect
-  useEffect(() => {
-    if (phase === 'counting') {
-      if (currentIndex < text.length) {
-        const timer = setTimeout(() => {
-          const charCode = text.charCodeAt(currentIndex);
-          setCurrentCharASCII(charCode);
-          setCumulativeSum(prev => prev + charCode);
-          setCurrentIndex(prev => prev + 1);
-        }, 500);
-        return () => clearTimeout(timer);
-      } else {
-        // Counting finished
-        setPhase('complete');
-      }
-    }
-  }, [phase, currentIndex, text.length]);
-
-  // Transition Effect: Complete -> Phantasm
-  useEffect(() => {
-    if (phase === 'complete') {
-      const timer = setTimeout(() => setPhase('phantasm'), 1000);
-      return () => clearTimeout(timer);
-    }
-  }, [phase]);
-
-  // Reset Effect: Phantasm -> Counting
-  useEffect(() => {
-    if (phase === 'phantasm') {
-      // Reset after 5 seconds
-      const timer = setTimeout(() => {
-        setCurrentIndex(0);
-        setCumulativeSum(0);
-        setCurrentCharASCII(0);
-        setPhase('counting');
-      }, 5000);
-      return () => clearTimeout(timer);
-    }
-  }, [phase]);
-
-  const numberString = cumulativeSum.toString().padStart(4, '0');
-
-  // Calculate opacity
-  const progress = currentIndex / text.length;
-  const counterOpacity = phase === 'counting' ? 1 - (progress * 0.8) : (phase === 'complete' ? 0.2 : 0);
-
-  return (
-    <div className={styles.asciiDemo} style={{ position: 'relative' }}>
-      {/* Counter Content */}
-      <div style={{
-        opacity: phase === 'phantasm' ? 0 : 1,
-        transition: 'opacity 0.5s ease',
-        pointerEvents: phase === 'phantasm' ? 'none' : 'auto'
-      }}>
-        <div className={styles.asciiText} style={{ opacity: counterOpacity, transition: 'opacity 0.3s ease' }}>
-          <span className={styles.quote}>"</span>
-          {text.split('').map((char, index) => (
-            <span
-              key={index}
-              className={clsx(
-                styles.asciiChar,
-                index < currentIndex && styles.revealed,
-                index === currentIndex - 1 && styles.current
-              )}
-            >
-              {char}
-            </span>
-          ))}
-          <span className={styles.quote}>"</span>
-        </div>
-
-        <div className={styles.currentCharInfo} style={{ opacity: counterOpacity, transition: 'opacity 0.3s ease' }}>
-          {currentIndex === 0 ? (
-            "./start.sh"
-          ) : currentIndex <= text.length ? (
-            `'${text[currentIndex - 1]}' → ASCII ${currentCharASCII}`
-          ) : (
-            "./done"
-          )}
-        </div>
-
-        <div className={styles.counterContainer} style={{ opacity: counterOpacity, transition: 'opacity 0.3s ease' }}>
-          <div className={styles.counterValue}>
-            {numberString.split('').map((digit, i) => (
-              <span key={i} className={styles.counterDigit}>{digit}</span>
-            ))}
-          </div>
-          <div className={styles.counterLabel}>CUMULATIVE ASCII SUM</div>
-        </div>
-
-        <div className={styles.asciiComplete}>
-          <div className={styles.messageContent}>
-            {phase === 'counting' ? (
-              <div className={styles.interimMessage} style={{ opacity: counterOpacity, transition: 'opacity 0.3s ease' }}>
-                <span className={styles.blinkingCursor}>_</span> Calculating age...
-              </div>
-            ) : (
-              <div className={styles.completeMessage}>
-                Expected Age &ge; <span style={{ textDecoration: 'underline' }}>{cumulativeSum}</span>
-                <br />
-                <span style={{ fontSize: '0.8rem', color: '#999' }}>(Source: ASCII Sum Check)</span>
-              </div>
-            )}
-          </div>
-        </div>
-      </div>
-
-      {/* Phase Phantasm Link */}
-      <Link
-        to="https://ph.sukima-ml.club"
-        style={{
-          position: 'absolute',
-          top: '50%',
-          left: '50%', // Center strictly
-          transform: 'translate(-50%, -50%)',
-          opacity: phase === 'phantasm' ? 1 : 0,
-          transition: 'opacity 0.5s ease',
-          pointerEvents: phase === 'phantasm' ? 'auto' : 'none',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          textDecoration: 'none',
-          color: 'inherit',
-          width: '100%', // Ensure it can center its content
-          textAlign: 'center'
-        }}
-      >
-        <div style={{
-          fontFamily: '"Courier New", monospace',
-          fontSize: '1rem',
-          marginBottom: '1rem',
-          color: '#666',
-          letterSpacing: '0.1em',
-          textTransform: 'uppercase'
-        }}>
-          [ <Translate id="home.ascii.clickToSee">Click to See</Translate> ]
-        </div>
-        <div style={{
-          fontFamily: '"Times New Roman", serif',
-          fontSize: 'clamp(2rem, 4vw, 3rem)',
-          letterSpacing: '0.1em',
-          fontWeight: 400,
-          borderBottom: '2px solid #b71c1c',
-          paddingBottom: '0.5rem',
-          marginBottom: '1rem',
-          color: '#b71c1c',
-        }}>
-          <Translate id="home.ascii.statePhantasm">State Phantasm</Translate>
-        </div>
-        <div style={{
-          fontFamily: '"Courier New", monospace',
-          fontSize: '0.8rem',
-          color: '#999',
-          letterSpacing: '0.1em',
-        }}>
-          <Translate id="home.ascii.photographyBy">Photography by Organizer</Translate>
-        </div>
-      </Link>
-    </div>
-  );
-}
-
-// 开门式 Hero + 画廊：
-// 桌面端（h）左右门板向两侧划开；移动端（v）上下门板向上下划开，露出后方画廊
-// prefers-reduced-motion 用户保持静态堆叠布局（由 CSS 媒体查询控制）
-type DoorMode = 'off' | 'h' | 'v';
-
-function HeroGalleryDoors({ heroLogoUrl }: { heroLogoUrl: string }) {
-  const zoneRef = useRef<HTMLDivElement>(null);
-  const [doorMode, setDoorMode] = useState<DoorMode>('off');
-
-  useEffect(() => {
-    // 与 index.module.css 中门板布局的媒体查询保持一致
-    const motionMq = window.matchMedia('(prefers-reduced-motion: no-preference)');
-    const desktopMq = window.matchMedia('(min-width: 993px)');
-    const update = () =>
-      setDoorMode(!motionMq.matches ? 'off' : desktopMq.matches ? 'h' : 'v');
-    update();
-    motionMq.addEventListener('change', update);
-    desktopMq.addEventListener('change', update);
-    return () => {
-      motionMq.removeEventListener('change', update);
-      desktopMq.removeEventListener('change', update);
-    };
-  }, []);
-
-  const { scrollYProgress } = useScroll({
-    target: zoneRef,
-    offset: ['start start', 'end end'],
-  });
-  // 滚动前 85% 行程内完全打开，留一段停顿让画廊完整亮相
-  // 负向：桌面=左门向左 / 移动=上门向上；正向：桌面=右门向右 / 移动=下门向下
-  const doorOutNeg = useTransform(scrollYProgress, [0, 0.85], ['0%', '-100%']);
-  const doorOutPos = useTransform(scrollYProgress, [0, 0.85], ['0%', '100%']);
-  const hintOpacity = useTransform(scrollYProgress, [0, 0.15], [1, 0]);
-
-  const doorStyle = (offset: typeof doorOutNeg) =>
-    doorMode === 'h' ? { x: offset } : doorMode === 'v' ? { y: offset } : undefined;
-
-  return (
-    <div ref={zoneRef} className={styles.doorZone}>
-      <div className={styles.doorViewport}>
-        <motion.div
-          className={clsx(styles.heroLeft, styles.doorLeft)}
-          style={doorStyle(doorOutNeg)}
-        >
-          <Link to="/giclee" className={styles.heroLogoWrapper}>
-            <img
-              src={heroLogoUrl}
-              alt="Gap of the Moon"
-              className={styles.heroLogo}
-              width={200}
-              height={120}
-              loading="eager"
-              decoding="sync"
-              fetchPriority="high"
-            />
-            <div className={styles.heroLogoCaption}>
-              <Translate id="home.hero.caption">我们选择的工艺——艺术微喷</Translate>
-            </div>
-          </Link>
-        </motion.div>
-
-        <motion.div
-          className={clsx(styles.heroRight, styles.doorRight)}
-          style={doorStyle(doorOutPos)}
-        >
-          <div className={styles.asciiContainer}>
-            <ASCIIDemo />
-          </div>
-        </motion.div>
-
-        <div className={styles.galleryLayer}>
-          <MagicGalleryComponent className={styles.galleryFill} />
-        </div>
-
-        {doorMode !== 'off' && (
-          <motion.div className={styles.scrollHint} style={{ opacity: hintOpacity }} aria-hidden="true">
-            <Translate id="home.hero.scrollHint">SCROLL</Translate> ▼
-          </motion.div>
-        )}
-      </div>
-    </div>
-  );
-}
-
-// 模块介绍砖块组件
+// 入口卡：墙上的一张展签，左上角编号；悬停、键盘聚焦时被墨涂满、字变纸色
 interface ModuleBlockProps extends NavigationItem {
   index: number;
 }
 
-function ModuleBlock({ title, description, link, index }: ModuleBlockProps) {
+function ModuleBlock({ title, description, link, index }: ModuleBlockProps): ReactNode {
   const formattedIndex = (index + 1).toString().padStart(2, '0');
 
   return (
     <Link to={link} className={styles.moduleBlock}>
-      <div className={styles.moduleNumber}>{formattedIndex}</div>
-      <h3 className={styles.moduleTitle}>{title}</h3>
-      <div className={styles.moduleDesc}>{description}</div>
-      <div className={styles.arrowIcon}>→</div>
+      <span className={clsx(styles.moduleNumber, 'wc-mono')} aria-hidden="true">
+        {formattedIndex}
+      </span>
+      <LabelCard as="div" title={title} lines={[description]} seed={51 + index * 7} nominal={[280, 300]} className={styles.moduleCard} />
+      <span className={styles.arrowIcon} aria-hidden="true">
+        →
+      </span>
     </Link>
   );
 }
 
 // 主页组件
-export default function Home() {
+export default function Home(): ReactNode {
   const { siteConfig } = useDocusaurusContext();
-  const heroLogoUrl = useBaseUrl("/img/sukima-ml.svg");
+  const heroLogoUrl = useBaseUrl('/img/sukima-ml.svg');
   const organizationLogoUrl = useBaseUrl('/img/new.webp', { absolute: true });
   const socialImageUrl = useBaseUrl('/img/artworks/Variant_B.webp', { absolute: true });
   const homeDescription = translate({
@@ -360,32 +106,48 @@ export default function Home() {
         </script>
       </Head>
 
-      <main className={styles.mainContainer}>
+      <main className={styles.mainContainer} data-wc-tone="wall">
 
-        {/* 1+2. Hero doors + Gallery reveal */}
-        <HeroGalleryDoors heroLogoUrl={heroLogoUrl} />
+        {/* 1. 开场：隙间张开，升起 Logo 和「名画与东方的邂逅」 */}
+        <HomeHero logoUrl={heroLogoUrl} />
 
-        {/* 3. Navigation Modules: Grid */}
-        <div className={styles.modulesSection}>
-          {navigationItems.map((item, index) => (
-            <ModuleBlock
-              key={item.title}
-              index={index}
-              title={item.title}
-              link={item.link}
-              description={item.description}
-            />
-          ))}
+        {/* 2. 画廊墙：四幅画，隙间扫过把名画换成东方版 */}
+        <GalleryWall />
+
+        {/* 3. Endlessly 17 票据 */}
+        <div className={styles.ticketSection}>
+          <EndlesslyTicket />
         </div>
 
-        {/* 4. Brand sign-off — slim band that transitions into the global footer */}
-        <footer className={styles.homeFooter}>
-          <div className={styles.footerContent}>
-            <div className={styles.footerMark}>隙間月影 · SUKIMA MOONLIGHT</div>
-            <p className={styles.footerText}>
-              <Translate id="footer.text">隙间月影 Sukima Moonlight - 为东方带来更有文化底蕴的制品</Translate>
-            </p>
+        {/* 4. 四个入口 */}
+        <section className={styles.modulesSection} aria-labelledby="home-modules-heading">
+          <h2 id="home-modules-heading" className="wc-sr-only">
+            <Translate id="home.modules.heading" description="首页四个入口的标题（只给读屏）">
+              四个入口
+            </Translate>
+          </h2>
+          <div className={styles.modulesGrid}>
+            {navigationItems.map((item, index) => (
+              <ModuleBlock
+                key={item.title}
+                index={index}
+                title={item.title}
+                link={item.link}
+                description={item.description}
+              />
+            ))}
           </div>
+        </section>
+
+        {/* 5. 墙根：品牌落款 */}
+        <footer className={styles.homeFooter}>
+          <InkRule weight="bold" length={1120} seed={13} decorative className={styles.footerRule} />
+          <p className={styles.footerLine}>
+            <span className={styles.footerMark}>隙間月影 · SUKIMA MOONLIGHT</span>
+            <span className={styles.footerText}>
+              <Translate id="footer.text">隙间月影 Sukima Moonlight - 为东方带来更有文化底蕴的制品</Translate>
+            </span>
+          </p>
         </footer>
 
       </main>

@@ -1,0 +1,41 @@
+{
+  "home.hero.label": {
+    "message": "Sukima Moonlight"
+  },
+  "home.hero.title": {
+    "message": "Where Classic Art Meets Touhou"
+  },
+  "home.hero.subtitle": {
+    "message": "名画与东方的邂逅"
+  },
+  "home.gallery.heading": {
+    "message": "Four works on the wall"
+  },
+  "home.gallery.original": {
+    "message": "Original"
+  },
+  "home.gallery.character": {
+    "message": "Character"
+  },
+  "home.gallery.artist": {
+    "message": "Artist"
+  },
+  "home.gallery.view": {
+    "message": "View this piece"
+  },
+  "home.gallery.viewLabel": {
+    "message": "View this piece: {title}"
+  },
+  "home.gallery.toggle": {
+    "message": "Show the Touhou version: {title}"
+  },
+  "home.gallery.altOriginal": {
+    "message": "Original: {name}"
+  },
+  "home.gallery.altTouhou": {
+    "message": "Touhou version: {title}"
+  },
+  "home.modules.heading": {
+    "message": "Four ways in"
+  }
+}

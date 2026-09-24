@@ -1,0 +1,220 @@
+/* 首页开场：占满一屏（减去导航栏），纸墙底色来自外层 main[data-wc-tone='wall'] */
+.hero {
+  position: relative;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100vh - var(--ifm-navbar-height));
+  min-height: calc(100svh - var(--ifm-navbar-height));
+  padding: clamp(96px, 14vh, 150px) 20px clamp(72px, 10vh, 104px);
+  overflow-x: clip;
+}
+
+/* 左上角的小展签（片子每段开头的字幕） */
+.hero .label {
+  position: absolute;
+  top: clamp(14px, 2.2vw, 28px);
+  left: clamp(16px, 3vw, 48px);
+  z-index: 2;
+}
+
+/* 挂画轨：一道粗墨线 + 一道断续细线（和 InkFrame 的挂画轨同一画法），横贯整面墙 */
+.rail {
+  position: absolute;
+  top: clamp(62px, 9vh, 96px);
+  left: 0;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  pointer-events: none;
+}
+
+.rail .railLine {
+  margin: 0;
+}
+
+.center {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: min(100%, 780px);
+  text-align: center;
+}
+
+/* Logo 从隙间上沿升起：外层只裁下沿 */
+.riseClip {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  padding-bottom: 8px;
+}
+
+.rise {
+  display: flex;
+  justify-content: center;
+}
+
+.logoLink {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--wc-fg);
+  text-decoration: none;
+}
+
+.logoLink:hover {
+  color: var(--wc-fg);
+  text-decoration: none;
+}
+
+.logoLink:focus-visible {
+  outline: 2px solid var(--wc-line);
+  outline-offset: 6px;
+}
+
+.logo {
+  display: block;
+  width: clamp(200px, 28vw, 380px);
+  height: auto;
+  aspect-ratio: 200 / 120;
+}
+
+.logoCaption {
+  padding-bottom: 2px;
+  border-bottom: 2px solid transparent;
+  color: var(--wc-fg-2);
+  font-size: clamp(0.95rem, 0.3vw + 0.85rem, 1.1rem);
+  letter-spacing: 0.06em;
+}
+
+.logoLink:hover .logoCaption,
+.logoLink:focus-visible .logoCaption {
+  border-bottom-color: var(--wc-line);
+  color: var(--wc-fg);
+}
+
+.slitBox {
+  width: min(100%, 720px);
+  margin-top: clamp(0px, 0.6vh, 8px);
+}
+
+.hero .title {
+  margin: clamp(4px, 1.2vh, 14px) 0 0.25em;
+}
+
+.hero .subtitle {
+  margin: 0;
+  color: var(--wc-fg-2);
+  letter-spacing: 0.06em;
+}
+
+/* 往下滚提示 */
+.hint {
+  position: absolute;
+  bottom: clamp(14px, 3vh, 28px);
+  left: 50%;
+  display: flex;
+  align-items: center;
+  gap: 0.6em;
+  color: var(--wc-fg-2);
+  font-size: 0.75rem;
+  letter-spacing: 0.3em;
+  white-space: nowrap;
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+.hintArrow {
+  display: inline-block;
+  letter-spacing: 0;
+}
+
+/* ---------- 进场（README「动画与减少动态」：只在 html[data-wc-motion='on'] 时先藏） ---------- */
+
+:global(html[data-wc-motion='on']) .hero[data-wc-reveal='pending'] .rail {
+  clip-path: inset(-20px 100% -20px 0);
+}
+
+.hero[data-wc-reveal='play'] .rail {
+  animation: draw 0.45s cubic-bezier(0.22, 1, 0.36, 1) 0.1s both;
+}
+
+:global(html[data-wc-motion='on']) .hero[data-wc-reveal='pending'] .riseClip,
+.hero[data-wc-reveal='play'] .riseClip {
+  clip-path: inset(-60% -60% 0 -60%);
+}
+
+:global(html[data-wc-motion='on']) .hero[data-wc-reveal='pending'] .rise {
+  transform: translateY(105%);
+}
+
+.hero[data-wc-reveal='play'] .rise {
+  animation: rise 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) 0.8s both;
+}
+
+:global(html[data-wc-motion='on']) .hero[data-wc-reveal='pending'] .hint {
+  opacity: 0;
+}
+
+.hero[data-wc-reveal='play'] .hint {
+  animation: hintIn 0.25s ease-out 2.2s both;
+}
+
+@keyframes draw {
+  from {
+    clip-path: inset(-20px 100% -20px 0);
+  }
+  to {
+    clip-path: inset(-20px 0 -20px 0);
+  }
+}
+
+@keyframes rise {
+  from {
+    transform: translateY(105%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes hintIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* 箭头每 2.4 秒往下点一下：停住、突然动、再停住 */
+@media (prefers-reduced-motion: no-preference) {
+  .hintArrow {
+    animation: nudge 2.4s ease-in-out infinite;
+  }
+}
+
+@keyframes nudge {
+  0%,
+  70%,
+  100% {
+    transform: translateY(0);
+  }
+  80% {
+    transform: translateY(5px);
+  }
+  90% {
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 996px) {
+  .hero {
+    padding-top: clamp(88px, 13vh, 120px);
+  }
+}

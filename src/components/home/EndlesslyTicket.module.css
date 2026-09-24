@@ -1,0 +1,280 @@
+/* Endlessly 17 票据：卡纸白小卡、墨色细毛边、左右打孔半圆、等宽字（wc-mono）。印章红只给 State Phantasm。 */
+.ticket {
+  position: relative;
+  box-sizing: border-box;
+  width: min(100%, 30rem);
+  margin-inline: auto;
+  padding: clamp(24px, 4vw, 36px) clamp(30px, 6vw, 52px);
+  background: var(--wc-card);
+  color: var(--wc-card-fg);
+  box-shadow: 7px 9px 0 var(--wc-shade);
+  text-align: center;
+}
+
+.paper {
+  color: var(--wc-card);
+}
+
+.edge {
+  color: var(--wc-card-line);
+}
+
+/* 打孔：圆心在卡片左右边上，墙色圆盖住边线，里侧半圈描一道墨线 */
+.notch {
+  position: absolute;
+  top: 50%;
+  z-index: 1;
+  display: block;
+  width: 24px;
+  height: 24px;
+  margin-top: -12px;
+  pointer-events: none;
+}
+
+.notch[data-side='left'] {
+  left: -12px;
+}
+
+.notch[data-side='right'] {
+  right: -12px;
+}
+
+.notchSvg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.hole {
+  fill: var(--wc-bg);
+}
+
+.holeEdge {
+  fill: none;
+  stroke: var(--wc-card-line);
+  stroke-width: 1.4;
+  vector-effect: non-scaling-stroke;
+}
+
+/* 计数部分 */
+.counter {
+  position: relative;
+  transition: opacity 0.5s ease;
+}
+
+.asciiText {
+  margin-bottom: 14px;
+  font-size: clamp(1rem, 4.4vw, 1.4rem);
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+.quote {
+  color: var(--wc-card-fg-2);
+}
+
+.asciiChar {
+  color: var(--wc-card-fg-2);
+  opacity: 0.35;
+}
+
+.asciiChar.revealed {
+  color: var(--wc-card-fg);
+  opacity: 1;
+}
+
+.asciiChar.current {
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.2em;
+}
+
+.charInfoRow {
+  margin-bottom: 18px;
+}
+
+.charInfo {
+  display: inline-block;
+  max-width: 100%;
+  padding: 3px 10px;
+  border: 1px solid var(--wc-card-line);
+  color: var(--wc-card-fg-2);
+  font-size: 0.85rem;
+  overflow-wrap: anywhere;
+}
+
+.counterBox {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0 0 18px;
+}
+
+.counterValue {
+  display: flex;
+  justify-content: center;
+  gap: clamp(6px, 1.6vw, 10px);
+  margin-bottom: 10px;
+}
+
+.counterDigit {
+  min-width: 1.35em;
+  padding: 0.12em 0.2em;
+  border: 1.5px solid var(--wc-card-line);
+  color: var(--wc-card-fg);
+  font-size: clamp(1.8rem, 7vw, 2.5rem);
+  line-height: 1.15;
+  text-align: center;
+}
+
+.counterLabel {
+  color: var(--wc-card-fg-2);
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+}
+
+.message {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 40px;
+}
+
+.interim,
+.complete {
+  padding: 4px 10px;
+  font-size: 0.8rem;
+  line-height: 1.5;
+}
+
+.complete {
+  color: var(--wc-card-fg);
+}
+
+.sum {
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+
+.source {
+  color: var(--wc-card-fg-2);
+  font-size: 0.78rem;
+}
+
+/* 数数期间逐渐变淡：1 → .2，用时 = 22 个字 × .5 秒（旧版按进度写 opacity = 1 − 进度 × .8） */
+.ticket[data-running][data-phase='counting'] .dim {
+  animation: dim 11s linear both;
+}
+
+.ticket[data-phase='complete'] .dim {
+  opacity: 0.2;
+}
+
+@keyframes dim {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0.2;
+  }
+}
+
+.dim {
+  transition: opacity 0.3s ease;
+}
+
+.cursor {
+  display: inline-block;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .cursor {
+    animation: blink 1s steps(1, end) infinite;
+  }
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+/* State Phantasm：盖在票面中间；轮到它时显示，键盘聚焦时也显示 */
+.phantasm {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  color: var(--wc-card-fg);
+  text-align: center;
+  text-decoration: none;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.5s ease;
+}
+
+.phantasm:hover {
+  color: var(--wc-card-fg);
+  text-decoration: none;
+}
+
+.ticket[data-phase='phantasm'] .phantasm,
+.phantasm:focus-visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.ticket[data-phase='phantasm'] .counter,
+.ticket:has(.phantasm:focus-visible) .counter {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.phantasm:focus-visible {
+  outline: 2px solid var(--wc-card-line);
+  outline-offset: -10px;
+}
+
+.clickToSee {
+  display: block;
+  margin-bottom: 0.9rem;
+  color: var(--wc-card-fg-2);
+  font-size: 0.9rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.stateName {
+  display: block;
+  margin-bottom: 0.9rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 2px solid var(--wc-stamp);
+  color: var(--wc-stamp);
+  font-size: clamp(1.7rem, 4vw, 2.5rem);
+  line-height: 1.2;
+  letter-spacing: 0.08em;
+}
+
+.byline {
+  display: block;
+  color: var(--wc-card-fg-2);
+  font-size: 0.78rem;
+  letter-spacing: 0.1em;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .counter,
+  .dim,
+  .phantasm {
+    transition: none;
+  }
+
+  .ticket[data-running][data-phase='counting'] .dim {
+    animation: none;
+  }
+}
