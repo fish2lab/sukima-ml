@@ -69,4 +69,4 @@ date: 2026-09-24
 Sincerely,
 
 **苏心贤**  
-Beijing Jiaotong University
+PhD Student, Beijing Jiaotong University

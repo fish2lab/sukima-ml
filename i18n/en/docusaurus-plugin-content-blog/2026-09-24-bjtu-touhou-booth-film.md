@@ -68,5 +68,5 @@ Touhou Project characters and setting © Team Shanghai Alice (ZUN). This film is
 
 Sincerely,
 
-**Fischer Su (苏心贤)**  
-Beijing Jiaotong University
+**Silas Su (苏心贤)**  
+PhD Student, Beijing Jiaotong University
