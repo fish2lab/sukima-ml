@@ -1,0 +1,26 @@
+{
+  "gallery.counter": {
+    "message": "Artwork {current} of {total}"
+  },
+  "gallery.wall.label": {
+    "message": "Gallery wall"
+  },
+  "gallery.yukari.ask": {
+    "message": "Ask Yukari about this artwork"
+  },
+  "gallery.bubble.label": {
+    "message": "Yukari on {title}"
+  },
+  "gallery.label.originalLine": {
+    "message": "Original: {painting}"
+  },
+  "gallery.label.characterLine": {
+    "message": "Characters: {character}"
+  },
+  "gallery.label.artistLine": {
+    "message": "Artist: {artist}"
+  },
+  "gallery.label.view": {
+    "message": "See this piece"
+  }
+}

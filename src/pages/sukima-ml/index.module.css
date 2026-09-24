@@ -1,0 +1,343 @@
+/*
+ * 作品集页：展厅里的一面画廊墙。
+ *
+ * 桌面（≥ 997px）：舞台占满一屏（去掉导航栏），里面是一张 1440 × 840 的逻辑画面，按舞台大小等比缩放、贴底居中，
+ * 设计单位 --u = 1 个逻辑像素。逻辑画面里（x 从左、y 从上）：挂画轨 y 36；画框中心 x 450、从挂画轨挂下来，画框宽 640 × 宽高比；
+ * 紫站在 x 630–925、脚下是踢脚线 y 790；展签 x 990 起、下沿和画框下沿齐；箭头在画框两侧 y 330。
+ * 手机（≤ 996px）：画框宽 82vw（最多 460px），高度按图片比例；墙高按最瘦的一幅留；紫缩小到画高的一半站在画的右下角；
+ * 箭头在墙下面两侧，展签再往下。
+ */
+
+.page {
+  /* InkFrame（size md）的框宽 + 卡纸衬，和 InkFrame.module.css 里的两个 clamp 一致，用来算画框下沿 */
+  --p: calc(clamp(10px, 0.9vw + 7px, 22px) + clamp(10px, 1.6vw + 6px, 32px));
+  position: relative;
+  display: block;
+  margin: 0;
+}
+
+.stage {
+  position: relative;
+  display: block;
+}
+
+/* 墙：两个开间并排，镜头移动时整面墙（纸纹、画）一起横移 */
+.wall {
+  position: absolute;
+  inset: 0;
+  overflow: clip;
+}
+
+.drag {
+  position: absolute;
+  inset: 0;
+}
+
+.track {
+  position: absolute;
+  inset: 0;
+}
+
+.bay {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+}
+
+.frameSlot {
+  position: absolute;
+  transform: translateX(-50%);
+}
+
+.artLink {
+  position: relative;
+  display: block;
+  color: inherit;
+  text-decoration: none;
+  cursor: pointer;
+  -webkit-user-drag: none;
+}
+
+.artLink:hover {
+  text-decoration: none;
+}
+
+.artLink > img {
+  display: block;
+  width: 100%;
+  height: auto;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.artLink:focus-visible {
+  outline: 3px solid var(--wc-fg);
+  outline-offset: 6px;
+}
+
+/* 悬停在画上：画心下沿一张小展签「View Details」 */
+.hint {
+  position: absolute;
+  bottom: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 0;
+  pointer-events: none;
+}
+
+@media (hover: hover) {
+  .artLink:hover .hint {
+    opacity: 1;
+  }
+}
+
+.artLink:focus-visible .hint {
+  opacity: 1;
+}
+
+/* 挂画轨（一粗一细两道）、踢脚线和地面：连续的横线，不随镜头动 */
+.rail {
+  position: absolute;
+  right: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  color: var(--wc-line);
+  pointer-events: none;
+}
+
+.floor {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: var(--wc-tint);
+  color: var(--wc-line);
+  pointer-events: none;
+}
+
+.skirting {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  transform: translateY(-50%);
+}
+
+.floorLine {
+  position: absolute;
+  right: 0;
+  left: 0;
+}
+
+.counter {
+  position: absolute;
+  z-index: 3;
+  margin: 0;
+  color: var(--wc-fg-2);
+  font-size: 0.9rem;
+  line-height: 1;
+  letter-spacing: 0.08em;
+  transform: translateY(50%);
+  pointer-events: none;
+}
+
+.labelWrap {
+  transform-origin: 0 50%;
+}
+
+.labelAction {
+  margin-top: 1.1rem;
+}
+
+/* 气泡里的字：深浅色模式下都是纸上的墨字 */
+.bubbleTitle {
+  margin: 0 1.9rem 0.2rem 0;
+  color: var(--wc-k-ink);
+  font-size: 1.3rem;
+  line-height: 1.3;
+}
+
+.bubbleSubtitle {
+  margin-bottom: 0.65rem;
+  padding-bottom: 0.55rem;
+  border-bottom: 1px solid var(--wc-k-g1);
+  color: var(--wc-k-g3);
+  font-size: 0.8rem;
+  line-height: 1.4;
+  letter-spacing: 0.05em;
+}
+
+.bubbleText {
+  margin: 0;
+  color: var(--wc-k-ink);
+  font-size: 1rem;
+  line-height: 1.75;
+}
+
+.bubbleArtist {
+  margin-top: 0.65rem;
+  color: var(--wc-k-g3);
+  font-size: 0.82rem;
+  text-align: right;
+}
+
+/* ===================== 桌面 ===================== */
+@media (min-width: 997px) {
+  .page {
+    --u: min(calc(100cqh / 840), calc(100cqw / 1440));
+    height: calc(100dvh - var(--ifm-navbar-height));
+    min-height: 540px;
+    overflow: clip;
+    container-type: size;
+  }
+
+  .stage {
+    position: absolute;
+    inset: 0;
+  }
+
+  .rail {
+    /* 粗线的中线（InkRule 高 12px，中线在 6px）对准画框上沿 */
+    top: calc(100% - 804 * var(--u) - 6px);
+  }
+
+  .floor {
+    height: calc(50 * var(--u));
+  }
+
+  .floorLine {
+    top: calc(12 * var(--u));
+  }
+
+  .frameSlot {
+    top: calc(100% - 804 * var(--u));
+    left: calc(50% - 270 * var(--u));
+    width: calc(640 * var(--u) * var(--ar));
+  }
+
+  .stand {
+    bottom: calc(50 * var(--u));
+    left: calc(50% - 90 * var(--u));
+    width: calc(390 * var(--u) * 552 / 729);
+    height: calc(390 * var(--u));
+  }
+
+  /* 隙间：中线在踢脚线上，横向对准紫的身体 */
+  .slit {
+    bottom: calc(2.5 * var(--u));
+    left: calc(50% - 132.5 * var(--u));
+    width: calc(380 * var(--u));
+  }
+
+  .counter {
+    bottom: calc(25 * var(--u));
+    left: max(20px, calc(50% - 684 * var(--u)));
+  }
+
+  .nav {
+    position: absolute;
+    z-index: 4;
+    inset: 0;
+    pointer-events: none;
+  }
+
+  .navPrev,
+  .navNext {
+    position: absolute;
+    top: calc(100% - 510 * var(--u) - 28px);
+    pointer-events: auto;
+  }
+
+  .navPrev {
+    left: calc(50% - 568 * var(--u) - 64px);
+  }
+
+  .navNext {
+    left: calc(50% + 28 * var(--u));
+  }
+
+  /* 展签下沿 = 画框下沿：挂画轨 36 + 挂绳 .13W + 框高（画心 (W - 2p) / 宽高比 + 2p），W = 640 × 宽高比 */
+  .labelSlot {
+    position: absolute;
+    z-index: 3;
+    bottom: calc(164 * var(--u) - 83.2 * var(--u) * var(--ar) + 2 * var(--p) / var(--ar) - 2 * var(--p));
+    left: calc(50% + 270 * var(--u));
+    width: clamp(250px, 340 * var(--u), 420px);
+  }
+}
+
+/* ===================== 手机 ===================== */
+@media (max-width: 996px) {
+  .page {
+    --W: min(82cqw, 460px);
+    --rail-y: 22px;
+    --floor: 26px;
+    /* 最瘦那一幅的画心高、踢脚线的位置（画框下沿再往下 34px） */
+    --art-h: calc((var(--W) - 2 * var(--p)) / var(--ar-min));
+    --S: calc(var(--rail-y) + 0.13 * var(--W) + var(--art-h) + 2 * var(--p) + 34px);
+    /* 紫：画高的一半；外接框 552 × 729（YUKARI_BOX），右边伸出画框 .084W，不出屏幕 */
+    --y-h: calc(0.5 * var(--art-h));
+    --y-w: calc(var(--y-h) * 552 / 729);
+    --y-right: max(6px, calc(50% - 0.584 * var(--W)));
+    padding-bottom: 48px;
+    container-type: inline-size;
+  }
+
+  .stage {
+    height: calc(var(--S) + var(--floor));
+  }
+
+  .rail {
+    top: calc(var(--rail-y) - 6px);
+  }
+
+  .floor {
+    height: var(--floor);
+  }
+
+  .floorLine {
+    top: 9px;
+  }
+
+  .frameSlot {
+    top: var(--rail-y);
+    left: 50%;
+    width: var(--W);
+  }
+
+  .stand {
+    --yukari-shade-x: 5px;
+    --yukari-shade-y: 4px;
+    right: var(--y-right);
+    bottom: var(--floor);
+    width: var(--y-w);
+    height: var(--y-h);
+  }
+
+  .slit {
+    right: calc(var(--y-right) + var(--y-w) / 2 - 0.23 * var(--W));
+    bottom: calc(var(--floor) - 0.0575 * var(--W));
+    width: calc(0.46 * var(--W));
+  }
+
+  .counter {
+    bottom: calc(var(--floor) / 2);
+    left: 16px;
+  }
+
+  .nav {
+    display: flex;
+    justify-content: space-between;
+    width: calc(var(--W) + 16px);
+    max-width: 100%;
+    margin: 4px auto 0;
+  }
+
+  .labelSlot {
+    width: min(calc(100% - 40px), 460px);
+    margin: 10px auto 0;
+  }
+}

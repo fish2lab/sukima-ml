@@ -1,0 +1,59 @@
+.arrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 56px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--wc-fg);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.svg {
+  display: block;
+  width: 52px;
+  height: 35px;
+  overflow: visible;
+  transition: transform 0.12s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.arrow[data-dir='prev'] .svg {
+  transform: scaleX(-1);
+}
+
+@media (hover: hover) {
+  .arrow[data-dir='next']:hover .svg {
+    transform: translateX(4px);
+  }
+
+  .arrow[data-dir='prev']:hover .svg {
+    transform: scaleX(-1) translateX(4px);
+  }
+}
+
+.arrow:focus-visible {
+  outline: 2px solid var(--wc-fg);
+  outline-offset: 2px;
+}
+
+@media (max-width: 996px) {
+  .arrow {
+    width: 56px;
+    height: 48px;
+  }
+
+  .svg {
+    width: 46px;
+    height: 31px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .svg {
+    transition: none;
+  }
+}
