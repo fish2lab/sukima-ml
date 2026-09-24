@@ -1,15 +1,54 @@
-
-import React, { useState, useEffect, useMemo, useRef } from 'react';
+import React, { useState, useEffect, useMemo, useRef, type ReactNode, type RefObject } from 'react';
 import Layout from '@theme/Layout';
+import Link from '@docusaurus/Link';
 import { useHistory } from '@docusaurus/router';
-import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronRight, ArrowRight } from 'lucide-react';
-import clsx from 'clsx'; // Ensure clsx is installed or use template literals
+import { translate } from '@docusaurus/Translate';
+import { motion, AnimatePresence, MotionConfig, animate, useMotionValue } from 'framer-motion';
+import clsx from 'clsx';
 import { questions, chapters, targetArtworks, Vector3, Chapter, Question, Option } from '../data/touhou-questions';
+import { artworks } from '../data/galleryData';
 import useBaseUrl from '@docusaurus/useBaseUrl';
+import {
+    Caption,
+    HandTitle,
+    InkButton,
+    InkFrame,
+    LabelCard,
+    PaperSection,
+    RoughBorder,
+    SukimaSlit,
+    motionAllowedNow,
+    useJitterTick,
+} from '../components/woodcut';
+import ExhibitCard from '../components/pages/ExhibitCard';
+import InkCircleNum from '../components/pages/InkCircleNum';
+import { tickMark } from '../components/pages/marks';
+import styles from './touhou-test.module.css';
 
 // --- Constants ---
 const LOADING_DURATION_MS = 3000;
+
+/** 尺子上每道题一根刻度（形状按 seed 固定） */
+const TICKS = questions.map((_, i) => tickMark(200 + i));
+
+/** 换视图：停住、突然动、再停住（短、easeOut），减少动态时 framer-motion 只留透明度 */
+const VIEW_MOTION = {
+    initial: { opacity: 0, y: 14 },
+    animate: { opacity: 1, y: 0, transition: { duration: 0.2, ease: [0.22, 1, 0.36, 1] as const } },
+    exit: { opacity: 0, transition: { duration: 0.12 } },
+};
+
+/** 视图出现时把焦点移过去（键盘、读屏跟着走）；selector 为空时聚焦容器本身 */
+function useFocusOnMount(ref: RefObject<HTMLElement | null>, selector?: string) {
+    useEffect(() => {
+        const root = ref.current;
+        if (!root) return;
+        const target = selector ? root.querySelector<HTMLElement>(selector) : root;
+        target?.focus();
+        // 只在挂载时聚焦一次
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+}
 
 // --- View Components ---
 // 定义在模块级：若定义在页面组件内部，每次 state 变化（答题、显示解析等）都会
@@ -21,38 +60,30 @@ interface IntroViewProps {
 }
 
 const IntroView = ({ logoUrl, onStart }: IntroViewProps) => (
-    <motion.div
-        key="intro"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: -20 }}
-        className="flex flex-col items-center justify-center p-6 text-center max-w-md w-full"
-    >
-        {/* LOGO */}
-        <div className="w-full max-w-[200px] mb-8">
-            <img src={logoUrl} alt="Sukima ML Logo" className="w-full h-auto" />
-        </div>
+    <motion.div key="intro" {...VIEW_MOTION} className={styles.view}>
+        <ExhibitCard className={clsx(styles.sheet, styles.cover)} seed={141} nominal={[560, 640]}>
+            {/* LOGO */}
+            <div className={styles.logo}>
+                <img src={logoUrl} alt="Sukima ML Logo" width={200} height={120} decoding="async" />
+            </div>
 
-        <h1 className="text-3xl font-bold mb-4 font-serif">红·妖·永中的<br />零设叙事</h1>
-        <p className="text-gray-600 dark:text-gray-300 mb-8 leading-relaxed text-sm md:text-base">
-            穿越红魔馆的迷雾，跨过白玉楼的幽冥，<br />
-            最终抵达永远亭的满月。<br />
-            <br />
-            21道民俗学试炼，<br />
-            探寻你灵魂深处的幻想乡归属。
-        </p>
+            <HandTitle as="h1" size="title" className={styles.coverTitle}>{'红·妖·永中的\n零设叙事'}</HandTitle>
+            <p className={styles.lead}>
+                穿越红魔馆的迷雾，跨过白玉楼的幽冥，<br />
+                最终抵达永远亭的满月。<br />
+                <br />
+                21道民俗学试炼，<br />
+                探寻你灵魂深处的幻想乡归属。
+            </p>
 
-        <button
-            onClick={onStart}
-            className="group relative inline-flex items-center justify-center px-8 py-3 font-semibold text-white transition-all duration-200 bg-black font-sans rounded-full hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900 shadow-lg"
-        >
-            开启境界
-            <ChevronRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
-        </button>
+            <InkButton variant="solid" size="lg" onClick={onStart}>
+                开启境界
+            </InkButton>
 
-        <div className="mt-8 text-xs text-gray-400">
-            <a href="/sukima-ml" className="underline hover:text-gray-600 dark:hover:text-gray-200">参观画廊</a>
-        </div>
+            <div className={styles.galleryLink}>
+                <Link to="/sukima-ml">参观画廊</Link>
+            </div>
+        </ExhibitCard>
     </motion.div>
 );
 
@@ -62,31 +93,110 @@ interface ChapterIntroViewProps {
     onStart: () => void;
 }
 
-const ChapterIntroView = ({ chapter, chapterIndex, onStart }: ChapterIntroViewProps) => (
-    <motion.div
-        key="chapter-intro"
-        initial={{ opacity: 0, scale: 0.95 }}
-        animate={{ opacity: 1, scale: 1 }}
-        exit={{ opacity: 0, scale: 1.05 }}
-        className="flex flex-col items-center justify-center p-8 text-center max-w-lg w-full h-[50vh]"
-        onClick={onStart} // clickable whole area
-    >
-        <div className="text-sm font-mono text-gray-400 mb-4 tracking-widest uppercase">
-            Chapter {chapterIndex + 1}
-        </div>
-        <h2 className="text-2xl md:text-3xl font-serif font-bold mb-6">
-            {chapter.title}
-        </h2>
-        <p className="text-gray-600 dark:text-gray-300 mb-10 leading-relaxed whitespace-pre-wrap">
-            {chapter.intro}
-        </p>
+const ChapterIntroView = ({ chapter, chapterIndex, onStart }: ChapterIntroViewProps) => {
+    const ref = useRef<HTMLDivElement>(null);
+    useFocusOnMount(ref, 'button');
+    return (
+        <motion.div
+            key="chapter-intro"
+            ref={ref}
+            {...VIEW_MOTION}
+            className={clsx(styles.view, styles.chapterView)}
+            onClick={onStart} // clickable whole area
+        >
+            <ExhibitCard className={clsx(styles.sheet, styles.chapterSheet)} seed={151 + chapterIndex} nominal={[560, 420]}>
+                <div className={clsx(styles.chapterNo, 'wc-mono')}>
+                    Chapter {chapterIndex + 1}
+                </div>
+                <HandTitle as="h2" size="title" className={styles.chapterTitle}>
+                    {chapter.title}
+                </HandTitle>
+                <p className={styles.chapterIntro}>
+                    {chapter.intro}
+                </p>
+                <InkButton
+                    size="md"
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        onStart();
+                    }}
+                >
+                    点击继续
+                </InkButton>
+            </ExhibitCard>
+        </motion.div>
+    );
+};
 
-        <div className="animate-bounce">
-            <ArrowRight className="w-6 h-6 text-gray-400" />
+/** 进度：一把手画的尺子，每道题一根刻度；答到哪一题，刻度就被墨描到哪里 */
+function Ruler({ index, total }: { index: number; total: number }): ReactNode {
+    const n = index + 1;
+    return (
+        <div
+            className={styles.ruler}
+            role="progressbar"
+            aria-label={translate({ id: 'test.progress.label', message: '答题进度' })}
+            aria-valuemin={1}
+            aria-valuemax={total}
+            aria-valuenow={n}
+            aria-valuetext={`${n} / ${total}`}
+        >
+            <RoughBorder variant="line" weight={1.6} amp={0.5} seed={121} nominal={[560, 48]} className={styles.rulerEdge} />
+            <div className={styles.ticks} aria-hidden="true">
+                {TICKS.slice(0, total).map((t, i) => {
+                    const major = i === 0 || (i + 1) % 5 === 0;
+                    return (
+                        <span
+                            key={i}
+                            className={styles.tick}
+                            data-state={i < index ? 'done' : i === index ? 'now' : 'todo'}
+                            data-major={major || undefined}
+                        >
+                            <svg className={styles.tickSvg} viewBox={`0 0 ${t.w} ${t.h}`} preserveAspectRatio="none" focusable="false">
+                                <path d={t.d} fill="currentColor" />
+                            </svg>
+                            {major ? <span className={clsx(styles.tickNum, 'wc-mono')}>{i + 1}</span> : null}
+                        </span>
+                    );
+                })}
+            </div>
         </div>
-        <div className="text-xs text-gray-400 mt-2">点击继续</div>
-    </motion.div>
-);
+    );
+}
+
+interface QuizOptionProps {
+    label: string;
+    text: string;
+    selected: boolean;
+    disabled: boolean;
+    seed: number;
+    onPick: () => void;
+}
+
+/** 选项框：木刻毛边，悬停时边抖；选中时被墨从左往右涂满、字变纸色 */
+function QuizOption({ label, text, selected, disabled, seed, onPick }: QuizOptionProps): ReactNode {
+    const [hot, setHot] = useState(false);
+    const tick = useJitterTick(hot && !disabled);
+    return (
+        <button
+            type="button"
+            className={styles.option}
+            data-selected={selected || undefined}
+            aria-pressed={selected}
+            disabled={disabled}
+            onClick={onPick}
+            onPointerEnter={() => setHot(true)}
+            onPointerLeave={() => setHot(false)}
+            onFocus={() => setHot(true)}
+            onBlur={() => setHot(false)}
+        >
+            <span className={styles.optFill} aria-hidden="true" />
+            <RoughBorder variant="line" weight={2} amp={0.6} seed={seed} jitter={tick} nominal={[560, 60]} className={styles.optEdge} />
+            <span className={styles.optLabel}>{label}.</span>
+            <span className={styles.optText}>{text}</span>
+        </button>
+    );
+}
 
 interface QuestionViewProps {
     chapter: Chapter;
@@ -94,105 +204,84 @@ interface QuestionViewProps {
     globalIndex: number;
     options: Option[];
     showFeedback: boolean;
+    selectedIndex: number | null;
     onOptionClick: (opt: Option, idx: number) => void;
     onNext: () => void;
 }
 
-const QuestionView = ({ chapter, question, globalIndex, options, showFeedback, onOptionClick, onNext }: QuestionViewProps) => {
-    // Progress calculation (Global)
+const QuestionView = ({ chapter, question, globalIndex, options, showFeedback, selectedIndex, onOptionClick, onNext }: QuestionViewProps) => {
     const totalQuestions = questions.length;
-    // We can just use the global index we tracked roughly, or map ids.
-    // Ideally we'd flatten the chapter structure to get exact progress, but simple counter works.
-    const progress = ((globalIndex + 1) / totalQuestions) * 100;
+    const headingRef = useRef<HTMLHeadingElement>(null);
+    const feedbackRef = useRef<HTMLDivElement>(null);
+    useFocusOnMount(headingRef);
+
+    // 答完一题：焦点移到「下一题」，解析卡跟着滚进视口
+    useEffect(() => {
+        if (showFeedback) feedbackRef.current?.querySelector<HTMLElement>('button')?.focus();
+    }, [showFeedback]);
 
     if (!question) return null;
 
+    const headingId = `q-${question.id}-text`;
     return (
         <motion.div
             key={`q-${question.id}`} // Force re-render on new question for anims
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -20 }}
-            className="w-full max-w-lg p-6 flex flex-col min-h-[70vh] relative"
+            {...VIEW_MOTION}
+            className={styles.view}
         >
-            {/* Header: Chapter & Progress */}
-            <div className="w-full flex justify-between items-end mb-4 border-b border-gray-100 pb-2">
-                <span className="text-xs font-bold text-gray-400 uppercase tracking-widest">
-                    {chapter.title}
-                </span>
-                <span className="text-xs font-mono text-gray-300">
-                    {globalIndex + 1} / {totalQuestions}
-                </span>
-            </div>
+            <ExhibitCard as="section" className={clsx(styles.sheet, styles.paper)} seed={161} nominal={[640, 760]}>
+                {/* Header: Chapter & Progress */}
+                <div className={styles.paperHead}>
+                    <Caption size="sm">{chapter.title}</Caption>
+                    <span className={clsx(styles.count, 'wc-mono')} aria-hidden="true">
+                        {globalIndex + 1} / {totalQuestions}
+                    </span>
+                </div>
 
-            {/* Progress Bar */}
-            <div className="w-full h-1 bg-gray-100 rounded-full mb-8 overflow-hidden">
-                <motion.div
-                    className="h-full bg-black"
-                    initial={{ width: 0 }}
-                    animate={{ width: `${progress}%` }}
-                />
-            </div>
+                <Ruler index={globalIndex} total={totalQuestions} />
 
-            {/* Question Text */}
-            <div className="flex-grow mb-8">
-                <h2 className="text-lg md:text-xl font-serif font-medium leading-relaxed">
-                    {question.text}
-                </h2>
-            </div>
+                {/* Question Text */}
+                <div className={styles.qRow}>
+                    <InkCircleNum size="lg" seed={300 + question.id}>{String(globalIndex + 1)}</InkCircleNum>
+                    <h2 ref={headingRef} id={headingId} tabIndex={-1} className={styles.qText}>
+                        <span className="wc-sr-only">
+                            {translate({ id: 'test.question.number', message: '第 {n} 题' }, { n: globalIndex + 1 })}
+                        </span>
+                        {question.text}
+                    </h2>
+                </div>
 
-            {/* Options Area */}
-            <div className="relative flex flex-col gap-3">
-                {options.map((opt, idx) => {
-                    const label = String.fromCharCode(65 + idx); // A, B, C, D...
-                    return (
-                        <button
+                {/* Options Area */}
+                <div className={styles.options} role="group" aria-labelledby={headingId}>
+                    {options.map((opt, idx) => (
+                        <QuizOption
                             key={idx}
-                            onClick={() => onOptionClick(opt, idx)}
+                            label={String.fromCharCode(65 + idx)} // A, B, C, D...
+                            text={opt.text}
+                            selected={selectedIndex === idx}
                             disabled={showFeedback}
-                            className={clsx(
-                                "w-full text-left p-4 rounded-xl border transition-all duration-300 text-sm md:text-base flex items-start",
-                                showFeedback
-                                    ? "blur-sm opacity-50 border-gray-200 cursor-default" // Frosted effect base
-                                    : "border-gray-200 hover:border-black hover:bg-gray-50 active:scale-[0.98] cursor-pointer"
-                            )}
-                        >
-                            <span className="font-bold mr-2 text-gray-500 min-w-[1.5rem]">{label}.</span>
-                            <span>{opt.text}</span>
-                        </button>
-                    );
-                })}
+                            seed={400 + question.id * 7 + idx}
+                            onPick={() => onOptionClick(opt, idx)}
+                        />
+                    ))}
+                </div>
 
-                {/* FEEDBACK OVERLAY (Glassmorphism) */}
-                <AnimatePresence>
-                    {showFeedback && (
-                        <motion.div
-                            initial={{ opacity: 0, backdropFilter: "blur(0px)" }}
-                            animate={{ opacity: 1, backdropFilter: "blur(8px)" }}
-                            className="absolute inset-0 z-10 flex items-center justify-center"
-                        >
-                            {/* Content Card */}
-                            <motion.div
-                                initial={{ scale: 0.9, y: 10 }}
-                                animate={{ scale: 1, y: 0 }}
-                                className="bg-white/90 dark:bg-black/90 p-6 rounded-2xl shadow-2xl border border-white/20 max-h-[100%] overflow-y-auto"
-                            >
-                                <div className="text-xs font-bold text-gray-400 uppercase mb-2">解析</div>
-                                <p className="text-sm md:text-base text-gray-800 dark:text-gray-200 leading-relaxed mb-6 font-serif">
-                                    {question.explanation}
-                                </p>
-
-                                <button
-                                    onClick={onNext}
-                                    className="w-full py-3 bg-black text-white rounded-lg font-semibold text-sm hover:bg-gray-800 transition-colors"
-                                >
+                {/* 解析：一张展签翻出来 */}
+                {showFeedback && (
+                    <div ref={feedbackRef} className={styles.feedback}>
+                        <LabelCard titleAs="h3" title="解析" seed={171 + question.id} nominal={[560, 260]}>
+                            <p className={styles.explanation}>
+                                {question.explanation}
+                            </p>
+                            <div className={styles.nextRow}>
+                                <InkButton variant="solid" size="lg" onClick={onNext}>
                                     下一题
-                                </button>
-                            </motion.div>
-                        </motion.div>
-                    )}
-                </AnimatePresence>
-            </div>
+                                </InkButton>
+                            </div>
+                        </LabelCard>
+                    </div>
+                )}
+            </ExhibitCard>
         </motion.div>
     );
 };
@@ -202,6 +291,26 @@ interface LoadingViewProps {
 }
 
 const LoadingView = ({ result }: LoadingViewProps) => {
+    const ref = useRef<HTMLDivElement>(null);
+    useFocusOnMount(ref);
+    const open = useMotionValue(0);
+    const artwork = result ? artworks.find((a) => a.id === result.id) : undefined;
+    const artworkSrc = useBaseUrl(artwork?.imagePath ?? '');
+
+    // 隙间张合几次（代替原来的转圈）；减少动态时直接张开、不动
+    useEffect(() => {
+        if (!motionAllowedNow()) {
+            open.set(1);
+            return undefined;
+        }
+        const controls = animate(open, [0, 1, 0.35, 1, 0.55, 1], {
+            duration: 2.6,
+            times: [0, 0.18, 0.38, 0.58, 0.78, 1],
+            ease: 'easeOut',
+        });
+        return () => controls.stop();
+    }, [open]);
+
     // Map Result Title to Game Name for the text
     const getGameName = () => {
         if (!result) return "某部作品";
@@ -212,21 +321,38 @@ const LoadingView = ({ result }: LoadingViewProps) => {
     };
 
     return (
-        <motion.div
-            key="loading"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="flex flex-col items-center justify-center p-6 text-center max-w-md"
-        >
-            <div className="animate-spin text-4xl mb-6">☯️</div>
-            <h3 className="text-xl font-serif mb-4">正在测定幻想乡坐标...</h3>
-            <p className="text-sm md:text-base text-gray-600 dark:text-gray-300 leading-relaxed">
-                你可能对{getGameName()}情有独钟。<br />
-                这是一份幻想入的世界名画，<br />
-                请点进你的本命作品看一眼吧<br />
-                <span className="text-xs text-gray-400 mt-2 block">（抱一副回家就更好了）</span>
-            </p>
+        <motion.div key="loading" {...VIEW_MOTION} className={clsx(styles.view, styles.loadingView)}>
+            <div className={styles.slitBox}>
+                <SukimaSlit open={open} eyes={7} aspect={3.8} seed={131} glance={0.5} />
+            </div>
+            <div ref={ref} tabIndex={-1} className={styles.loadingHead}>
+                <HandTitle as="h2" size="section" per={0.05} className={styles.loadingTitle}>
+                    正在测定幻想乡坐标...
+                </HandTitle>
+            </div>
+            <div className={styles.result} data-has-art={artwork ? true : undefined}>
+                {artwork ? (
+                    <div className={styles.resultFrame}>
+                        <InkFrame hang swing size="md" seed={133} nominal={[300, 360]}>
+                            <img src={artworkSrc} alt={artwork.title} width={artwork.imageWidth} height={artwork.imageHeight} loading="eager" decoding="async" />
+                        </InkFrame>
+                    </div>
+                ) : null}
+                <LabelCard
+                    className={styles.resultCard}
+                    title={artwork?.title}
+                    lines={artwork ? [artwork.originalPainting, artwork.touhouCharacter] : []}
+                    seed={137}
+                    nominal={[440, 360]}
+                >
+                    <p className={styles.resultText}>
+                        你可能对{getGameName()}情有独钟。<br />
+                        这是一份幻想入的世界名画，<br />
+                        请点进你的本命作品看一眼吧<br />
+                        <span className={styles.resultNote}>（抱一副回家就更好了）</span>
+                    </p>
+                </LabelCard>
+            </div>
         </motion.div>
     );
 };
@@ -345,31 +471,28 @@ export default function TouhouTestPage() {
 
     return (
         <Layout title="红·妖·永中的零设叙事" description="探索你的本命作品">
-            <main className="min-h-screen w-full bg-[#fafafa] dark:bg-[#111] flex flex-col items-center justify-center relative overflow-hidden transition-colors duration-500">
-
-                {/* Background Texture */}
-                <div className="absolute inset-0 pointer-events-none opacity-[0.03]"
-                    style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23000000' fill-opacity='1' fill-rule='evenodd'%3E%3Ccircle cx='3' cy='3' r='3'/%3E%3Ccircle cx='13' cy='13' r='3'/%3E%3C/g%3E%3C/svg%3E")` }}
-                />
-
-                <AnimatePresence mode="wait">
-                    {view === 'intro' && <IntroView logoUrl={logoUrl} onStart={handleStart} />}
-                    {view === 'chapter-intro' && <ChapterIntroView chapter={currentChapter} chapterIndex={currentChapterIndex} onStart={handleChapterStart} />}
-                    {view === 'test' && (
-                        <QuestionView
-                            chapter={currentChapter}
-                            question={currentQuestion}
-                            globalIndex={currentQuestionGlobalIndex}
-                            options={randomizedOptions}
-                            showFeedback={showFeedback}
-                            onOptionClick={handleOptionClick}
-                            onNext={handleNextQuestion}
-                        />
-                    )}
-                    {view === 'loading' && <LoadingView result={calculatedResult} />}
-                </AnimatePresence>
-
-            </main>
+            <PaperSection as="main" tone="paper" width="narrow" space="md" className={styles.stage} innerClassName={styles.stageInner}>
+                <MotionConfig reducedMotion="user">
+                    <AnimatePresence mode="wait" initial={false}>
+                        {view === 'intro' && <IntroView key="intro" logoUrl={logoUrl} onStart={handleStart} />}
+                        {view === 'chapter-intro' && <ChapterIntroView key="chapter-intro" chapter={currentChapter} chapterIndex={currentChapterIndex} onStart={handleChapterStart} />}
+                        {view === 'test' && (
+                            <QuestionView
+                                key={`q-${currentQuestionId}`}
+                                chapter={currentChapter}
+                                question={currentQuestion}
+                                globalIndex={currentQuestionGlobalIndex}
+                                options={randomizedOptions}
+                                showFeedback={showFeedback}
+                                selectedIndex={selectedOptionIndex}
+                                onOptionClick={handleOptionClick}
+                                onNext={handleNextQuestion}
+                            />
+                        )}
+                        {view === 'loading' && <LoadingView key="loading" result={calculatedResult} />}
+                    </AnimatePresence>
+                </MotionConfig>
+            </PaperSection>
         </Layout>
     );
 }

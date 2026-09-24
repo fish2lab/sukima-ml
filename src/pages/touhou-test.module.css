@@ -1,0 +1,394 @@
+/* 东方测试：桌上一张考卷。题目印在卡纸上，题号手画圈，选项是木刻毛边的框，进度是一把手画的尺子 */
+
+.stage {
+  min-height: calc(100vh - var(--ifm-navbar-height));
+}
+
+.stageInner {
+  display: flex;
+  min-height: calc(100vh - var(--ifm-navbar-height) - 192px);
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.view {
+  width: 100%;
+  max-width: 640px;
+}
+
+.sheet {
+  width: 100%;
+}
+
+/* ---------- 封面 ---------- */
+
+.cover {
+  text-align: center;
+}
+
+.logo {
+  width: min(180px, 50%);
+  margin: 0.5rem auto 1.25rem;
+}
+
+.logo img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.coverTitle {
+  margin: 0 0 1rem;
+  color: var(--wc-card-fg);
+}
+
+.lead {
+  margin: 0 0 2rem;
+  color: var(--wc-card-fg-2);
+  font-size: 1.05rem;
+  line-height: 1.85;
+}
+
+.galleryLink {
+  margin-top: 1.5rem;
+  font-size: 0.95rem;
+}
+
+.galleryLink a {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  color: var(--wc-card-fg-2);
+  text-decoration: underline;
+  text-underline-offset: 0.25em;
+}
+
+.galleryLink a:hover {
+  color: var(--wc-card-fg);
+}
+
+/* ---------- 章节扉页 ---------- */
+
+.chapterView {
+  cursor: pointer;
+}
+
+.chapterSheet {
+  text-align: center;
+}
+
+.chapterNo {
+  margin: 0.25rem 0 0.75rem;
+  color: var(--wc-card-fg-2);
+  font-size: 0.85rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.chapterTitle {
+  margin: 0 0 1.25rem;
+  color: var(--wc-card-fg);
+}
+
+.chapterIntro {
+  margin: 0 0 2rem;
+  color: var(--wc-card-fg-2);
+  font-size: 1.05rem;
+  line-height: 1.9;
+  white-space: pre-wrap;
+}
+
+/* ---------- 考卷 ---------- */
+
+.paperHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.count {
+  color: var(--wc-card-fg-2);
+  font-size: 0.85rem;
+  letter-spacing: 0.08em;
+}
+
+/* 尺子：一条细墨框，刻度从上沿垂下来；答过的题刻度是墨，没答的是淡灰，当前这一根被描出来 */
+.ruler {
+  position: relative;
+  height: 46px;
+  margin-bottom: 1.75rem;
+  color: var(--wc-card-fg);
+}
+
+.rulerEdge {
+  color: var(--wc-card-line);
+}
+
+.ticks {
+  position: absolute;
+  inset: 2px 12px 0;
+  display: flex;
+  justify-content: space-between;
+}
+
+.tick {
+  position: relative;
+  width: 3px;
+  height: 100%;
+}
+
+.tickSvg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: block;
+  width: 3px;
+  height: 38%;
+  overflow: visible;
+}
+
+.tick[data-major] .tickSvg {
+  height: 58%;
+}
+
+.tick[data-state='todo'] .tickSvg {
+  color: var(--wc-fg-3);
+  opacity: 0.55;
+}
+
+.tick[data-state='done'] .tickSvg,
+.tick[data-state='now'] .tickSvg {
+  color: var(--wc-card-fg);
+}
+
+.tickNum {
+  position: absolute;
+  bottom: 2px;
+  left: 50%;
+  color: var(--wc-card-fg-2);
+  font-size: 0.66rem;
+  line-height: 1;
+  transform: translateX(-50%);
+}
+
+:global(html[data-wc-motion='on']) .tick[data-state='now'] .tickSvg {
+  animation: ink 0.32s cubic-bezier(0.22, 1, 0.36, 1) 0.12s both;
+}
+
+@keyframes ink {
+  from {
+    clip-path: inset(0 -2px 100% -2px);
+  }
+  to {
+    clip-path: inset(0 -2px -2px -2px);
+  }
+}
+
+.qRow {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.9rem;
+  margin-bottom: 1.5rem;
+}
+
+.qText {
+  margin: 0.35rem 0 0;
+  color: var(--wc-card-fg);
+  font-size: clamp(1.15rem, 0.5vw + 1rem, 1.35rem);
+  line-height: 1.7;
+  letter-spacing: 0.02em;
+  outline: none;
+}
+
+.options {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.option {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  width: 100%;
+  min-height: 52px;
+  align-items: flex-start;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0.8rem 1.1rem;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  color: var(--wc-card-fg);
+  font-size: 1.03rem;
+  line-height: 1.6;
+  text-align: left;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: color 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.optFill {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--wc-card-fg);
+  clip-path: inset(0 100% 0 0);
+  transition: clip-path 0.22s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.optEdge {
+  color: var(--wc-card-fg);
+}
+
+.optLabel {
+  flex: none;
+  min-width: 1.5rem;
+  color: var(--wc-card-fg-2);
+}
+
+.optText {
+  min-width: 0;
+}
+
+@media (hover: hover) {
+  .option:hover:not(:disabled) {
+    background: var(--wc-tint);
+  }
+}
+
+.option:focus-visible {
+  outline: 2px solid var(--wc-line);
+  outline-offset: 4px;
+}
+
+/* 选中：被墨涂满，字变纸色 */
+.option[data-selected],
+.option[data-selected] .optLabel {
+  color: var(--wc-card);
+}
+
+.option[data-selected] .optFill {
+  clip-path: inset(0);
+}
+
+.option:disabled {
+  cursor: default;
+}
+
+.option:disabled:not([data-selected]) {
+  opacity: 0.42;
+}
+
+.feedback {
+  margin-top: 1.75rem;
+  scroll-margin-bottom: 24px;
+}
+
+.explanation {
+  margin: 0.25rem 0 1.25rem;
+  color: var(--wc-card-fg);
+  font-size: 1.02rem;
+  line-height: 1.85;
+}
+
+.nextRow {
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* ---------- 测定 / 结果 ---------- */
+
+.loadingView {
+  max-width: 880px;
+}
+
+.slitBox {
+  width: min(100%, 560px);
+  margin: 0 auto 0.5rem;
+}
+
+.loadingHead {
+  margin-bottom: 2rem;
+  text-align: center;
+  outline: none;
+}
+
+.loadingTitle {
+  margin: 0;
+  color: var(--wc-fg);
+}
+
+.result {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  justify-items: center;
+  gap: 2rem;
+}
+
+.result[data-has-art] {
+  grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+  align-items: start;
+}
+
+.resultFrame {
+  width: min(100%, 300px);
+  padding-top: 0.5rem;
+}
+
+.resultCard {
+  width: 100%;
+  max-width: 440px;
+}
+
+.resultText {
+  margin: 0.4rem 0 0;
+  color: var(--wc-card-fg);
+  font-size: 1.02rem;
+  line-height: 1.85;
+}
+
+.resultNote {
+  display: block;
+  margin-top: 0.4rem;
+  color: var(--wc-card-fg-2);
+  font-size: 0.88rem;
+}
+
+@media (max-width: 996px) {
+  .stageInner {
+    min-height: calc(100vh - var(--ifm-navbar-height) - 112px);
+  }
+
+  .qRow {
+    gap: 0.7rem;
+  }
+
+  /* 手机：先看展签上的结论，画挂在下面 */
+  .result[data-has-art] {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .resultFrame {
+    order: 2;
+    width: min(62%, 240px);
+  }
+
+  .ticks {
+    inset: 2px 8px 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .option,
+  .optFill {
+    transition: none;
+  }
+
+  .tick[data-state='now'] .tickSvg {
+    animation: none !important;
+  }
+}

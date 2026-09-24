@@ -1,7 +1,7 @@
 import React from 'react';
 import Layout from '@theme/Layout';
 import Translate, { translate } from '@docusaurus/Translate';
-import Link from '@docusaurus/Link';
+import { HandTitle, InkButton, InkRule, PaperSection } from '../components/woodcut';
 import styles from './copyright.module.css';
 
 export default function Copyright() {
@@ -14,21 +14,23 @@ export default function Copyright() {
             })}
             description="Copyright Declaration for Sukima Moonlight and Studio Phantasm"
         >
-            <div className={styles.pageContainer}>
-                <div className={styles.contentWrapper}>
+            <PaperSection as="main" tone="paper" width="narrow" space="md" innerClassName={styles.inner}>
+                <article className={styles.article}>
                     <header className={styles.header}>
-                        <h1 className={styles.title}>
-                            <Translate id="copyright.header">版权声明 / Copyright Declaration</Translate>
-                        </h1>
-                        <p className={styles.lastUpdated}>
+                        <HandTitle as="h1" size="title" className={styles.title}>
+                            {translate({ id: 'copyright.header', message: '版权声明 / Copyright Declaration' })}
+                        </HandTitle>
+                        <p className={`${styles.lastUpdated} wc-mono`}>
                             <Translate id="copyright.lastUpdated">Last Updated: January 2026</Translate>
                         </p>
                     </header>
 
+                    <InkRule weight="bold" dry={0.2} length={680} seed={31} />
+
                     <section className={styles.section}>
-                        <h2 className={styles.sectionTitle}>
-                            <Translate id="copyright.ownership">权利归属 / Ownership</Translate>
-                        </h2>
+                        <HandTitle as="h2" size="section" className={styles.sectionTitle}>
+                            {translate({ id: 'copyright.ownership', message: '权利归属 / Ownership' })}
+                        </HandTitle>
                         <p>
                             <Translate id="copyright.ownership.text1">
                                 本网站（sukima-ml.club）刊载的所有内容，除特别注明外，著作权均归苏心贤｜Fischer Su所有。具体归属如下：
@@ -51,8 +53,12 @@ export default function Copyright() {
                         </p>
                     </section>
 
-                    <section className={`${styles.section} ${styles.declaration}`}>
-                        <h3 className={styles.sectionTitle}><Translate id="copyright.declaration">声明 / Declaration</Translate></h3>
+                    <InkRule weight="thin" length={680} seed={32} />
+
+                    <section className={styles.section}>
+                        <HandTitle as="h2" size="section" className={styles.sectionTitle}>
+                            {translate({ id: 'copyright.declaration', message: '声明 / Declaration' })}
+                        </HandTitle>
                         <p>
                             <Translate id="copyright.declaration.text1">
                                 依据《中华人民共和国著作权法》及《信息网络传播权保护条例》，未经著作权人书面许可，任何单位或个人不得以任何方式（包括但不限于复制、截图、深度链接、镜像、AI训练素材投喂）使用上述内容。
@@ -63,8 +69,8 @@ export default function Copyright() {
                                 本网站保留对侵犯信息网络传播权及署名权的行为追究法律责任的权利。
                             </Translate>
                         </p>
-                        <hr />
-                        <p>
+                        <InkRule weight="hair" dry={0.45} length={680} seed={33} className={styles.innerRule} />
+                        <p className={styles.english}>
                             <em>
                                 <Translate id="copyright.declaration.english">
                                     All photography works on this site are protected under the Copyright Law of the PRC. Unauthorized use is strictly prohibited.
@@ -73,13 +79,15 @@ export default function Copyright() {
                         </p>
                     </section>
 
+                    <InkRule weight="thin" length={680} seed={34} />
+
                     <div className={styles.backRow}>
-                        <Link to="/" className={styles.backButton}>
+                        <InkButton to="/" size="lg">
                             <Translate id="copyright.back">Back to Home</Translate>
-                        </Link>
+                        </InkButton>
                     </div>
-                </div>
-            </div>
+                </article>
+            </PaperSection>
         </Layout>
     );
 }

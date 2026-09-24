@@ -1,0 +1,32 @@
+.main {
+  display: block;
+}
+
+.inner {
+  display: flex;
+  min-height: calc(100vh - var(--ifm-navbar-height) - 288px);
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.slit {
+  width: min(100%, 720px);
+  margin: 2.5rem auto 1.5rem;
+}
+
+.line {
+  margin: 0 0 2.25rem;
+  color: var(--wc-fg);
+}
+
+@media (max-width: 996px) {
+  .inner {
+    min-height: calc(100vh - var(--ifm-navbar-height) - 160px);
+  }
+
+  .slit {
+    margin: 1.75rem auto 1rem;
+  }
+}
