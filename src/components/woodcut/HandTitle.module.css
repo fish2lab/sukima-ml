@@ -1,0 +1,28 @@
+.title {
+  font-family: var(--wc-font-hand);
+  font-weight: 400;
+  font-synthesis: none;
+  color: inherit;
+  letter-spacing: 0.02em;
+  overflow-wrap: anywhere;
+}
+
+.title[data-size='display'] {
+  font-size: clamp(2.3rem, 4.2vw + 1rem, 4.6rem);
+  line-height: 1.16;
+}
+
+.title[data-size='title'] {
+  font-size: clamp(1.8rem, 2.4vw + 1rem, 3rem);
+  line-height: 1.22;
+}
+
+.title[data-size='section'] {
+  font-size: clamp(1.35rem, 1.1vw + 1rem, 2rem);
+  line-height: 1.3;
+}
+
+.title[data-size='inherit'] {
+  font-size: inherit;
+  line-height: inherit;
+}

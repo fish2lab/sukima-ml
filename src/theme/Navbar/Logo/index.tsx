@@ -14,7 +14,8 @@ export default function Logo(): ReactNode {
     const logoImageUrl = useBaseUrl('/img/new.webp');
 
     return (
-        <div className={styles.navbarBrand}>
+        // wc-keep-font：东方部分全站换成手写楷体时，Logo 保留原来的字体（src/css/woodcut.css）
+        <div className={`${styles.navbarBrand} wc-keep-font`}>
             {/* Logo 图片 */}
             <Link to={logoLink} className={styles.logoLink}>
                 <img

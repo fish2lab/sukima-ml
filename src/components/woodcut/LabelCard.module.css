@@ -1,0 +1,109 @@
+/* 片子 S2.CARD：770×600 的卡片、内边距 44；作品名 84 号、原作 44、角色画师 40、规格 44、价格 72（1080p 单位） */
+.card {
+  position: relative;
+  display: block;
+  box-sizing: border-box;
+  margin: 0;
+  padding: clamp(20px, 2.4vw, 36px) clamp(20px, 2.6vw, 40px) clamp(18px, 2.2vw, 32px);
+  background: var(--wc-card);
+  color: var(--wc-card-fg);
+  box-shadow: 7px 9px 0 var(--wc-shade);
+  font-family: var(--wc-font-hand);
+  font-synthesis: none;
+  transform-origin: 0 50%;
+}
+
+.paper {
+  color: var(--wc-card);
+}
+
+.line {
+  color: var(--wc-card-line);
+}
+
+.body {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+}
+
+.title {
+  margin: 0 0 0.55em;
+  color: var(--wc-card-fg);
+  font-family: var(--wc-font-hand);
+  font-size: clamp(1.55rem, 1.4vw + 1rem, 2.35rem);
+  font-weight: 400;
+  line-height: 1.22;
+  letter-spacing: 0.02em;
+}
+
+.row {
+  margin: 0;
+}
+
+.meta {
+  color: var(--wc-card-fg-2);
+  font-size: clamp(1rem, 0.35vw + 0.9rem, 1.2rem);
+  line-height: 1.55;
+}
+
+.meta + .meta {
+  margin-top: 0.3em;
+  font-size: clamp(0.95rem, 0.3vw + 0.85rem, 1.08rem);
+}
+
+.foot {
+  margin-top: auto;
+  padding-top: clamp(20px, 2.8vw, 44px);
+}
+
+.spec {
+  color: var(--wc-card-fg-2);
+  font-size: clamp(1rem, 0.35vw + 0.9rem, 1.2rem);
+  line-height: 1.4;
+}
+
+.price {
+  margin-top: 0.15em;
+  color: var(--wc-card-fg);
+  font-size: clamp(1.6rem, 1.2vw + 1.1rem, 2.3rem);
+  line-height: 1.2;
+  font-variant-numeric: lining-nums;
+}
+
+/* 进场：以左边为轴翻出（easeOutBack，带一点过冲），各行按 --d 从左往右擦出 */
+:global(html[data-wc-motion='on']) .card[data-wc-reveal='pending'] {
+  transform: scaleX(0);
+}
+
+:global(html[data-wc-motion='on']) .card[data-wc-reveal='pending'] .row {
+  clip-path: inset(-10% 100% -10% 0);
+}
+
+.card[data-wc-reveal='play'] {
+  animation: flip 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+.card[data-wc-reveal='play'] .row {
+  animation: wipe 0.28s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: var(--d, 0s);
+}
+
+@keyframes flip {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes wipe {
+  from {
+    clip-path: inset(-10% 100% -10% 0);
+  }
+  to {
+    clip-path: inset(-10% -2% -10% 0);
+  }
+}

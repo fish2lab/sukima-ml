@@ -1,0 +1,559 @@
+/**
+ * 东方部分（隙间月影）的全局木刻画风：颜色、字体、纸纹、导航栏、手机菜单、页脚、Infima 与旧页面变量的对接。
+ *
+ * 所有规则都挂在 html[data-sukima] 下（标记由 src/theme/Layout → SukimaScope 输出，SSR 就在）。
+ * Studio Phantasm（/ph、/ph/*、/en/ph…）的 <html> 上没有这个标记，外观完全不受影响。
+ * 画风参照 BX 短片 animation/kit.js；组件与用法见 src/components/woodcut/README.md。
+ *
+ * 规矩：不用渐变、不发光、不加彩色阴影；投影一律是平的灰块。实拍图片按原样显示，不加滤镜。
+ */
+
+/* ===================== 1. 色表、字体 ===================== */
+
+html[data-sukima] {
+  /* 片子 kit.js 的 K（常量，不随深浅色变） */
+  --wc-k-ink: #161412;
+  --wc-k-ink2: #24211e;
+  --wc-k-paper: #ebe5d8;
+  --wc-k-paper2: #e2dbcc;
+  --wc-k-card: #f3efe6;
+  --wc-k-wall: #f7f6f4;
+  --wc-k-wall-card: #fcfbf9;
+  --wc-k-g1: #cdc6b8;
+  --wc-k-g2: #8e887d;
+  --wc-k-g3: #4b4741;
+  --wc-k-plum: #4b2a63;
+  --wc-k-stamp: #a3342c;
+
+  /* 霞鹜文楷屏幕版（常规字重，自托管，src/theme/Root.tsx 引入）；等宽只给票据、编号用 */
+  --wc-font-hand: 'LXGW WenKai Screen R', 'LXGW WenKai Screen', 'LXGW WenKai', 'Kaiti SC', STKaiti, KaiTi, serif;
+  --wc-font-mono: ui-monospace, 'SF Mono', SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace;
+
+  --ifm-font-size-base: 106.25%;
+}
+
+@media (max-width: 996px) {
+  html[data-sukima] {
+    --ifm-font-size-base: 110%;
+  }
+}
+
+/* ===================== 2. 语义色：纸（浅色）与墨（深色、黑场） ===================== */
+/* 在 <html> 上按深浅色定一次；PaperSection 等设了 data-wc-tone 的元素按自己的底色再定一次，里面的字、线、按钮跟着变。
+   对比度（正文 ≥ 4.5:1）：墨/纸 14.6、g3/纸 7.3、暗紫/纸 9.2；纸/墨 14.6、g1/墨 10.8、g2/墨 5.2、淡紫/墨 8.0 */
+
+html[data-sukima],
+html[data-sukima] [data-wc-tone='paper'],
+html[data-sukima] [data-wc-tone='wall'] {
+  --wc-bg: var(--wc-k-paper);
+  --wc-fg: var(--wc-k-ink);
+  --wc-fg-2: var(--wc-k-g3);
+  --wc-fg-3: var(--wc-k-g2);
+  --wc-line: var(--wc-k-ink);
+  --wc-line-soft: rgba(22, 20, 18, 0.16);
+  --wc-tint: rgba(22, 20, 18, 0.06);
+  --wc-accent: var(--wc-k-plum);
+  --wc-on-accent: var(--wc-k-paper);
+  --wc-stamp: var(--wc-k-stamp);
+  --wc-card: var(--wc-k-wall-card);
+  --wc-card-fg: var(--wc-k-ink);
+  --wc-card-fg-2: var(--wc-k-g3);
+  --wc-card-line: var(--wc-k-ink);
+  --wc-shade: #dbd4c6;
+  --wc-frame: var(--wc-k-ink);
+  --wc-mat: var(--wc-k-wall-card);
+  --wc-slit: var(--wc-k-ink);
+  --wc-slit-line: var(--wc-k-paper);
+  --wc-slit-iris: var(--wc-k-plum);
+  --wc-slit-bow: var(--wc-k-ink);
+  --wc-slit-bow-line: var(--wc-k-paper);
+  --wc-slit-rim: none;
+
+  --ifm-color-emphasis-0: #f3efe6;
+  --ifm-color-emphasis-100: #e7e0d2;
+  --ifm-color-emphasis-200: #ddd6c8;
+  --ifm-color-emphasis-300: #cdc6b8;
+  --ifm-color-emphasis-400: #bdb6a8;
+  --ifm-color-emphasis-500: #a9a296;
+  --ifm-color-emphasis-600: #8e887d;
+  --ifm-color-emphasis-700: #6b665d;
+  --ifm-color-emphasis-800: #4b4741;
+  --ifm-color-emphasis-900: #24211e;
+  --ifm-color-emphasis-1000: #161412;
+}
+
+/* 隙间页面的画廊墙：更白的纸（片子 SUKIMA_PAPER），投影也浅一点 */
+html[data-sukima] [data-wc-tone='wall'] {
+  --wc-bg: var(--wc-k-wall);
+  --wc-shade: #e0dcd3;
+}
+
+html[data-sukima][data-theme='dark'],
+html[data-sukima] [data-wc-tone='ink'],
+html[data-sukima][data-theme='dark'] [data-wc-tone] {
+  --wc-bg: var(--wc-k-ink);
+  --wc-fg: var(--wc-k-paper);
+  --wc-fg-2: var(--wc-k-g1);
+  --wc-fg-3: var(--wc-k-g2);
+  --wc-line: var(--wc-k-paper);
+  --wc-line-soft: rgba(235, 229, 216, 0.2);
+  --wc-tint: rgba(235, 229, 216, 0.08);
+  --wc-accent: #b7a3cb;
+  --wc-on-accent: var(--wc-k-ink);
+  --wc-stamp: #c4493f;
+  --wc-card: var(--wc-k-ink2);
+  --wc-card-fg: var(--wc-k-paper);
+  --wc-card-fg-2: var(--wc-k-g1);
+  --wc-card-line: rgba(235, 229, 216, 0.7);
+  --wc-shade: #070606;
+  --wc-frame: var(--wc-k-ink2);
+  --wc-mat: #d8d2c6;
+  --wc-slit: #0b0a09;
+  --wc-slit-line: var(--wc-k-paper);
+  --wc-slit-iris: var(--wc-k-plum);
+  --wc-slit-bow: var(--wc-k-paper);
+  --wc-slit-bow-line: var(--wc-k-ink);
+  --wc-slit-rim: var(--wc-k-paper);
+
+  --ifm-color-emphasis-0: #161412;
+  --ifm-color-emphasis-100: #1e1c19;
+  --ifm-color-emphasis-200: #292622;
+  --ifm-color-emphasis-300: #3a3631;
+  --ifm-color-emphasis-400: #4b4741;
+  --ifm-color-emphasis-500: #6b665d;
+  --ifm-color-emphasis-600: #8e887d;
+  --ifm-color-emphasis-700: #aea79b;
+  --ifm-color-emphasis-800: #cdc6b8;
+  --ifm-color-emphasis-900: #e2dbcc;
+  --ifm-color-emphasis-1000: #ebe5d8;
+}
+
+/* Infima 和旧页面的 --art-* 变量接到 --wc-* 上（每个语境重新计算一次） */
+html[data-sukima],
+html[data-sukima] [data-wc-tone] {
+  --ifm-background-color: var(--wc-bg);
+  --ifm-background-surface-color: var(--wc-card);
+  --ifm-color-content: var(--wc-fg);
+  --ifm-color-content-secondary: var(--wc-fg-2);
+  --ifm-font-color-base: var(--wc-fg);
+  --ifm-font-color-secondary: var(--wc-fg-2);
+  --ifm-heading-color: var(--wc-fg);
+  --ifm-color-primary: var(--wc-accent);
+  --ifm-color-primary-dark: var(--wc-accent);
+  --ifm-color-primary-darker: var(--wc-accent);
+  --ifm-color-primary-darkest: var(--wc-accent);
+  --ifm-color-primary-light: var(--wc-accent);
+  --ifm-color-primary-lighter: var(--wc-accent);
+  --ifm-color-primary-lightest: var(--wc-accent);
+  --ifm-link-color: var(--wc-accent);
+  --ifm-link-hover-color: var(--wc-fg);
+  --ifm-border-color: var(--wc-line-soft);
+  --ifm-toc-border-color: var(--wc-line-soft);
+  --ifm-hr-background-color: var(--wc-line);
+  --ifm-code-background: var(--wc-tint);
+  --ifm-table-stripe-background: var(--wc-tint);
+  --ifm-menu-color: var(--wc-fg-2);
+  --ifm-menu-color-active: var(--wc-fg);
+  --ifm-menu-color-background-active: var(--wc-tint);
+  --ifm-menu-color-background-hover: var(--wc-tint);
+  --ifm-dropdown-background-color: var(--wc-card);
+  --ifm-dropdown-hover-background-color: var(--wc-tint);
+  --ifm-dropdown-link-color: var(--wc-fg);
+  --ifm-navbar-background-color: var(--wc-bg);
+  --ifm-navbar-link-color: var(--wc-fg);
+  --ifm-navbar-link-hover-color: var(--wc-fg);
+  --ifm-navbar-link-active-color: var(--wc-fg);
+  --ifm-navbar-shadow: none;
+  --ifm-card-background-color: var(--wc-card);
+  --ifm-breadcrumb-item-background-active: var(--wc-tint);
+  --ifm-tabs-color-active: var(--wc-fg);
+  --ifm-tabs-color-active-border: var(--wc-fg);
+  --ifm-pagination-nav-color-hover: var(--wc-fg);
+  --ifm-global-shadow-lw: 2px 3px 0 var(--wc-shade);
+  --ifm-global-shadow-md: 4px 5px 0 var(--wc-shade);
+  --ifm-global-shadow-tl: 6px 8px 0 var(--wc-shade);
+  --ifm-font-family-base: var(--wc-font-hand);
+  --ifm-heading-font-family: var(--wc-font-hand);
+  --ifm-font-family-monospace: var(--wc-font-mono);
+  --ifm-font-family-serif: var(--wc-font-hand);
+  --ifm-heading-font-weight: 400;
+  --font-color: var(--wc-fg);
+  --light-font-color: var(--wc-fg);
+  --dark-font-color: var(--wc-fg);
+
+  --art-bg: var(--wc-bg);
+  --art-surface: var(--wc-card);
+  --art-surface-2: var(--wc-card);
+  --art-beige: var(--wc-tint);
+  --art-ink: var(--wc-fg);
+  --art-ink-soft: var(--wc-fg-2);
+  --art-muted: var(--wc-fg-2);
+  --art-faint: var(--wc-fg-3);
+  --art-line: var(--wc-line);
+  --art-line-soft: var(--wc-line-soft);
+  --art-accent: var(--wc-accent);
+  --art-accent-soft: var(--wc-tint);
+  --art-purple: var(--wc-accent);
+  --art-font-display: var(--wc-font-hand);
+  --art-font-serif: var(--wc-font-hand);
+  --art-font-mono: var(--wc-font-mono);
+  --art-shadow-hard: 6px 6px 0 var(--wc-shade);
+  --art-shadow-soft: 4px 5px 0 var(--wc-shade);
+  --art-shadow-lift: 6px 8px 0 var(--wc-shade);
+}
+
+/* ===================== 3. 底色与纸纹 ===================== */
+/* 纸纹是 512px 见方的无缝 WebP（scripts/woodcut/make-grain.mjs 照片子 tile() 生成，明暗起伏 ΔL* ≤ 5）。
+   铺在 <html> 上：根元素的背景随文档一起滚动，不重绘；不用 background-attachment: fixed。 */
+
+html[data-sukima] {
+  background-color: var(--wc-bg);
+  background-image: url('../components/woodcut/assets/grain-paper.webp');
+  background-repeat: repeat;
+  background-size: 512px 512px;
+  color: var(--wc-fg);
+  color-scheme: light;
+  font-family: var(--wc-font-hand);
+  font-synthesis: none;
+}
+
+html[data-sukima][data-theme='dark'] {
+  background-image: url('../components/woodcut/assets/grain-ink.webp');
+  color-scheme: dark;
+}
+
+html[data-sukima] [data-wc-tone] {
+  background-color: var(--wc-bg);
+  background-repeat: repeat;
+  background-size: 512px 512px;
+  color: var(--wc-fg);
+}
+
+html[data-sukima] [data-wc-tone='paper'] {
+  background-image: url('../components/woodcut/assets/grain-paper.webp');
+}
+
+html[data-sukima] [data-wc-tone='wall'] {
+  background-image: url('../components/woodcut/assets/grain-wall.webp');
+}
+
+html[data-sukima] [data-wc-tone='ink'],
+html[data-sukima][data-theme='dark'] [data-wc-tone] {
+  background-image: url('../components/woodcut/assets/grain-ink.webp');
+}
+
+/* 撕开的隙间、画框会伸出版心：页面主体横向裁掉，不出现横向滚动条（clip 不建滚动容器，sticky 照常） */
+html[data-sukima] .main-wrapper {
+  overflow-x: clip;
+}
+
+/* ===================== 4. 字：全部手写楷体 ===================== */
+/* 东方部分所有文字（标题、正文、价格、按钮）都用霞鹜文楷，压过页面模块里单独写的字体。
+   要等宽（票据、编号）加 class="wc-mono"；code / kbd / samp / pre 保持等宽；
+   class="wc-keep-font" 的元素保留自己的字体（导航栏 Logo）。 */
+
+html[data-sukima] body *:not(.wc-mono, .wc-mono *, .wc-keep-font, .wc-keep-font *, code, code *, kbd, kbd *, samp, samp *, pre, pre *) {
+  font-family: var(--wc-font-hand);
+}
+
+html[data-sukima] .wc-mono {
+  font-family: var(--wc-font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+/* 只有常规字重：标题不假粗；strong / em 允许浏览器合成，保留强调 */
+html[data-sukima] :is(h1, h2, h3, h4, h5, h6) {
+  font-weight: 400;
+  letter-spacing: 0.02em;
+}
+
+html[data-sukima] :is(strong, b) {
+  font-synthesis: weight;
+}
+
+html[data-sukima] :is(em, i, cite, dfn) {
+  font-synthesis: style;
+}
+
+html[data-sukima] ::selection {
+  background: var(--wc-accent);
+  color: var(--wc-on-accent);
+}
+
+html[data-sukima] :where(:focus-visible) {
+  outline: 2px solid var(--wc-accent);
+  outline-offset: 2px;
+}
+
+/* 读屏可见、屏幕上隐藏（组件用；/ph 没有元素用它） */
+.wc-sr-only {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  margin: -1px !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  clip-path: inset(50%) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+/* ===================== 5. 导航栏 ===================== */
+/* 纸底，底边一道木刻粗墨线（mask-rule.svg），链接手写楷体，悬停 / 当前页下面一笔墨线；Logo 不变 */
+
+html[data-sukima] .navbar {
+  background-color: var(--wc-bg);
+  background-image: url('../components/woodcut/assets/grain-paper.webp');
+  background-size: 512px 512px;
+  border-bottom: 0;
+  box-shadow: none;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+html[data-sukima][data-theme='dark'] .navbar {
+  background-image: url('../components/woodcut/assets/grain-ink.webp');
+}
+
+html[data-sukima] .navbar::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  bottom: -4px;
+  left: 0;
+  height: 8px;
+  background: var(--wc-line);
+  pointer-events: none;
+}
+
+html[data-sukima] .navbar__item {
+  font-size: 1.08rem;
+  letter-spacing: 0.04em;
+  text-transform: none;
+}
+
+html[data-sukima] .navbar__link {
+  position: relative;
+  color: var(--wc-fg);
+}
+
+html[data-sukima] .navbar__link::before {
+  content: '';
+  position: absolute;
+  right: 14%;
+  bottom: 0.1rem;
+  left: 14%;
+  height: 5px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  transition: transform 0.18s cubic-bezier(0.22, 1, 0.36, 1);
+  pointer-events: none;
+}
+
+html[data-sukima] .navbar__link:hover::before,
+html[data-sukima] .navbar__link--active::before {
+  transform: scaleX(1);
+}
+
+html[data-sukima] .navbar-sukima-item .navbar__link:hover {
+  background: none;
+}
+
+html[data-sukima] .navbar-phantasm-item .navbar__link,
+html[data-sukima][data-theme='dark'] .navbar-phantasm-item .navbar__link {
+  color: var(--wc-fg-2) !important;
+}
+
+html[data-sukima] .navbar-phantasm-item .navbar__link:hover,
+html[data-sukima][data-theme='dark'] .navbar-phantasm-item .navbar__link:hover {
+  background: none;
+  color: var(--wc-fg) !important;
+}
+
+html[data-sukima] .dropdown__menu {
+  border: 1.5px solid var(--wc-line);
+  border-radius: 0;
+}
+
+html[data-sukima] .dropdown__link {
+  border-radius: 0;
+}
+
+/* 手机菜单：同一张纸，品牌行下面一笔墨线，当前页左边一道墨 */
+html[data-sukima] .navbar-sidebar {
+  background-color: var(--wc-bg);
+  background-image: url('../components/woodcut/assets/grain-paper.webp');
+  background-size: 512px 512px;
+}
+
+html[data-sukima][data-theme='dark'] .navbar-sidebar {
+  background-image: url('../components/woodcut/assets/grain-ink.webp');
+}
+
+html[data-sukima] .navbar-sidebar__brand {
+  position: relative;
+  box-shadow: none;
+}
+
+html[data-sukima] .navbar-sidebar__brand::after {
+  content: '';
+  position: absolute;
+  right: 0.5rem;
+  bottom: -3px;
+  left: 0.5rem;
+  height: 6px;
+  background: var(--wc-line);
+  pointer-events: none;
+}
+
+html[data-sukima] .navbar-sidebar .menu__link {
+  border-radius: 0;
+  color: var(--wc-fg);
+  font-size: 1.15rem;
+  letter-spacing: 0.04em;
+}
+
+html[data-sukima] .navbar-sidebar .menu__link--active {
+  background: var(--wc-tint);
+  box-shadow: inset 4px 0 0 var(--wc-line);
+}
+
+html[data-sukima] .navbar-sidebar__backdrop {
+  background-color: rgba(22, 20, 18, 0.55);
+}
+
+/* ===================== 6. 页脚：黑场 ===================== */
+/* 墨底、纸色字；上沿是木刻刀口的毛边（mask-edge.svg），像一块墨压在纸上。深色模式下再压暗一档，上沿加一道纸色刮痕 */
+
+html[data-sukima] .footer {
+  --ifm-footer-background-color: var(--wc-k-ink);
+  --ifm-footer-color: var(--wc-k-g1);
+  --ifm-footer-link-color: var(--wc-k-paper);
+  --ifm-footer-link-hover-color: var(--wc-k-paper);
+  --ifm-footer-title-color: var(--wc-k-g1);
+  position: relative;
+  margin-top: 12px;
+  background-color: var(--ifm-footer-background-color);
+  background-image: url('../components/woodcut/assets/grain-ink.webp');
+  background-size: 512px 512px;
+  color: var(--ifm-footer-color);
+}
+
+html[data-sukima][data-theme='dark'] .footer {
+  --ifm-footer-background-color: #0e0d0c;
+}
+
+html[data-sukima] .footer::before {
+  content: '';
+  position: absolute;
+  right: 0;
+  bottom: calc(100% - 8px);
+  left: 0;
+  height: 16px;
+  background: var(--ifm-footer-background-color);
+  pointer-events: none;
+}
+
+html[data-sukima][data-theme='dark'] .footer::after {
+  content: '';
+  position: absolute;
+  top: 2px;
+  right: 0;
+  left: 0;
+  height: 4px;
+  background: var(--wc-k-paper);
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+html[data-sukima] .footer__title,
+html[data-sukima][data-theme='dark'] .footer__title {
+  color: var(--wc-k-g1);
+  font-size: 0.95rem;
+  font-weight: 400;
+  letter-spacing: 0.14em;
+  text-transform: none;
+}
+
+html[data-sukima] .footer__link-item,
+html[data-sukima][data-theme='dark'] .footer__link-item {
+  color: var(--wc-k-paper);
+  font-size: 1rem;
+  font-weight: 400;
+}
+
+html[data-sukima] .footer__link-item:hover,
+html[data-sukima][data-theme='dark'] .footer__link-item:hover {
+  color: var(--wc-k-paper);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.25em;
+}
+
+html[data-sukima] .footer__copyright {
+  color: var(--wc-k-g2);
+  font-size: 0.88rem;
+}
+
+/* ===================== 7. 正文、旧组件 ===================== */
+
+html[data-sukima] .markdown a {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.22em;
+}
+
+html[data-sukima] hr {
+  height: 6px;
+  border: 0;
+  background: var(--wc-line);
+}
+
+html[data-sukima] .button {
+  font-weight: 400;
+  letter-spacing: 0.06em;
+  text-transform: none;
+}
+
+html[data-sukima] .button--primary,
+html[data-sukima][data-theme='dark'] .button--primary {
+  border-color: var(--wc-fg);
+  background: var(--wc-fg);
+  color: var(--wc-bg);
+}
+
+html[data-sukima] .button--primary:hover,
+html[data-sukima][data-theme='dark'] .button--primary:hover {
+  border-color: var(--wc-fg-2);
+  background: var(--wc-fg-2);
+  color: var(--wc-bg);
+}
+
+html[data-sukima] .card {
+  border: 1px solid var(--wc-line-soft);
+  background: var(--wc-card);
+  box-shadow: 4px 5px 0 var(--wc-shade);
+}
+
+html[data-sukima] .card:hover {
+  box-shadow: 6px 8px 0 var(--wc-shade);
+}
+
+/* ===================== 8. 木刻毛边遮罩 ===================== */
+/* 两张遮罩（scripts/woodcut/make-masks.mjs 生成，小于 10KB 会被内联成 data URI），
+   每张只在这里写一次，免得每处用到都在 CSS 里复制一份。颜色由各自的 background 决定。 */
+
+html[data-sukima] .navbar::after,
+html[data-sukima] .navbar__link::before,
+html[data-sukima] .navbar-sidebar__brand::after,
+html[data-sukima][data-theme='dark'] .footer::after,
+html[data-sukima] hr {
+  -webkit-mask: url('../components/woodcut/assets/mask-rule.svg') 0 0 / 100% 100% no-repeat;
+  mask: url('../components/woodcut/assets/mask-rule.svg') 0 0 / 100% 100% no-repeat;
+}
+
+html[data-sukima] .footer::before {
+  -webkit-mask: url('../components/woodcut/assets/mask-edge.svg') 0 0 / 100% 100% no-repeat;
+  mask: url('../components/woodcut/assets/mask-edge.svg') 0 0 / 100% 100% no-repeat;
+}

@@ -1,0 +1,76 @@
+.root {
+  position: relative;
+  display: block;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: inherit;
+  -webkit-tap-highlight-color: transparent;
+}
+
+button.root {
+  cursor: pointer;
+  appearance: none;
+}
+
+button.root:focus-visible {
+  outline: 2px solid var(--wc-accent);
+  outline-offset: 8px;
+}
+
+/* 画心：固定宽高比，图片加载前后不跳 */
+.pic {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: 100%;
+}
+
+.clip {
+  position: absolute;
+  inset: 0;
+  display: block;
+  overflow: hidden;
+}
+
+.img {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  user-select: none;
+}
+
+/* 缝：中线跟着扫到的高度走，两头伸出画外（片子里缝长约画宽 1.6 倍），盖到框和墙上 */
+.track {
+  position: absolute;
+  top: 0;
+  left: -35%;
+  display: block;
+  width: 170%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.slitBox {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: block;
+  width: 100%;
+  height: 38%;
+  transform: translateY(-50%);
+}
+
+/* 减少动态：自动播放的最终状态是东方版，水合前就直接显示，不先闪一下原作 */
+@media (prefers-reduced-motion: reduce) {
+  .root[data-autoplay]:not([data-ready]) .to {
+    clip-path: none !important;
+  }
+}

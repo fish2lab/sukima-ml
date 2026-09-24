@@ -1,0 +1,171 @@
+.pageTitle {
+  margin: 1.2rem 0 1rem;
+}
+
+.lead {
+  max-width: 44em;
+  color: var(--wc-fg-2);
+  font-size: 1.1rem;
+}
+
+.swatches {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px 24px;
+  margin-top: 2rem;
+}
+
+.swatch {
+  display: grid;
+  grid-template-columns: 40px 1fr;
+  grid-template-rows: auto auto;
+  column-gap: 12px;
+  align-items: center;
+  font-size: 0.95rem;
+}
+
+.swatch .chip {
+  grid-row: span 2;
+  width: 40px;
+  height: 40px;
+  box-shadow: 3px 4px 0 var(--wc-shade);
+  outline: 1px solid var(--wc-line-soft);
+}
+
+.swatch > :global(.wc-mono) {
+  color: var(--wc-fg-2);
+  font-size: 0.8rem;
+}
+
+.block {
+  margin-block: 0 3.5rem;
+}
+
+.blockHead {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 20px;
+  margin-bottom: 2rem;
+}
+
+.blockHead h2 {
+  margin: 0;
+}
+
+.desc {
+  flex: 1 1 24em;
+  margin: 0;
+  color: var(--wc-fg-2);
+}
+
+.note {
+  margin: 0.8rem 0 1.4rem;
+  color: var(--wc-fg-2);
+  font-size: 0.8rem;
+  line-height: 1.5;
+}
+
+.grid3 {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 56px 48px;
+  align-items: start;
+}
+
+.cell {
+  min-width: 0;
+}
+
+.stack > * {
+  max-width: 100%;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 20px 28px;
+}
+
+.slitRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 24px 40px;
+  margin-top: 2rem;
+}
+
+.slitBox {
+  flex: 1 1 480px;
+  max-width: 640px;
+}
+
+.range {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 200px;
+}
+
+.range input {
+  accent-color: var(--wc-accent);
+}
+
+.slitSmall {
+  width: min(100%, 360px);
+  margin-top: 2rem;
+}
+
+.cardText {
+  margin: 0.8em 0 0;
+  color: var(--wc-card-fg-2);
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.frameCol {
+  width: min(100%, 340px);
+}
+
+.scrollTrack {
+  position: relative;
+  height: 220vh;
+  margin-top: 2rem;
+}
+
+.scrollSticky {
+  position: sticky;
+  top: calc(var(--ifm-navbar-height) + 6vh);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 24px 48px;
+}
+
+.scrollSticky .frameCol {
+  width: min(100%, 30vh, 340px);
+}
+
+.inkPair {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr);
+  gap: 48px;
+  align-items: center;
+  margin-top: 2rem;
+}
+
+@media (max-width: 996px) {
+  .swatches {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .grid3,
+  .inkPair {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .grid3 > .cell {
+    max-width: 420px;
+  }
+}

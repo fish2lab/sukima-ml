@@ -1,0 +1,135 @@
+.button {
+  --btn-fg: var(--wc-fg);
+  --btn-bg: var(--wc-bg);
+  position: relative;
+  isolation: isolate;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5em;
+  min-height: 44px;
+  margin: 0;
+  padding: 0.5em 1.35em 0.55em;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  color: var(--btn-fg);
+  font-family: var(--wc-font-hand);
+  font-size: 1.08rem;
+  font-weight: 400;
+  font-synthesis: none;
+  line-height: 1.2;
+  letter-spacing: 0.06em;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    color 0.18s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.12s ease-out,
+    box-shadow 0.12s ease-out;
+}
+
+.button:hover,
+.button:focus-visible {
+  color: var(--btn-fg);
+  text-decoration: none;
+}
+
+.button[data-size='sm'] {
+  min-height: 36px;
+  padding: 0.36em 1em 0.4em;
+  font-size: 0.95rem;
+}
+
+.button[data-size='lg'] {
+  min-height: 56px;
+  padding: 0.6em 1.7em 0.65em;
+  font-size: 1.3rem;
+}
+
+.fill {
+  position: absolute;
+  inset: 0;
+  background: var(--btn-fg);
+  clip-path: inset(0 100% 0 0);
+  transition: clip-path 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.edge {
+  color: var(--btn-fg);
+}
+
+.label {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+}
+
+/* outline：悬停时被墨涂满（从左往右一刷），字变纸色。触屏上按下时才涂 */
+@media (hover: hover) {
+  .button[data-variant='outline']:hover {
+    color: var(--btn-bg);
+  }
+
+  .button[data-variant='outline']:hover .fill {
+    clip-path: inset(0);
+  }
+}
+
+.button[data-variant='outline']:focus-visible,
+.button[data-variant='outline']:active {
+  color: var(--btn-bg);
+}
+
+.button[data-variant='outline']:focus-visible .fill,
+.button[data-variant='outline']:active .fill {
+  clip-path: inset(0);
+}
+
+/* solid：实心墨块，墙上一块平的灰投影；悬停时往投影方向按下去 */
+.button[data-variant='solid'],
+.button[data-variant='solid']:hover,
+.button[data-variant='solid']:focus-visible {
+  color: var(--btn-bg);
+}
+
+.button[data-variant='solid'] {
+  box-shadow: 4px 5px 0 var(--wc-shade);
+}
+
+.button[data-variant='solid'] .fill {
+  clip-path: none;
+}
+
+@media (hover: hover) {
+  .button[data-variant='solid']:hover {
+    transform: translate(2px, 3px);
+    box-shadow: 2px 2px 0 var(--wc-shade);
+  }
+}
+
+.button[data-variant='solid']:active {
+  transform: translate(4px, 5px);
+  box-shadow: 0 0 0 var(--wc-shade);
+}
+
+.button:focus-visible {
+  outline: 2px solid var(--wc-accent);
+  outline-offset: 5px;
+}
+
+.button:disabled,
+.button[aria-disabled='true'] {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .button,
+  .fill {
+    transition: none;
+  }
+}

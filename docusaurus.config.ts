@@ -4,6 +4,16 @@ import type * as Preset from '@docusaurus/preset-classic';
 
 // This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
 
+/**
+ * 木刻画风的动画开关（src/components/woodcut/README.md「动画与减少动态」）：首帧前在 <html> 上写 data-wc-motion。
+ * on：进场动画（逐字写出、展签翻出）先把元素藏成起点，进入视口再播；off：要求减少动态，一律直接显示最终状态。
+ * 没有 JS 时没有这个属性，什么都不藏。4 秒还没水合（脚本出错、网太慢）就改成 off，免得内容一直藏着。
+ */
+const WOODCUT_MOTION_FLAG =
+  "(function(){try{var d=document.documentElement,r=window.matchMedia('(prefers-reduced-motion: reduce)').matches;" +
+  "d.setAttribute('data-wc-motion',r?'off':'on');" +
+  "if(!r)setTimeout(function(){if(d.getAttribute('data-has-hydrated')!=='true')d.setAttribute('data-wc-motion','off')},4000)}catch(e){}})();";
+
 const config: Config = {
   title: '隙间月影 | Sukima Moonlight',
   tagline: '名画与东方的邂逅 | Where Classic Art Meets Touhou',
@@ -69,7 +79,8 @@ const config: Config = {
           onUntruncatedBlogPosts: 'warn',
         },
         theme: {
-          customCss: './src/css/custom.css',
+          // woodcut.css：东方部分（html[data-sukima]）的木刻画风，排在后面
+          customCss: ['./src/css/custom.css', './src/css/woodcut.css'],
         },
         sitemap: {
           changefreq: 'weekly',
@@ -82,6 +93,14 @@ const config: Config = {
 
   plugins: [
     // Redirects removed - photography moved to fcsu.dev
+    function woodcutMotionFlag() {
+      return {
+        name: 'woodcut-motion-flag',
+        injectHtmlTags() {
+          return { headTags: [{ tagName: 'script', innerHTML: WOODCUT_MOTION_FLAG }] };
+        },
+      };
+    },
   ],
 
   themeConfig: {

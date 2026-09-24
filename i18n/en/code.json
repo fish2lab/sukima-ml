@@ -962,5 +962,9 @@
   },
   "gallery.art.002.originalPainting": {
     "message": "The Bookworm"
+  },
+  "woodcut.sweep.toggle": {
+    "message": "Show the Touhou version",
+    "description": "SweepReveal 切换按钮的读屏名称（按下 = 显示东方版）"
   }
 }

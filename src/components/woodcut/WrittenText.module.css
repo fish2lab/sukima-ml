@@ -1,0 +1,32 @@
+.text {
+  display: inline;
+}
+
+.word {
+  white-space: nowrap;
+}
+
+.ch {
+  display: inline-block;
+  transform: translateY(var(--y, 0)) rotate(var(--r, 0deg));
+}
+
+/* 进场：由最近的 data-wc-reveal 祖先控制。
+   pending 只在能动时（<html data-wc-motion="on">，内联脚本首帧前写上）才藏，没有 JS 的时候字照常显示。 */
+:global(html[data-wc-motion='on']) :global([data-wc-reveal='pending']) .ch {
+  clip-path: inset(-30% 100% -30% -12%);
+}
+
+:global([data-wc-reveal='play']) .ch {
+  animation: write var(--wc-per, 0.04s) linear both;
+  animation-delay: calc(var(--wc-delay, 0s) + var(--i, 0) * var(--wc-per, 0.04s));
+}
+
+@keyframes write {
+  from {
+    clip-path: inset(-30% 100% -30% -12%);
+  }
+  to {
+    clip-path: inset(-30% -12% -30% -12%);
+  }
+}

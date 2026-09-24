@@ -113,3 +113,9 @@
         white-space: nowrap;
     }
 }
+
+/* 东方部分（html[data-sukima]）：Logo 字体不变，悬停色换成全站唯一的强调色暗紫 */
+:global(html[data-sukima]) .sukimaLink:hover,
+:global(html[data-sukima]) .phantasmLink:hover {
+    color: var(--wc-accent) !important;
+}

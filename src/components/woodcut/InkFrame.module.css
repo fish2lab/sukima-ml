@@ -1,0 +1,166 @@
+/* 比例照片子 s2Frame：画高 640 时框宽 26、卡纸 30、投影偏移 (9, 11)；网页上按屏幕宽度 clamp */
+.frame {
+  --fw: clamp(10px, 0.9vw + 7px, 22px);
+  --mat: clamp(10px, 1.6vw + 6px, 32px);
+  --sx: clamp(4px, 0.45vw + 2px, 9px);
+  --sy: calc(var(--sx) * 1.22);
+  --rail-over: 14%;
+  position: relative;
+  display: block;
+  margin: 0;
+  color: var(--wc-line);
+}
+
+.frame[data-size='sm'] {
+  --fw: clamp(7px, 0.45vw + 5px, 12px);
+  --mat: clamp(6px, 0.8vw + 4px, 16px);
+  --sx: clamp(3px, 0.3vw + 2px, 6px);
+}
+
+.frame[data-size='lg'] {
+  --fw: clamp(12px, 1.2vw + 8px, 28px);
+  --mat: clamp(14px, 2.2vw + 8px, 44px);
+  --sx: clamp(5px, 0.6vw + 2px, 11px);
+}
+
+/* 晃动：绕挂画轨（挂绳顶端）的中点转 */
+.swing {
+  position: relative;
+  display: block;
+  transform-origin: 50% 0;
+}
+
+/* 挂绳：画框上方，高度是画框宽的 13%（片子里挂钩离画框上沿 76 / 画框宽 582） */
+.cords {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 100 / 13;
+}
+
+.cordSvg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: block;
+  width: 100%;
+  height: calc(100% + 4px);
+  overflow: visible;
+  color: var(--wc-line);
+}
+
+.hook {
+  position: absolute;
+  top: -7px;
+  width: 8px;
+  height: 14px;
+  margin-left: -4px;
+  background: var(--wc-line);
+}
+
+.rail {
+  position: absolute;
+  top: 0;
+  left: calc(-1 * var(--rail-over));
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  width: calc(100% + 2 * var(--rail-over));
+  margin-top: -5px;
+  color: var(--wc-line);
+  pointer-events: none;
+}
+
+.railSvg {
+  display: block;
+  width: 100%;
+  overflow: visible;
+}
+
+/* 框 */
+.body {
+  position: relative;
+  display: block;
+  padding: var(--fw);
+  background: var(--wc-frame);
+  color: var(--wc-frame);
+  box-shadow: var(--sx) var(--sy) 0 var(--wc-shade);
+}
+
+.frame[data-shadow='false'] .body {
+  box-shadow: none;
+}
+
+.scratch {
+  color: var(--wc-k-paper, #ebe5d8);
+}
+
+.corners {
+  position: absolute;
+  inset: 0;
+  display: block;
+  pointer-events: none;
+}
+
+.corner {
+  position: absolute;
+  display: block;
+  width: var(--fw);
+  height: var(--fw);
+  color: var(--wc-k-paper, #ebe5d8);
+  opacity: 0.7;
+}
+
+.corner[data-corner='tl'] {
+  top: 0;
+  left: 0;
+}
+
+.corner[data-corner='tr'] {
+  top: 0;
+  right: 0;
+}
+
+.corner[data-corner='br'] {
+  right: 0;
+  bottom: 0;
+}
+
+.corner[data-corner='bl'] {
+  bottom: 0;
+  left: 0;
+}
+
+/* 白卡纸衬 */
+.mat {
+  position: relative;
+  display: block;
+  padding: var(--mat);
+  background: var(--wc-mat);
+  color: var(--wc-mat);
+}
+
+.art {
+  position: relative;
+  display: block;
+  color: var(--wc-k-ink, #161412);
+}
+
+.art > img,
+.art > picture,
+.art > picture > img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.artLine {
+  color: var(--wc-k-g3, #4b4741);
+}
+
+.caption {
+  margin-top: calc(var(--sy) + 0.9rem);
+  color: var(--wc-fg-2);
+  font-size: 0.95rem;
+  line-height: 1.5;
+}

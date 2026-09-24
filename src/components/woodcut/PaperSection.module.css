@@ -1,0 +1,69 @@
+/* 颜色、纸纹来自 [data-wc-tone]（src/css/woodcut.css）；这里只管版心和留白 */
+.section {
+  position: relative;
+  display: block;
+  --pad-x: 56px;
+  padding-block: var(--pad-y, 0px);
+}
+
+.section[data-space='sm'] {
+  --pad-y: 48px;
+}
+
+.section[data-space='md'] {
+  --pad-y: 96px;
+}
+
+.section[data-space='lg'] {
+  --pad-y: 144px;
+}
+
+.inner {
+  position: relative;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: calc(var(--measure) + 2 * var(--pad-x));
+  margin-inline: auto;
+  padding-inline: var(--pad-x);
+}
+
+.inner[data-width='narrow'] {
+  --measure: 720px;
+}
+
+.inner[data-width='normal'] {
+  --measure: 1120px;
+}
+
+.inner[data-width='wide'] {
+  --measure: 1360px;
+}
+
+.inner[data-width='full'] {
+  max-width: none;
+}
+
+/* 毛边条用本段的底色 */
+.edge {
+  color: var(--wc-bg);
+  z-index: 1;
+}
+
+/* 手机 */
+@media (max-width: 996px) {
+  .section {
+    --pad-x: 20px;
+  }
+
+  .section[data-space='sm'] {
+    --pad-y: 32px;
+  }
+
+  .section[data-space='md'] {
+    --pad-y: 56px;
+  }
+
+  .section[data-space='lg'] {
+    --pad-y: 80px;
+  }
+}
