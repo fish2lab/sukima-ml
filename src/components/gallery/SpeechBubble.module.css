@@ -1,0 +1,65 @@
+/* 漫画对话框：深浅色模式下都是纸色底、墨线、墨字（和片子第 5 段一样） */
+.bubble {
+  position: absolute;
+  z-index: 6;
+  box-sizing: border-box;
+  color: var(--wc-k-ink);
+  cursor: auto;
+}
+
+.bubble:focus {
+  outline: none;
+}
+
+.shape {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: block;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.fill {
+  fill: var(--wc-k-card);
+}
+
+.line {
+  fill: var(--wc-k-ink);
+}
+
+.body {
+  position: relative;
+  padding: 24px 30px 22px 28px;
+}
+
+/* 手画的 ×：在超椭圆的角里面（角被削掉了，按钮往里收） */
+.close {
+  position: absolute;
+  z-index: 1;
+  top: 12px;
+  right: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  margin: 0;
+  padding: 4px;
+  border: 0;
+  background: none;
+  color: var(--wc-k-ink);
+  cursor: pointer;
+}
+
+.close:focus-visible {
+  outline: 2px solid var(--wc-k-ink);
+  outline-offset: 1px;
+}
+
+.cross {
+  display: block;
+  width: 20px;
+  height: 20px;
+  overflow: visible;
+}

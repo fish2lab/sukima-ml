@@ -1,0 +1,83 @@
+/* 立绘外接框：位置和大小由页面定。框本身不接点击，只有里面的按钮接 */
+.stand {
+  position: absolute;
+  z-index: 2;
+  pointer-events: none;
+}
+
+/* 升起时在地面那条线（框的下沿）裁掉，她从缝里出来；站好后不裁 */
+.stand[data-wc-reveal='pending'],
+.stand[data-wc-reveal='play'] {
+  clip-path: polygon(-400% -400%, 500% -400%, 500% 100%, -400% 100%);
+}
+
+.riser {
+  position: absolute;
+  inset: 0;
+}
+
+:global(html[data-wc-motion='on']) .stand[data-wc-reveal='pending'] .riser {
+  transform: translateY(101%);
+}
+
+/* 缝张开 .2 秒后开始升，.4 秒到位（停住、突然动、再停住） */
+.stand[data-wc-reveal='play'] .riser {
+  animation: rise 0.4s cubic-bezier(0.22, 1, 0.36, 1) 0.2s both;
+}
+
+@keyframes rise {
+  from {
+    transform: translateY(101%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+/* 很淡的墨色平投影：同一张图当遮罩的剪影，往右下错开 */
+.shade {
+  position: absolute;
+  display: block;
+  background: var(--wc-k-ink);
+  opacity: 0.11;
+  transform: translate(var(--yukari-shade-x, 9px), var(--yukari-shade-y, 6px));
+  pointer-events: none;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+}
+
+.hit {
+  position: absolute;
+  inset: 0;
+  display: block;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
+  background: none;
+  cursor: help;
+  pointer-events: auto;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.hit:focus-visible {
+  outline: 2px solid var(--wc-fg);
+  outline-offset: 3px;
+}
+
+.img {
+  position: absolute;
+  display: block;
+  max-width: none;
+  height: auto;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.slit {
+  position: absolute;
+  z-index: 1;
+  pointer-events: none;
+}
