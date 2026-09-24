@@ -496,6 +496,29 @@ html[data-sukima] .footer__copyright {
   font-size: 0.88rem;
 }
 
+/* 手机上三组链接两列排（原来一组一行、每组之间空一大截，页脚有一屏多高）；链接仍保留 44px 的点按高度 */
+@media (max-width: 996px) {
+  html[data-sukima] .footer__links {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px 24px;
+    margin-inline: 0;
+  }
+
+  html[data-sukima] .footer__col {
+    margin-bottom: 0;
+    padding-inline: 0;
+  }
+
+  html[data-sukima] .footer__title {
+    margin-bottom: 4px;
+  }
+
+  html[data-sukima] .footer__item {
+    line-height: 1.2;
+  }
+}
+
 /* ===================== 7. 正文、旧组件 ===================== */
 
 html[data-sukima] .markdown a {

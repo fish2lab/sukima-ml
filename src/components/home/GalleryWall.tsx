@@ -2,7 +2,7 @@ import React, { Fragment, useCallback, useEffect, useRef, useSyncExternalStore, 
 import { motion, useScroll, useTransform, type MotionValue } from 'framer-motion';
 import useBaseUrl, { useBaseUrlUtils } from '@docusaurus/useBaseUrl';
 import Translate, { translate } from '@docusaurus/Translate';
-import { InkButton, InkRule, LabelCard, SweepReveal, motionAllowedNow, type SweepImage } from '@site/src/components/woodcut';
+import { InkButton, InkFrame, InkRule, LabelCard, SweepReveal, motionAllowedNow, type SweepImage } from '@site/src/components/woodcut';
 import { clamp, easeIO, easeOutBack, lerp } from '@site/src/components/woodcut/draw';
 import { artworks, type Artwork } from '@site/src/data/galleryData';
 import { getArtworkSubtitle, getArtworkTitle, getOriginalPaintingTitle } from '@site/src/utils/galleryTranslations';
@@ -56,6 +56,15 @@ function wallX(p: number): string {
 }
 
 const wallScale = (p: number): number => camera(p * TOTAL).zoom;
+
+/*
+ * 拉远的收尾：整面墙按片子缩到 0.23 倍时，画只剩指甲盖大、展签的字看不清。所以拉远的后半程把墙淡掉，
+ * 换成一面「四幅并排」的总览墙（四幅东方版按正常大小挂在同一道挂画轨上），总览墙从 1.4 倍缩到 1 倍淡入，读起来仍是镜头在往后退。
+ */
+const zoomE = (p: number): number => clamp((p * TOTAL - ZOOM_AT) / ZOOM, 0, 1);
+const wallOpacity = (p: number): number => 1 - clamp((zoomE(p) - 0.25) / 0.3, 0, 1);
+const overviewOpacity = (p: number): number => clamp((zoomE(p) - 0.5) / 0.4, 0, 1);
+const overviewScale = (p: number): number => lerp(1.4, 1, easeIO(clamp((zoomE(p) - 0.2) / 0.8, 0, 1)));
 
 // ---------- 桌面横向模式的开关（SSR 和水合那一帧是 false） ----------
 
@@ -185,6 +194,10 @@ export default function GalleryWall(): ReactNode {
   const { scrollYProgress } = useScroll({ target: sectionRef, offset: ['start start', 'end end'] });
   const x = useTransform(scrollYProgress, wallX);
   const scale = useTransform(scrollYProgress, wallScale);
+  const opacity = useTransform(scrollYProgress, wallOpacity);
+  const ovOpacity = useTransform(scrollYProgress, overviewOpacity);
+  const ovScale = useTransform(scrollYProgress, overviewScale);
+  const ovPointer = useTransform(ovOpacity, (v) => (v > 0.6 ? 'auto' : 'none'));
   const { withBaseUrl } = useBaseUrlUtils();
 
   // 横向模式：画廊离视口还有一屏时把八张图先取回来，开间横移进来时不空着
@@ -227,7 +240,7 @@ export default function GalleryWall(): ReactNode {
         </Translate>
       </h2>
       <div className={styles.stage} style={{ '--bays': N } as CSSProperties}>
-        <motion.div key={wall ? 'wall' : 'stack'} className={styles.wall} data-wc-tone="wall" style={wall ? { x, scale } : undefined}>
+        <motion.div key={wall ? 'wall' : 'stack'} className={styles.wall} data-wc-tone="wall" style={wall ? { x, scale, opacity } : undefined}>
           {artworks.map((a, k) => (
             <Fragment key={a.id}>
               {k > 0 ? <InkRule className={styles.rule} length={960} dry={0.15} seed={5 + k} /> : null}
@@ -236,6 +249,21 @@ export default function GalleryWall(): ReactNode {
           ))}
           <InkRule className={styles.skirting} weight="bold" length={N * 1440} seed={9} decorative />
         </motion.div>
+        {wall ? (
+          // 总览墙只是开间里已有内容的缩略重复：对读屏隐藏，链接不进 Tab 顺序（键盘和读屏用上面的开间）
+          <motion.div className={styles.overview} aria-hidden="true" style={{ opacity: ovOpacity, scale: ovScale, pointerEvents: ovPointer }}>
+            <InkRule className={styles.ovRail} weight="thin" length={1200} seed={13} decorative />
+            {artworks.map((a, k) => (
+              <a key={a.id} href={withBaseUrl(a.link)} tabIndex={-1} className={styles.ovItem} style={{ '--ar': (a.imageWidth / a.imageHeight).toFixed(4) } as CSSProperties}>
+                <InkFrame as="div" hang rail={false} size="sm" nominal={[280, 380]} seed={61 + k * 7}>
+                  <img src={withBaseUrl(a.imagePath)} alt="" width={a.imageWidth} height={a.imageHeight} loading="lazy" decoding="async" />
+                </InkFrame>
+                <span className={styles.ovTitle}>{getArtworkTitle(a)}</span>
+              </a>
+            ))}
+            <InkRule className={styles.ovSkirting} weight="bold" length={1400} seed={17} decorative />
+          </motion.div>
+        ) : null}
       </div>
     </section>
   );

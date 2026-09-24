@@ -87,7 +87,7 @@
   /* 一屏一个开间：画在左、展签在右（片子：画框中心在开间 28% 处，展签在 50%–90%） */
   :global(html[data-wc-motion='on']) .bay {
     --stage-h: calc(100vh - var(--ifm-navbar-height));
-    --frame-w: min(40vw, calc(var(--stage-h) * 0.54 * var(--ar) + 6rem));
+    --frame-w: min(40vw, calc(var(--stage-h) * 0.64 * var(--ar) + 6rem));
     flex: 0 0 calc(100% / var(--bays));
     height: 100%;
     max-width: none;
@@ -112,6 +112,59 @@
 
   :global(html[data-wc-motion='on']) .wall .rule {
     display: none;
+  }
+
+  /* 拉远后的总览墙：四幅东方版挂在同一道挂画轨上，画心高约舞台高的 44% */
+  :global(html[data-wc-motion='on']) .overview {
+    --stage-h: calc(100vh - var(--ifm-navbar-height));
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    gap: clamp(28px, 3.2vw, 64px);
+    padding-top: calc(var(--stage-h) * 0.16);
+    transform-origin: 50% 45%;
+    will-change: transform, opacity;
+  }
+
+  :global(html[data-wc-motion='on']) .ovItem {
+    display: grid;
+    justify-items: center;
+    gap: 18px;
+    width: min(21vw, calc(var(--stage-h) * 0.44 * var(--ar) + 3rem));
+    color: inherit;
+    text-decoration: none;
+  }
+
+  :global(html[data-wc-motion='on']) .ovItem > :first-child {
+    width: 100%;
+  }
+
+  :global(html[data-wc-motion='on']) .ovTitle {
+    font-size: clamp(15px, 1.2vw, 19px);
+    letter-spacing: 0.06em;
+    text-align: center;
+  }
+
+  :global(html[data-wc-motion='on']) .ovItem:hover .ovTitle {
+    color: var(--wc-accent);
+  }
+
+  :global(html[data-wc-motion='on']) .ovRail,
+  :global(html[data-wc-motion='on']) .ovSkirting {
+    position: absolute;
+    left: 6%;
+    width: 88%;
+    margin: 0;
+  }
+
+  :global(html[data-wc-motion='on']) .ovRail {
+    top: calc(var(--stage-h) * 0.16);
+  }
+
+  :global(html[data-wc-motion='on']) .ovSkirting {
+    bottom: 5%;
   }
 
   /* 踢脚线：横贯整面墙，拉远时看得到墙根 */
