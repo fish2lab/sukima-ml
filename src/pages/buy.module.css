@@ -1,249 +1,157 @@
-.pageContainer {
-    box-sizing: border-box;
-    width: 100%;
-    background-color: #fff;
-    color: #1a1a1a;
-    font-family: "Times New Roman", "Songti SC", Serif;
-    min-height: 100vh;
-    padding: 60px 20px;
-}
-
-.contentWrapper {
-    box-sizing: border-box;
-    max-width: 800px;
-    margin: 0 auto;
-    width: 100%;
+/* 购买页：画廊墙上一张票据 + 三步。颜色只用 --wc-* 变量，字体全站锁定（票据用 wc-mono） */
+.page {
+  --ticket-hole: var(--wc-bg);
 }
 
 .title {
-    font-size: 2.5rem;
-    text-align: center;
-    margin-bottom: 3rem;
-    font-weight: normal;
-    letter-spacing: 1px;
+  margin: 0 0 clamp(28px, 4vw, 48px);
+  text-align: center;
 }
 
-.section {
-    margin-bottom: 4rem;
+/* ---------- 从作品页带过来的小票据 ---------- */
+.slip {
+  width: min(100%, 460px);
+  margin: 0 auto clamp(40px, 5vw, 64px);
 }
 
-.sectionTitle {
-    font-size: 1.5rem;
-    border-bottom: 2px solid #000;
-    padding-bottom: 10px;
-    margin-bottom: 2rem;
-    font-family: "Songti SC", serif;
+.slipHead {
+  margin: 0;
+  color: var(--wc-fg-2);
+  font-size: 1.05rem;
+  letter-spacing: 0.08em;
 }
 
-.paymentMethods {
-    display: flex;
-    justify-content: center;
-    gap: 40px;
-    flex-wrap: wrap;
-    margin-bottom: 2rem;
+.slipRows {
+  display: grid;
+  gap: 0.45rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 0.92rem;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
 }
 
-.qrCard {
-    box-sizing: border-box;
-    text-align: center;
-    background: var(--art-beige);
-    padding: 20px;
-    border: 1px solid var(--art-line);
-    box-shadow: var(--art-shadow-hard);
-    transition: transform 0.25s ease, box-shadow 0.25s ease;
+.slipAmount {
+  margin: 1rem 0 0;
+  padding-top: 0.8rem;
+  border-top: 1px solid var(--wc-line-soft);
+  font-size: 1.15rem;
+  line-height: 1.4;
+  text-align: right;
 }
 
-.qrCard:hover {
-    transform: translateY(-3px);
+/* ---------- 三步 ---------- */
+.step {
+  margin: 0;
 }
 
-.qrImage {
-    width: 250px;
-    height: auto;
-    display: block;
-    margin-bottom: 15px;
+.rule {
+  margin-block: clamp(36px, 4.5vw, 56px);
 }
 
-.qrLabel {
-    font-family: "Courier New", monospace;
-    font-weight: bold;
-    color: #555;
-    overflow-wrap: anywhere;
+.qrRow {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: clamp(24px, 5vw, 56px);
+  margin-top: 1.6rem;
 }
 
-.contactInfo {
-    box-sizing: border-box;
-    background: #f4f1ea;
-    padding: 30px;
-    border-radius: 0;
-    line-height: 1.8;
+.qr {
+  width: min(100%, 230px);
 }
 
-.emailList {
-    margin: 1rem 0;
+.para {
+  margin: 0 0 0.9rem;
+  line-height: 1.8;
 }
 
-.emailItem {
-    display: block;
-    font-family: "Courier New", monospace;
-    font-size: 1.1rem;
-    margin-bottom: 0.5rem;
-    overflow-wrap: anywhere;
+.emails {
+  display: grid;
+  gap: 0.8rem;
+  margin: 1.4rem 0 0;
+  padding: 0;
+  list-style: none;
+  overflow-wrap: anywhere;
 }
 
 .primary {
-    color: #b71c1c;
-    font-weight: bold;
+  position: relative;
+  padding: 0.75rem 1rem;
+  font-size: 1.08rem;
+}
+
+.emailEdge {
+  color: var(--wc-line);
+}
+
+.emailText {
+  position: relative;
 }
 
 .secondary {
-    color: #666;
+  padding: 0 1rem;
+  color: var(--wc-fg-2);
 }
 
 .templateBox {
-    box-sizing: border-box;
-    background: #fafafa;
-    border: 1px dashed #ccc;
-    padding: 30px;
-    font-family: "Courier New", monospace;
-    white-space: pre-wrap;
-    overflow-wrap: anywhere;
-    line-height: 1.6;
-    position: relative;
+  position: relative;
+  box-sizing: border-box;
+  margin-top: 1.4rem;
+  padding: clamp(40px, 5vw, 52px) clamp(18px, 3.5vw, 36px) clamp(22px, 3vw, 32px);
+  box-shadow: 7px 9px 0 var(--wc-shade);
+  line-height: 1.7;
+  overflow-wrap: anywhere;
 }
 
-.copyHint {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    font-size: 0.8rem;
-    color: #999;
-    font-family: sans-serif;
+.templateBox > :not(.templateEdge) {
+  position: relative;
+}
+
+.templateBox p {
+  margin: 0 0 0.35rem;
+}
+
+.templateEdge {
+  color: var(--wc-bg);
+}
+
+.templateBox > .copyHint {
+  position: absolute;
+  top: 14px;
+  right: 18px;
+  color: var(--wc-fg-2);
+  font-size: 0.85rem;
 }
 
 .importantNote {
-    margin-top: 20px;
-    color: #b71c1c;
-    font-weight: bold;
-    font-size: 0.9rem;
+  margin-top: 1.2rem;
+  padding-left: 0.9rem;
+  border-left: 3px solid var(--wc-line);
+  font-size: 0.92rem;
+  line-height: 1.7;
 }
 
 .signature {
-    text-align: right;
-    margin-top: 60px;
-    font-style: italic;
-    font-size: 1.2rem;
-    color: #444;
+  margin: clamp(40px, 5vw, 64px) 0 0;
+  font-size: 1.1rem;
+  line-height: 1.7;
+  text-align: right;
 }
 
-@media (max-width: 600px) {
-    .pageContainer {
-        padding: 42px 16px;
-    }
+@media (max-width: 996px) {
+  .qr {
+    width: min(44%, 200px);
+  }
 
-    .title {
-        font-size: clamp(2rem, 9vw, 2.4rem);
-        margin-bottom: 2.2rem;
-    }
+  .templateBox > .copyHint {
+    position: static;
+    display: block;
+    margin-bottom: 0.8rem;
+  }
 
-    .section {
-        margin-bottom: 3rem;
-    }
-
-    .sectionTitle {
-        font-size: 1.32rem;
-        margin-bottom: 1.5rem;
-    }
-
-    .paymentMethods {
-        gap: 20px;
-    }
-
-    .qrCard {
-        width: 100%;
-        max-width: 300px;
-        padding: 16px;
-    }
-
-    .qrImage {
-        width: 100%;
-        max-width: 250px;
-    }
-
-    .contactInfo {
-        padding: 22px;
-    }
-
-    .emailItem {
-        font-size: 0.95rem;
-        line-height: 1.6;
-    }
-
-    .templateBox {
-        padding: 44px 18px 22px;
-        font-size: 0.92rem;
-    }
-
-    .copyHint {
-        top: 12px;
-        right: 18px;
-        left: 18px;
-        text-align: right;
-    }
-
-    .signature {
-        margin-top: 42px;
-        font-size: 1.05rem;
-    }
-}
-
-/* Dark Mode Styles */
-[data-theme='dark'] .pageContainer {
-    background-color: #121212;
-    color: #e0e0e0;
-}
-
-[data-theme='dark'] .sectionTitle {
-    border-bottom-color: #444;
-    color: #fff;
-}
-
-[data-theme='dark'] .qrCard {
-    background: #1e1e1e;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-}
-
-[data-theme='dark'] .qrLabel {
-    color: #aaa;
-}
-
-[data-theme='dark'] .contactInfo {
-    background: #1e1e1e;
-    color: #ccc;
-}
-
-[data-theme='dark'] .primary {
-    color: #ff5252;
-}
-
-[data-theme='dark'] .secondary {
-    color: #aaa;
-}
-
-[data-theme='dark'] .templateBox {
-    background: #1e1e1e;
-    border-color: #444;
-    color: #ccc;
-}
-
-[data-theme='dark'] .copyHint {
-    color: #666;
-}
-
-[data-theme='dark'] .importantNote {
-    color: #ff5252;
-}
-
-[data-theme='dark'] .signature {
-    color: #888;
+  .templateBox {
+    padding-top: 22px;
+  }
 }
