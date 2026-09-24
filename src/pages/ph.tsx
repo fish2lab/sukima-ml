@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Head from '@docusaurus/Head';
 import Link from '@docusaurus/Link';
 import useBrokenLinks from '@docusaurus/useBrokenLinks';
+import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import Layout from '@theme/Layout';
 
 import StudioContactPanel from '../components/StudioContactPanel';
@@ -34,6 +35,7 @@ export default function StudioPhantasm() {
   const [shifted, setShifted] = useState(false);
   // 场地页和联系页链到 /ph#spaces；手写的 id 不会被 Docusaurus 的锚点检查收录，要自己登记
   useBrokenLinks().collectAnchor('spaces');
+  const { buildYear } = useDocusaurusContext().siteConfig.customFields as { buildYear: number };
 
   return (
     <Layout noFooter wrapperClassName="phantasmPage" title="Studio Phantasm | 摄影棚与场地出租" description="Studio Phantasm 摄影棚与场地出租。五种可切换的拍摄空间。">
@@ -45,7 +47,9 @@ export default function StudioPhantasm() {
         <meta property="og:image" content={`${HERO_BASE}-1600.webp`} />
         <meta property="og:url" content="https://ph.sukima-ml.club/" />
         <link rel="canonical" href="https://ph.sukima-ml.club/" />
-        <link rel="preload" as="image" href={`${HERO_BASE}-1600.webp`} fetchPriority="high" />
+        {/* 和 StudioPicture 的 <source media> 同一断点，手机只预载它真正显示的 1280 档 */}
+        <link rel="preload" as="image" href={`${HERO_BASE}-1280.webp`} media="(max-width: 700px)" fetchPriority="high" />
+        <link rel="preload" as="image" href={`${HERO_BASE}-1600.webp`} media="(min-width: 701px)" fetchPriority="high" />
       </Head>
 
       <div className={styles.site}>
@@ -66,7 +70,7 @@ export default function StudioPhantasm() {
         <main id="top">
           <section className={styles.hero} aria-labelledby="hero-title">
             <div className={styles.heroCard}>
-              <StudioPicture base={HERO_BASE} alt="Studio Phantasm 外墙、木窗与彩色座椅" className={styles.heroImage} eager />
+              <StudioPicture base={HERO_BASE} alt="Studio Phantasm 外墙、木窗与彩色座椅" className={styles.heroImage} size={{ width: 1600, height: 1600 }} eager />
               <div className={styles.heroCopy}>
                 <p className={styles.eyebrow}>PHOTOGRAPHY · SPACE RENTAL</p>
                 <h1 id="hero-title">让每一种想象<br />都有地方发生。</h1>
@@ -139,7 +143,7 @@ export default function StudioPhantasm() {
 
         <footer className={styles.footer}>
           <div className={styles.footerBrand}><img src="/img/studio/phantasm-mark.svg" alt="" width="54" height="61" /><span>STUDIO<br />PHANTASM</span></div>
-          <div className={styles.footerMeta}><Link to="/ph/contact">CONTACT</Link><a href="https://th.sukima-ml.club">TH. / TOUHOU</a><span>© {new Date().getFullYear()}</span></div>
+          <div className={styles.footerMeta}><Link to="/ph/contact">CONTACT</Link><a href="https://th.sukima-ml.club">TH. / TOUHOU</a><span>© {buildYear}</span></div>
         </footer>
       </div>
     </Layout>

@@ -741,7 +741,7 @@
     "message": "WeChat Pay"
   },
   "buy.payment.amount": {
-    "message": "Amount due: ¥{price}.00"
+    "message": "Amount due: ¥{price}"
   },
   "buy.contact.title": {
     "message": "2. Contact"

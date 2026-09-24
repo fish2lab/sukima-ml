@@ -91,7 +91,6 @@ export default function YukariStand({ src, alt, label, expanded, controls, image
               height={YUKARI_IMAGE.height}
               loading="eager"
               decoding="async"
-              fetchPriority="high"
               crossOrigin="anonymous"
               draggable={false}
               className={styles.img}

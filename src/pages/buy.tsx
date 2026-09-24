@@ -18,6 +18,8 @@ export default function BuyPage(): ReactNode {
     const variant = searchParams.get('variant');
     const spec = searchParams.get('spec');
     const price = searchParams.get('price');
+    // 作品页传来的是数字（68、6.5）；统一写成两位小数，不再在文案里硬拼 .00
+    const priceText = price && Number.isFinite(Number(price)) ? Number(price).toFixed(2) : (price ?? '');
 
     const prefill = product && variant && spec ? { product, variant, spec } : null;
 
@@ -43,7 +45,7 @@ export default function BuyPage(): ReactNode {
                         </ul>
                         {price ? (
                             <p className={`${styles.slipAmount} wc-mono`}>
-                                {translate({ id: 'buy.payment.amount', message: '待支付金额: ¥ {price}.00' }, { price })}
+                                {translate({ id: 'buy.payment.amount', message: '待支付金额: ¥ {price}' }, { price: priceText })}
                             </p>
                         ) : null}
                     </Ticket>

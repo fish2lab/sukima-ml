@@ -17,6 +17,12 @@ export const studioPricing = pricing;
 const image = (slug: string, id: string) =>
   `/img/studio/generated/spaces/${slug}/${id}`;
 
+// 场地图默认横幅 4:3（1600×1200）；这三张是竖幅 3:4。<img> 带上真实宽高，懒加载的图在下载前就能占好位置。
+const PORTRAIT = new Set(['white-stage/fsh0222', 'chinese-vintage/fsh0271', 'american-vintage/fsh0298']);
+
+export const studioImageSize = (base: string): { width: number; height: number } =>
+  PORTRAIT.has(base.split('/').slice(-2).join('/')) ? { width: 1200, height: 1600 } : { width: 1600, height: 1200 };
+
 // 图片编号属于网站；价格、面积、名称统一来自 studioPricing.json（PDF 也读同一文件）。
 const galleries: Record<string, { cover: string; images: string[] }> = {
   'white-stage': {

@@ -103,6 +103,11 @@ const config: Config = {
     },
   ],
 
+  // 构建时的年份：页面里直接写 new Date() 会在跨年后和预渲染的 HTML 对不上（水合不一致）
+  customFields: {
+    buildYear: new Date().getFullYear(),
+  },
+
   themeConfig: {
     image: 'img/artworks/Variant_B.webp',
     metadata: [

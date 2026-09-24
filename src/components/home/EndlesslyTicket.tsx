@@ -32,6 +32,8 @@ export default function EndlesslyTicket(): ReactNode {
   const text = TEXT;
   const ref = useRef<HTMLDivElement>(null);
   const running = useInView(ref, { once: true, amount: 0.3 });
+  // 滚出视口就暂停计数，回来接着数，不在后台每 0.5 秒重渲染
+  const visible = useInView(ref);
   const [cycle, setCycle] = useState(0);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [cumulativeSum, setCumulativeSum] = useState(0);
@@ -40,7 +42,7 @@ export default function EndlesslyTicket(): ReactNode {
 
   // Counting：每 0.5 秒累加一个字符的 ASCII 码
   useEffect(() => {
-    if (!running || phase !== 'counting') return undefined;
+    if (!running || !visible || phase !== 'counting') return undefined;
     if (currentIndex < text.length) {
       const timer = setTimeout(() => {
         const charCode = text.charCodeAt(currentIndex);
@@ -52,7 +54,7 @@ export default function EndlesslyTicket(): ReactNode {
     }
     setPhase('complete');
     return undefined;
-  }, [running, phase, currentIndex, text]);
+  }, [running, visible, phase, currentIndex, text]);
 
   // Complete -> Phantasm
   useEffect(() => {
@@ -77,7 +79,7 @@ export default function EndlesslyTicket(): ReactNode {
   const numberString = cumulativeSum.toString().padStart(4, '0');
 
   return (
-    <div ref={ref} className={clsx(styles.ticket, 'wc-mono')} data-phase={phase} data-running={running ? '' : undefined}>
+    <div ref={ref} className={clsx(styles.ticket, 'wc-mono')} data-phase={phase} data-running={running ? '' : undefined} data-paused={running && !visible ? '' : undefined}>
       <RoughBorder variant="fill" amp={0.8} freq={30} seed={71} nominal={NOMINAL} className={styles.paper} />
       <RoughBorder variant="line" weight={1.4} amp={0.4} seed={72} nominal={NOMINAL} className={styles.edge} />
       <Notch side="left" />
