@@ -85,10 +85,11 @@ export default function SpeechBubble({ id, label, place, maxBottom, onClose, pop
   if (maxBottom != null) top = Math.min(top, maxBottom - h - MARGIN);
   top = Math.round(Math.max(MARGIN, top));
   const left = Math.round(place.left);
-  const width = Math.round(place.width);
+  // 摆放算法在空间不够的那一帧可能给出负宽（手机上曾出现 -19），不画框，等下一次量完
+  const width = Math.max(0, Math.round(place.width));
   const tx = Math.round(place.tip[0] - left);
   const ty = Math.round(place.tip[1] - top);
-  const paths = useMemo(() => (h > 0 ? balloonPaths(width, h, [tx, ty], seed) : null), [width, h, tx, ty, seed]);
+  const paths = useMemo(() => (h > 0 && width > 0 ? balloonPaths(width, h, [tx, ty], seed) : null), [width, h, tx, ty, seed]);
   const cross = useMemo(() => crossPaths(seed + 20 + jitter), [seed, jitter]);
 
   return (

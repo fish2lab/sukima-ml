@@ -144,6 +144,20 @@
   pointer-events: none;
 }
 
+.labelSlot {
+  transition: opacity 0.2s ease;
+}
+
+.labelSlot[data-dim] {
+  opacity: 0.12;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .labelSlot {
+    transition: none;
+  }
+}
+
 .labelWrap {
   transform-origin: 0 50%;
 }

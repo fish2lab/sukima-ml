@@ -505,7 +505,8 @@ export default function MagicGallery(): ReactNode {
         </div>
 
         {/* 展签：桌面在画的右下，手机在画的下方；换幅时旧的收起，到位后新的翻出 */}
-        <div className={styles.labelSlot} style={{ '--ar': (centerItem.imageWidth / centerItem.imageHeight).toFixed(4) } as CSSProperties}>
+        {/* 气泡打开时展签退到很淡：桌面上气泡就摆在展签前面，两层字叠在一起读不清 */}
+        <div className={styles.labelSlot} data-dim={showInfo ? '' : undefined} style={{ '--ar': (centerItem.imageWidth / centerItem.imageHeight).toFixed(4) } as CSSProperties}>
           <AnimatePresence initial={false} mode="wait">
             {!moving ? (
               <motion.div

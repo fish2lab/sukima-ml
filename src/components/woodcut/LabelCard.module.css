@@ -29,6 +29,7 @@
 }
 
 .title {
+  text-wrap: balance;   /* 长标题两行尽量等长，不让最后一个字单独掉到第二行 */
   margin: 0 0 0.55em;
   color: var(--wc-card-fg);
   font-family: var(--wc-font-hand);
