@@ -1,0 +1,59 @@
+/* 票据：纸色卡 + 刀口纸边 + 撕线两头的半圆缺口。颜色全部来自 [data-wc-tone='paper'] 的变量 */
+.ticket {
+  --pad-x: clamp(20px, 4vw, 34px);
+  position: relative;
+  display: block;
+  box-sizing: border-box;
+  color: var(--wc-fg);
+  box-shadow: 7px 9px 0 var(--ticket-shade, var(--wc-shade));
+}
+
+.edge {
+  color: var(--wc-bg);
+}
+
+.line {
+  color: var(--wc-line-soft);
+}
+
+.head {
+  position: relative;
+  padding: 22px var(--pad-x) 12px;
+}
+
+.perf {
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: 24px;
+}
+
+.perfLine {
+  flex: 1;
+  margin: 0 20px;
+  color: var(--wc-fg-3);
+}
+
+/* 半圆缺口：一整个圆盖在纸边上，外半边和底色同色，看上去就是打掉了半个圆 */
+.hole {
+  position: absolute;
+  top: 0;
+  z-index: 2;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--ticket-hole, var(--wc-k-ink));
+}
+
+.hole[data-side='left'] {
+  left: -12px;
+}
+
+.hole[data-side='right'] {
+  right: -12px;
+}
+
+.body {
+  position: relative;
+  padding: 12px var(--pad-x) 26px;
+}

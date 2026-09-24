@@ -1,0 +1,143 @@
+/* 纸色价目卡（data-wc-tone="paper"：纸底 + 纸纹，墙上平灰投影） */
+.card {
+  position: relative;
+  box-sizing: border-box;
+  padding: clamp(20px, 2.6vw, 34px) clamp(14px, 2.4vw, 30px) clamp(18px, 2.2vw, 28px);
+  box-shadow: 7px 9px 0 var(--wc-shade);
+}
+
+.edge {
+  color: var(--wc-bg);
+}
+
+.title {
+  position: relative;
+  margin-bottom: 0.9rem;
+  padding-inline: 0.4rem;
+}
+
+.list {
+  position: relative;
+  display: grid;
+  gap: 2px;
+}
+
+/* 一行：勾 | 名字 ····· 价格；下面一行小字说明 */
+.row {
+  display: grid;
+  grid-template-columns: 1.6rem minmax(0, 1fr);
+  column-gap: 0.35rem;
+  align-items: baseline;
+  min-height: 44px;
+  box-sizing: border-box;
+  padding: 0.55rem 0.6rem 0.55rem 0.4rem;
+  color: var(--wc-fg);
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.row[data-selected] {
+  background: var(--wc-tint);
+}
+
+@media (hover: hover) {
+  .row:not([data-selected]):hover {
+    background: var(--wc-tint);
+  }
+}
+
+.row:focus-visible {
+  outline: 2px solid var(--wc-line);
+  outline-offset: -2px;
+}
+
+.mark {
+  display: block;
+  align-self: center;
+  width: 1.3rem;
+  height: 1.3rem;
+  font-size: 1.15rem;
+}
+
+.line {
+  display: flex;
+  align-items: baseline;
+  min-width: 0;
+  font-size: 1.06rem;
+  line-height: 1.45;
+}
+
+/* 每行不换行：名字太长时省略号（完整名字在 title 属性里，读屏照读全文） */
+.name {
+  flex: 0 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.spec {
+  color: var(--wc-fg-2);
+  font-size: 0.86em;
+}
+
+/* 中间一串细点连线 */
+.leader {
+  flex: 1 1 1.5rem;
+  min-width: 1.25rem;
+  margin: 0 0.5rem;
+  border-bottom: 2px dotted var(--wc-fg-3);
+  transform: translateY(-0.22em);
+}
+
+.price {
+  flex: none;
+  white-space: nowrap;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+.more {
+  grid-column: 2;
+  display: block;
+  margin-top: 0.2rem;
+  color: var(--wc-fg-2);
+  font-size: 0.86rem;
+  line-height: 1.5;
+}
+
+.tag {
+  display: inline-block;
+  margin: 0.1rem 0.5rem 0.1rem 0;
+  padding: 0 0.4em;
+  border: 1px solid var(--wc-line);
+  color: var(--wc-fg);
+  font-size: 0.78rem;
+  line-height: 1.55;
+  letter-spacing: 0.04em;
+}
+
+/* 推荐款的小标签是一枚印章 */
+.tag[data-recommended] {
+  border-color: var(--wc-stamp);
+  color: var(--wc-stamp);
+  transform: rotate(-2deg);
+}
+
+.detail {
+  display: block;
+}
+
+.detail + .detail {
+  margin-top: 0.1rem;
+}
+
+@media (max-width: 996px) {
+  .line {
+    font-size: 1rem;
+  }
+
+  .leader {
+    margin: 0 0.35rem;
+  }
+}

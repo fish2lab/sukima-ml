@@ -1,0 +1,143 @@
+.picker {
+  position: relative;
+  box-sizing: border-box;
+  padding: clamp(20px, 2.6vw, 34px) clamp(14px, 2.4vw, 30px) clamp(18px, 2.2vw, 28px);
+  box-shadow: 7px 9px 0 var(--wc-shade);
+}
+
+.edge {
+  color: var(--wc-bg);
+}
+
+.picker > :not(.edge) {
+  position: relative;
+}
+
+.title {
+  margin-bottom: 0.4rem;
+}
+
+.hint {
+  margin: 0 0 1rem;
+  color: var(--wc-fg);
+  font-size: 0.98rem;
+  line-height: 1.6;
+}
+
+.options {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(12px, 2vw, 24px);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.option {
+  display: grid;
+  gap: 0.7rem;
+  box-sizing: border-box;
+  padding: 0.8rem 0.8rem 0.7rem;
+  color: var(--wc-fg);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.option[data-interactive] {
+  cursor: pointer;
+}
+
+.option[data-selected] {
+  background: var(--wc-tint);
+}
+
+@media (hover: hover) {
+  .option[data-interactive]:not([data-selected]):hover {
+    background: var(--wc-tint);
+  }
+}
+
+.option:focus-visible {
+  outline: 2px solid var(--wc-line);
+  outline-offset: -2px;
+}
+
+.thumb {
+  display: block;
+  width: min(100%, 150px);
+  margin-inline: auto;
+}
+
+.text {
+  display: grid;
+  grid-template-columns: 1.4rem minmax(0, 1fr);
+  gap: 0.3rem;
+  align-items: start;
+}
+
+.mark {
+  display: block;
+  width: 1.3rem;
+  height: 1.3rem;
+  font-size: 1.1rem;
+}
+
+.words {
+  display: grid;
+  min-width: 0;
+}
+
+.label {
+  color: var(--wc-fg-2);
+  font-size: 0.8rem;
+  letter-spacing: 0.04em;
+}
+
+.name {
+  font-size: 1rem;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+
+/* 裸足版开关：手画的方框 + 墨色勾 */
+.toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  min-height: 44px;
+  margin: 0.9rem 0 0;
+  padding: 0.3rem 0.5rem 0.3rem 0.2rem;
+  border: 0;
+  background: none;
+  color: var(--wc-fg);
+  font-size: 1rem;
+  line-height: 1.3;
+  text-align: left;
+  cursor: pointer;
+  appearance: none;
+}
+
+.toggle:focus-visible {
+  outline: 2px solid var(--wc-line);
+  outline-offset: 2px;
+}
+
+.box {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 1.35rem;
+  height: 1.35rem;
+  border: 2px solid var(--wc-line);
+  font-size: 1.05rem;
+}
+
+.box > svg {
+  transform: translate(0.1em, -0.12em) scale(1.15);
+}
+
+.notice {
+  margin: 0.6rem 0 0;
+  color: var(--wc-fg-2);
+  font-size: 0.9rem;
+  line-height: 1.55;
+}

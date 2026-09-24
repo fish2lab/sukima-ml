@@ -1,0 +1,305 @@
+/* 作品详情页、数字作品页共用的版式。颜色只用 [data-sukima] 下的 --wc-* 变量，字体由全站锁定（等宽用 wc-mono） */
+
+/* ---------- 上半：画框 | 展签（手机单栏：画在上、展签在下） ---------- */
+.heroGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+  gap: clamp(40px, 5.5vw, 96px);
+  align-items: center;
+}
+
+.visual {
+  min-width: 0;
+  margin: 0;
+}
+
+.frameBox {
+  width: min(100%, 600px);
+  margin-inline: auto;
+}
+
+.caption {
+  width: min(100%, 600px);
+  margin: 1.5rem auto 0;
+  color: var(--wc-fg-2);
+  font-size: 0.95rem;
+  line-height: 1.5;
+  text-align: center;
+}
+
+.moreFrames {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(20px, 3vw, 40px);
+  width: min(100%, 600px);
+  margin: clamp(32px, 4vw, 56px) auto 0;
+}
+
+.label {
+  width: 100%;
+  max-width: 540px;
+}
+
+.kicker {
+  margin: 0 0 0.35rem;
+  color: var(--wc-card-fg-2);
+  font-size: clamp(0.95rem, 0.3vw + 0.85rem, 1.1rem);
+  line-height: 1.45;
+  letter-spacing: 0.03em;
+}
+
+.title {
+  margin: 0 0 0.9rem;
+}
+
+.facts {
+  margin: 0 0 0.9rem;
+  padding: 0;
+  list-style: none;
+  color: var(--wc-card-fg-2);
+  font-size: clamp(0.98rem, 0.3vw + 0.88rem, 1.12rem);
+  line-height: 1.6;
+}
+
+.meta {
+  margin: 0 0 1rem;
+  color: var(--wc-card-fg-2);
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+/* New Arrival、Dual Version：一枚歪着盖的小印章 */
+.stamp {
+  display: inline-block;
+  margin-right: 0.6em;
+  padding: 0.02em 0.45em;
+  border: 1.5px solid var(--wc-stamp);
+  color: var(--wc-stamp);
+  font-size: 0.82em;
+  letter-spacing: 0.06em;
+  transform: rotate(-3deg);
+}
+
+.intro {
+  margin: 0;
+  color: var(--wc-card-fg);
+  font-size: 1.02rem;
+  line-height: 1.8;
+}
+
+.priceNote {
+  color: var(--wc-card-fg-2);
+  font-size: 0.5em;
+  letter-spacing: 0.02em;
+}
+
+/* ---------- 下半：价目表 + 购买 | 材质说明 ---------- */
+.shopGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 6fr) minmax(0, 5fr);
+  gap: clamp(40px, 5.5vw, 96px);
+  align-items: start;
+}
+
+.order {
+  display: grid;
+  gap: clamp(28px, 3vw, 44px);
+  min-width: 0;
+}
+
+.costNote {
+  position: relative;
+  margin: 1rem 0.4rem 0;
+  color: var(--wc-fg-2);
+  font-size: 0.88rem;
+  line-height: 1.6;
+}
+
+.purchase {
+  display: grid;
+  justify-items: start;
+  gap: 0.75rem;
+}
+
+.buyWrap {
+  display: block;
+  max-width: 100%;
+}
+
+.notice {
+  margin: 0;
+  color: var(--wc-fg-2);
+  font-size: 0.92rem;
+  line-height: 1.5;
+}
+
+.notes {
+  min-width: 0;
+}
+
+.notes > .rule:first-child {
+  margin-top: 0.4rem;
+}
+
+.rule {
+  margin-block: 1.4rem 1.6rem;
+}
+
+.note {
+  min-width: 0;
+}
+
+.noteTitle {
+  margin: 0 0 0.75rem;
+}
+
+.para {
+  margin: 0 0 0.85rem;
+  font-size: 1.02rem;
+  line-height: 1.8;
+  overflow-wrap: anywhere;
+}
+
+/* ---------- 数字作品页 ---------- */
+.smallTitle {
+  margin: 1.2rem 0 0.7rem;
+  color: var(--wc-card-fg);
+  font-size: 1.15rem;
+  font-weight: 400;
+  line-height: 1.35;
+}
+
+.downloads {
+  display: grid;
+  gap: 0.7rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.download {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.2rem 1rem;
+  min-height: 48px;
+  box-sizing: border-box;
+  padding: 0.7rem 1rem;
+  color: var(--wc-card-fg);
+  text-decoration: none;
+}
+
+.download:hover {
+  background: var(--wc-tint);
+  color: var(--wc-card-fg);
+  text-decoration: none;
+}
+
+.download:focus-visible {
+  outline: 2px solid var(--wc-line);
+  outline-offset: 3px;
+}
+
+.downloadEdge {
+  color: var(--wc-card-line);
+}
+
+.downloadLabel {
+  position: relative;
+  font-size: 1.02rem;
+}
+
+.downloadSize {
+  position: relative;
+  color: var(--wc-card-fg-2);
+  font-size: 0.82rem;
+}
+
+.letter {
+  position: relative;
+  box-sizing: border-box;
+  padding: clamp(24px, 4vw, 48px) clamp(20px, 4vw, 52px);
+  box-shadow: 7px 9px 0 var(--wc-shade);
+}
+
+.letterEdge {
+  color: var(--wc-bg);
+}
+
+.letter > :not(.letterEdge) {
+  position: relative;
+}
+
+.signature {
+  margin: 1.4rem 0 0;
+  font-size: 1.08rem;
+  text-align: right;
+}
+
+.bigRule {
+  margin-block: clamp(40px, 5vw, 64px);
+}
+
+.payment {
+  text-align: center;
+}
+
+.bigPrice {
+  margin: 0.2rem 0 0.4rem;
+  font-size: clamp(2rem, 2vw + 1.4rem, 2.8rem);
+  line-height: 1.15;
+  font-variant-numeric: lining-nums;
+}
+
+.payNote {
+  margin: 0 0 1.8rem;
+  color: var(--wc-fg-2);
+}
+
+.qrRow {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: clamp(24px, 4vw, 48px);
+}
+
+.qr {
+  width: min(100%, 220px);
+}
+
+.free {
+  margin: 2rem 0 0;
+  color: var(--wc-fg-2);
+  font-size: 0.95rem;
+  line-height: 1.75;
+}
+
+/* ---------- 手机：两栏改单栏 ---------- */
+@media (max-width: 996px) {
+  .heroGrid,
+  .shopGrid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .frameBox,
+  .caption,
+  .moreFrames {
+    width: min(100%, 460px);
+  }
+
+  .label {
+    max-width: none;
+  }
+
+  .purchase,
+  .buyWrap,
+  .buy {
+    width: 100%;
+  }
+
+  .qr {
+    width: min(44%, 200px);
+  }
+}
