@@ -1,4 +1,5 @@
 .title {
+  text-wrap: balance;   /* 多行时各行尽量等长，不让最后一两个字单独成行 */
   font-family: var(--wc-font-hand);
   font-weight: 400;
   font-synthesis: none;
