@@ -178,6 +178,10 @@ export const artworkOffers: Record<ArtworkOffer['id'], ArtworkOffer> = {
           [CRAFT_LINK],
         ],
       },
+      {
+        headingKey: 'artist',
+        paragraphs: [['画师主页：', { link: 'Bilibili @真菌_isomer', href: 'https://space.bilibili.com/308844850', external: true }]],
+      },
     ],
     specTitle: '选择供奉规格 (Select Offering)',
     costNote: ['* 售价仅含极低的美术资源回收成本。', '* 全尺寸可选“无边框满印”或“加白边”。'],
@@ -324,7 +328,7 @@ export const artworkOffers: Record<ArtworkOffer['id'], ArtworkOffer> = {
     seo: { title: '《妖怪之山的秋千》', description: '東方風神録 × 弗拉戈纳尔《秋千》— 早苗与文文的决定性瞬间' },
     heading: { en: 'The Swing × Mountain of Faith', zh: '妖怪之山的秋千' },
     badge: 'New Arrival',
-    metaLines: ['Artist: Sukima-ML Official'],
+    metaLines: ['Artist: 真菌_isomer'],
     image: { src: '/img/artworks/artwork-004.webp', alt: '妖怪之山的秋千', width: 1063, height: 1417 },
     caption: 'Fig 4. The Swing × Mountain of Faith, 2025.',
     sections: [
