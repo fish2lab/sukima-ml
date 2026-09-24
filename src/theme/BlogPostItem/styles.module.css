@@ -1,0 +1,131 @@
+/* 博客：列表里每篇是一张展签；文章页是 720 左右的版心。正文里的代码块、引用、图片按木刻画风重画（Markdown 不改） */
+
+/* ---------- 列表、标签、作者页：展签卡片 ---------- */
+
+.card {
+  margin-bottom: 3.25rem;
+}
+
+.card :global(.margin-bottom--xl) {
+  margin-bottom: 0 !important;
+}
+
+.card :global(article > header h2) {
+  margin-bottom: 0.2rem;
+  font-size: clamp(1.5rem, 1vw + 1.15rem, 2.05rem);
+  line-height: 1.3;
+}
+
+.card :global(article > header h2 a) {
+  color: var(--wc-card-fg);
+  text-decoration: none;
+}
+
+.card :global(article > header h2 a:hover) {
+  color: var(--wc-card-fg);
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.22em;
+}
+
+.card :global(.markdown) {
+  color: var(--wc-card-fg);
+}
+
+.card :global(article > footer) {
+  margin-top: 1.25rem !important;
+  align-items: center;
+  row-gap: 0.75rem;
+}
+
+.card :global(article > footer a[aria-label]) {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  color: var(--wc-card-fg);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.25em;
+}
+
+/* ---------- 文章页 ---------- */
+
+.post {
+  max-width: 720px;
+  margin-inline: auto;
+}
+
+.post :global(.markdown) {
+  font-size: 1.06rem;
+  line-height: 1.95;
+}
+
+.post :global(.markdown) > :global(h2) {
+  margin-top: 2.75rem;
+}
+
+/* ---------- 正文元素（文章页和列表摘要共用） ---------- */
+
+/* 代码块：纸色底、细墨框、不要圆角和投影（prism 把底色写在 pre 的行内样式上，只能用 !important 压过） */
+.post :global(.theme-code-block),
+.card :global(.theme-code-block) {
+  border: 1.5px solid var(--wc-line);
+  border-radius: 0;
+  background: var(--wc-bg);
+  box-shadow: none;
+}
+
+.post :global(.theme-code-block pre),
+.card :global(.theme-code-block pre) {
+  border-radius: 0;
+  background-color: var(--wc-bg) !important;
+}
+
+.post :global(.theme-code-block button),
+.card :global(.theme-code-block button) {
+  border-radius: 0;
+}
+
+/* 引用块：左边一道木刻粗墨线（遮罩图在 BlogPostItem 里算好，放在 --pages-quote-bar 上） */
+.post :global(.markdown blockquote),
+.card :global(.markdown blockquote) {
+  position: relative;
+  margin: 1.75rem 0;
+  padding: 0.25rem 0 0.25rem 1.6rem;
+  border-left: 0;
+  background: none;
+  box-shadow: none;
+  color: var(--wc-fg-2);
+}
+
+.post :global(.markdown blockquote)::before,
+.card :global(.markdown blockquote)::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 8px;
+  background: var(--wc-line);
+  -webkit-mask: var(--pages-quote-bar) 0 0 / 100% 100% no-repeat;
+  mask: var(--pages-quote-bar) 0 0 / 100% 100% no-repeat;
+}
+
+/* 图片：简单的木刻框（墨框 + 白卡纸衬 + 墙上平灰投影），实拍不加滤镜 */
+.post :global(.markdown img),
+.card :global(.markdown img) {
+  box-sizing: border-box;
+  max-width: 100%;
+  height: auto;
+  margin: 0.75rem 0 0.5rem;
+  padding: clamp(6px, 1vw, 12px);
+  border: clamp(6px, 0.6vw + 3px, 10px) solid var(--wc-frame);
+  border-radius: 0;
+  background: var(--wc-mat);
+  box-shadow: 6px 8px 0 var(--wc-shade);
+}
+
+.post :global(.markdown hr),
+.card :global(.markdown hr) {
+  margin: 2.25rem 0;
+}

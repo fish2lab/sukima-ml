@@ -1,60 +1,15 @@
 .commentsWrapper {
   width: 100%;
-  margin: 60px auto 40px;
-  padding: 40px;
-  background: rgba(248, 250, 252, 0.8);
-  border-radius: 16px;
-  border: 1px solid rgba(0, 0, 0, 0.05);
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
-}
-
-.commentsHeader {
-  margin-bottom: 24px;
-  padding-bottom: 16px;
-  border-bottom: 2px solid rgba(0, 0, 0, 0.08);
-}
-
-.commentsTitle {
-  font-size: 1.8rem;
-  font-weight: 600;
-  margin: 0 0 8px 0;
-  color: var(--ifm-heading-color);
-}
-
-.commentsDescription {
-  font-size: 1rem;
-  margin: 0;
-  color: var(--ifm-color-emphasis-700);
-  line-height: 1.6;
+  margin: 64px 0 40px;
 }
 
 .commentsContent {
-  /* Giscus 内容区域 */
+  min-width: 0;
+  margin-top: 1.25rem;
 }
 
-/* 深色模式 */
-[data-theme='dark'] .commentsWrapper {
-  background: rgba(30, 41, 59, 0.9);
-  border-color: rgba(255, 255, 255, 0.1);
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.2);
-}
-
-[data-theme='dark'] .commentsHeader {
-  border-bottom-color: rgba(255, 255, 255, 0.1);
-}
-
-/* 响应式设计 */
-@media (max-width: 768px) {
+@media (max-width: 996px) {
   .commentsWrapper {
-    margin: 40px 20px 20px;
-    padding: 24px;
-  }
-
-  .commentsTitle {
-    font-size: 1.5rem;
-  }
-
-  .commentsDescription {
-    font-size: 0.9rem;
+    margin: 48px 0 24px;
   }
 }

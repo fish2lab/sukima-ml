@@ -1,0 +1,66 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  box-sizing: border-box;
+  padding: 16px;
+  overflow: auto;
+  overscroll-behavior: contain;
+  background: color-mix(in srgb, var(--wc-k-ink) 88%, transparent);
+  cursor: zoom-out;
+}
+
+/* 一张纸：深浅色模式下都是纸色，所以把 × 用到的语义色定回纸墨 */
+.sheet {
+  --wc-fg: var(--wc-k-ink);
+  --wc-line: var(--wc-k-ink);
+  --wc-tint: color-mix(in srgb, var(--wc-k-ink) 7%, transparent);
+  position: relative;
+  display: flex;
+  box-sizing: border-box;
+  max-width: 100%;
+  margin: auto;
+  flex-direction: column;
+  align-items: flex-end;
+  padding: 4px 12px 12px;
+  background-color: var(--wc-k-paper);
+  background-image: url('../woodcut/assets/grain-paper.webp');
+  background-size: 512px 512px;
+  cursor: default;
+  outline: none;
+}
+
+:global(html[data-wc-motion='on']) .sheet {
+  animation: drop 0.26s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+@keyframes drop {
+  from {
+    transform: translateY(-24px);
+  }
+  to {
+    transform: none;
+  }
+}
+
+.bar {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 4px;
+}
+
+.image {
+  display: block;
+  width: auto;
+  max-width: min(1200px, calc(100vw - 56px));
+  height: auto;
+  max-height: calc(100vh - 110px);
+  max-height: calc(100dvh - 110px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sheet {
+    animation: none !important;
+  }
+}

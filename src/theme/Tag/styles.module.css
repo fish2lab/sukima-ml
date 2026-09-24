@@ -1,0 +1,53 @@
+/* 标签：一张小展签。悬停时往左上抬一点，露出墙上的平灰投影 */
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  min-height: 36px;
+  color: var(--wc-fg);
+  text-decoration: none;
+  vertical-align: middle;
+}
+
+.tag:hover {
+  color: var(--wc-fg);
+  text-decoration: none;
+}
+
+.tag > :first-child {
+  transition:
+    transform 0.12s ease-out,
+    box-shadow 0.12s ease-out;
+}
+
+@media (hover: hover) {
+  .tag:hover > :first-child {
+    box-shadow: 3px 4px 0 var(--wc-shade);
+    transform: translate(-1px, -2px);
+  }
+}
+
+.tag:focus-visible {
+  outline: 2px solid var(--wc-line);
+  outline-offset: 3px;
+}
+
+.tagRegular {
+  font-size: 100%;
+}
+
+.tagWithCount {
+  font-size: 100%;
+}
+
+.count {
+  color: var(--wc-fg-2);
+  font-size: 0.8rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tag > :first-child {
+    transition: none;
+  }
+}

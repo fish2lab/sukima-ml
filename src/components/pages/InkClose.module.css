@@ -1,0 +1,32 @@
+.close {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  color: var(--wc-fg);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.close:hover {
+  background: var(--wc-tint);
+}
+
+.close:focus-visible {
+  outline: 2px solid var(--wc-line);
+  outline-offset: 2px;
+}
+
+.icon {
+  display: block;
+  width: 24px;
+  height: 24px;
+  overflow: visible;
+}

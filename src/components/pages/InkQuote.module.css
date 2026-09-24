@@ -1,0 +1,22 @@
+.quote {
+  position: relative;
+  margin: 0;
+  padding: 0.2rem 0 0.2rem 1.6rem;
+  border: 0;
+  color: var(--wc-fg-2);
+  line-height: 1.9;
+}
+
+.quote > p:last-child {
+  margin-bottom: 0;
+}
+
+.bar {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  display: block;
+  height: 100%;
+  color: var(--wc-line);
+}

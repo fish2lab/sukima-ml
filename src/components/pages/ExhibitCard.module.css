@@ -1,0 +1,27 @@
+.card {
+  position: relative;
+  display: block;
+  box-sizing: border-box;
+  margin: 0;
+  padding: clamp(18px, 2.2vw, 32px) clamp(18px, 2.4vw, 36px);
+  background: var(--wc-card);
+  color: var(--wc-card-fg);
+  box-shadow: 7px 9px 0 var(--wc-shade);
+  list-style: none;
+}
+
+.card[data-shadow='false'] {
+  box-shadow: none;
+}
+
+.paper {
+  color: var(--wc-card);
+}
+
+.line {
+  color: var(--wc-card-line);
+}
+
+.body {
+  position: relative;
+}

@@ -1,0 +1,10 @@
+.wall {
+  min-height: 70vh;
+}
+
+.inner {
+  display: flex;
+  min-height: 40vh;
+  align-items: center;
+  justify-content: center;
+}

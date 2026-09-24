@@ -1,78 +1,148 @@
-.modalOverlay {
+/* 票据弹窗。票据在深浅色模式下都是纸色卡、墨字（和片子黑场里的字幕一样），所以在 .ticket 上把语义色定回纸墨。 */
+
+.overlay {
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.75);
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  inset: 0;
   z-index: 9999;
-  animation: fadeIn 0.2s ease-out;
-  cursor: pointer;
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-.modalContent {
-  position: relative;
-  animation: scaleIn 0.3s ease-out;
-  cursor: default;
-  max-width: 90vw;
-  max-height: 90vh;
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1rem;
+  box-sizing: border-box;
+  padding: 16px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  background: color-mix(in srgb, var(--wc-k-ink) 80%, transparent);
+  cursor: pointer;
 }
 
-@keyframes scaleIn {
+/*
+ * 打孔缺口：外层比票据四周多出 --pad 的空地（给毛边留地方），用两张遮罩各管一半宽，
+ * 在票据左右边线、撕线的高度上各挖一个半径 --r 的圆。遮罩只看透明度（用哪个不透明色都一样），渐变的两个色标紧挨着，是一条硬边，不是可见的渐变。
+ */
+.cut {
+  --pad: 10px;
+  --r: 13px;
+  --stub: 5.25rem;
+  --y: calc(var(--pad) + var(--stub) + var(--r));
+  position: relative;
+  box-sizing: border-box;
+  width: min(22rem, 100%);
+  margin: auto;
+  padding: var(--pad);
+  cursor: default;
+  outline: none;
+  -webkit-mask:
+    radial-gradient(circle var(--r) at var(--pad) var(--y), transparent calc(var(--r) - 0.5px), var(--wc-k-ink) var(--r)) left top / 51% 100% no-repeat,
+    radial-gradient(circle var(--r) at calc(100% - var(--pad)) var(--y), transparent calc(var(--r) - 0.5px), var(--wc-k-ink) var(--r)) right top / 51% 100% no-repeat;
+  mask:
+    radial-gradient(circle var(--r) at var(--pad) var(--y), transparent calc(var(--r) - 0.5px), var(--wc-k-ink) var(--r)) left top / 51% 100% no-repeat,
+    radial-gradient(circle var(--r) at calc(100% - var(--pad)) var(--y), transparent calc(var(--r) - 0.5px), var(--wc-k-ink) var(--r)) right top / 51% 100% no-repeat;
+}
+
+/* 票据落下来：停住、突然动、再停住（easeOutBack，一点过冲） */
+:global(html[data-wc-motion='on']) .cut {
+  animation: drop 0.28s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+@keyframes drop {
   from {
-    opacity: 0;
-    transform: scale(0.8);
+    transform: translateY(-28px) rotate(-1.5deg);
   }
   to {
-    opacity: 1;
-    transform: scale(1);
+    transform: none;
   }
 }
 
-.modalTitle {
-  color: white;
-  font-size: 1.5rem;
+.ticket {
+  --wc-fg: var(--wc-k-ink);
+  --wc-fg-2: var(--wc-k-g3);
+  --wc-line: var(--wc-k-ink);
+  --wc-accent: var(--wc-k-plum);
+  --wc-tint: color-mix(in srgb, var(--wc-k-ink) 7%, transparent);
+  --wc-shade: var(--wc-k-g1);
+  --wc-frame: var(--wc-k-ink);
+  --wc-mat: var(--wc-k-wall-card);
+  position: relative;
+  background-color: var(--wc-k-paper);
+  background-image: url('../woodcut/assets/grain-paper.webp');
+  background-repeat: repeat;
+  background-size: 512px 512px;
+  color: var(--wc-k-ink);
+}
+
+.paper {
+  color: var(--wc-k-paper);
+}
+
+.line {
+  color: var(--wc-k-ink);
+}
+
+.stub {
+  position: relative;
+  display: flex;
+  box-sizing: border-box;
+  height: var(--stub);
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0 0.55rem 0 1.25rem;
+}
+
+.title {
   margin: 0;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  color: var(--wc-k-ink);
+  font-size: 1.3rem;
+  font-weight: 400;
+  line-height: 1.25;
+  letter-spacing: 0.04em;
 }
 
-.qrImage {
-  max-width: 100%;
-  max-height: 80vh;
-  height: auto;
-  border-radius: 10px;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
-  cursor: pointer;
-  transition: transform 0.2s ease;
+/* 撕线：一道带飞白的细墨线，两端是打孔缺口的描边 */
+.perf {
+  position: relative;
+  display: flex;
+  height: calc(2 * var(--r));
+  align-items: center;
 }
 
-.qrImage:hover {
-  transform: scale(1.02);
+.perf .tear {
+  flex: 1;
+  margin: 0 calc(var(--r) + 10px);
+  color: var(--wc-k-ink);
 }
 
-/* 响应式设计 */
-@media (max-width: 768px) {
-  .modalTitle {
-    font-size: 1.2rem;
-  }
-  
-  .qrImage {
-    max-height: 70vh;
+.notch {
+  position: absolute;
+  top: 50%;
+  display: block;
+  overflow: visible;
+  color: var(--wc-k-ink);
+  transform: translateY(-50%);
+}
+
+.notch[data-side='left'] {
+  left: 0;
+}
+
+.notch[data-side='right'] {
+  right: 0;
+  transform: translateY(-50%) scaleX(-1);
+}
+
+.body {
+  position: relative;
+  padding: 0.6rem 1.25rem 1.6rem;
+}
+
+/* 二维码框的宽度：同时受票据宽度和屏幕高度限制（图是 1200×2133），整张票据放得进一屏 */
+.qr {
+  width: min(100%, calc((100vh - 15rem) * 0.5626));
+  width: min(100%, calc((100dvh - 15rem) * 0.5626));
+  min-width: 9rem;
+  margin-inline: auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cut {
+    animation: none !important;
   }
 }

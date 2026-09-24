@@ -1,279 +1,143 @@
-.pageContainer {
-    box-sizing: border-box;
-    width: 100%;
-    background-color: #fff;
-    color: #1a1a1a;
-    font-family: "Times New Roman", "Songti SC", Serif;
+/* 关于页：画廊墙上左边挂着主催照片（挂绳），右边一张大展签 */
+
+.grid {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  gap: clamp(40px, 6vw, 104px);
+  align-items: start;
 }
 
-.mainGrid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    min-height: 90vh;
+/* 桌面：照片停在视口里，右边展签滚过去 */
+.visual {
+  position: sticky;
+  top: calc(var(--ifm-navbar-height) + 56px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2.25rem;
+  padding-top: 1.5rem;
 }
 
-.visualColumn {
-    box-sizing: border-box;
-    background-color: #f4f1ea;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 60px;
-    position: sticky;
-    top: 0;
-    height: 100vh;
-    overflow: hidden;
+.frameBox {
+  width: min(100%, 340px);
 }
 
-.frameWrapper {
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-    max-width: 60%;
-    border: 12px solid #fff;
-    background: #fff;
-    border-radius: 50%;
-    /* Circular frame for avatar */
-    overflow: hidden;
-    aspect-ratio: 1 / 1;
+.frame figcaption {
+  text-align: center;
 }
 
-.profileImage {
-    display: block;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+.card {
+  width: 100%;
 }
 
-.captionText {
-    font-family: "Courier New", monospace;
-    font-size: 0.8rem;
-    color: #888;
-    margin-top: 15px;
-    letter-spacing: 1px;
+.head {
+  margin-bottom: 0.25rem;
 }
 
-.gicleeLinkWrapper {
-    margin-top: 30px;
+.title {
+  margin: 0 0 0.6rem;
+  color: var(--wc-card-fg);
+  line-height: 1.25;
 }
 
-.gicleeLink {
-    display: inline-block;
-    padding: 16px 32px;
-    border: 1px solid var(--ifm-color-primary);
-    color: var(--ifm-color-primary);
-    font-family: "Songti SC", serif;
-    text-decoration: none;
-    transition: all 0.3s ease;
-    font-size: 1.1rem;
-    font-weight: bold;
+.name {
+  margin: 0 0 0.9rem;
+  color: var(--wc-card-fg);
+  font-size: clamp(1.3rem, 1vw + 1rem, 1.6rem);
+  letter-spacing: 0.08em;
 }
 
-.gicleeLink:hover {
-    background: var(--ifm-color-primary);
-    color: #fff;
-    text-decoration: none;
+.role {
+  margin: 0;
+  color: var(--wc-card-fg-2);
+  font-size: 1rem;
+  letter-spacing: 0.06em;
+  line-height: 1.6;
 }
 
-/* Dark Mode Overrides */
-[data-theme='dark'] .gicleeLink {
-    border-color: #e0e0e0;
-    color: #e0e0e0;
+.block {
+  color: var(--wc-card-fg);
+  font-size: 1.06rem;
+  line-height: 1.85;
+  overflow-wrap: anywhere;
 }
 
-[data-theme='dark'] .gicleeLink:hover {
-    background: #e0e0e0;
-    color: #000;
+.block p {
+  margin: 0 0 0.75rem;
 }
 
-.infoColumn {
-    box-sizing: border-box;
-    background-color: #ffffff;
-    display: flex;
-    flex-direction: column;
-    padding: 80px 60px;
-    justify-content: center;
+.block p:last-child {
+  margin-bottom: 0;
 }
 
-.infoContent {
-    max-width: 540px;
-    margin: 0 auto;
-    text-align: left;
-    width: 100%;
-    min-width: 0;
+.block a {
+  display: inline-flex;
+  min-width: 44px;
+  min-height: 40px;
+  align-items: center;
+  vertical-align: middle;
 }
 
-.mainTitle {
-    font-size: 2.6rem;
-    font-weight: 400;
-    line-height: 1.1;
-    margin-bottom: 1rem;
-    color: #000;
-    letter-spacing: -0.02em;
-}
-
-.subTitleCn {
-    display: block;
-    font-size: 1.5rem;
-    margin-top: 12px;
-    color: #333;
-    font-weight: normal;
-    font-family: "Songti SC", serif;
-}
-
-.artistMeta {
-    font-family: "Georgia", serif;
-    font-size: 1rem;
-    color: #666;
-    margin-bottom: 2rem;
-    line-height: 1.6;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-}
-
-.dividerShort {
-    width: 40px;
-    height: 2px;
-    background-color: #000;
-    margin: 2rem 0;
-}
-
-.descriptionBlock {
-    text-align: left;
-    margin-bottom: 2.5rem;
-    color: #333;
-    line-height: 1.8;
-    overflow-wrap: anywhere;
-}
-
-.descriptionBlock a {
-    display: inline-flex;
-    min-width: 44px;
-    min-height: 40px;
-    align-items: center;
-    vertical-align: middle;
-}
-
-.descriptionBlock h3 {
-    font-size: 1.1rem;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    border-bottom: 1px solid #eee;
-    padding-bottom: 8px;
-    margin-bottom: 12px;
+.blockTitle {
+  margin: 0 0 0.6rem;
+  color: var(--wc-card-fg);
+  font-size: 1.3rem;
+  line-height: 1.3;
+  letter-spacing: 0.08em;
 }
 
 .plainList {
-    list-style: none;
-    padding: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
 
 .plainList li {
-    margin-bottom: 0.5rem;
-    position: relative;
-    padding-left: 1.5rem;
+  position: relative;
+  margin-bottom: 0.4rem;
+  padding-left: 1.3rem;
 }
 
 .plainList li::before {
-    content: "·";
-    position: absolute;
-    left: 0;
-    font-weight: bold;
+  content: '';
+  position: absolute;
+  top: 0.85em;
+  left: 0.2rem;
+  width: 0.42rem;
+  height: 0.42rem;
+  background: var(--wc-card-fg);
+  transform: translateY(-50%) rotate(8deg);
 }
 
-.quoteBlock {
-    box-sizing: border-box;
-    text-align: left;
-    background: #f9f9f9;
-    padding: 24px;
-    border-left: 4px solid #000;
-    margin-bottom: 2rem;
-    font-style: italic;
-    color: #444;
-    line-height: 1.8;
+.quote {
+  margin: 0.25rem 0 1.5rem;
+  color: var(--wc-card-fg-2);
+  font-size: 1.05rem;
 }
 
-.smallNotice {
-    font-size: 0.8rem;
-    color: #888;
-    margin-top: 12px;
-    margin-bottom: 3rem;
-    font-family: "Courier New", monospace;
+.quote p {
+  margin: 0 0 0.6rem;
 }
 
-/* 响应式 */
-@media (max-width: 968px) {
-    .mainGrid {
-        grid-template-columns: 1fr;
-    }
-
-    .visualColumn {
-        height: auto;
-        position: static;
-        padding: 40px 20px;
-    }
-
-    .infoColumn {
-        padding: 40px 20px;
-    }
-
-    .mainTitle {
-        font-size: clamp(2rem, 9vw, 2.6rem);
-    }
-
-    .subTitleCn {
-        font-size: clamp(1.2rem, 5vw, 1.5rem);
-    }
-
-    .frameWrapper {
-        max-width: 200px;
-    }
+.notice {
+  margin: 0;
+  color: var(--wc-card-fg-2);
+  font-size: 0.92rem;
+  line-height: 1.6;
 }
 
-/* Dark Mode Support */
-[data-theme='dark'] .pageContainer {
-    background-color: #121212;
-    color: #e0e0e0;
-}
+@media (max-width: 996px) {
+  .grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 56px;
+  }
 
-[data-theme='dark'] .visualColumn {
-    background-color: #1e1e1e;
-}
+  .visual {
+    position: static;
+    padding-top: 1rem;
+  }
 
-[data-theme='dark'] .infoColumn {
-    background-color: #121212;
-}
-
-[data-theme='dark'] .mainTitle {
-    color: #fff;
-}
-
-[data-theme='dark'] .subTitleCn {
-    color: #ccc;
-}
-
-[data-theme='dark'] .artistMeta {
-    color: #aaa;
-}
-
-[data-theme='dark'] .dividerShort {
-    background-color: #fff;
-}
-
-[data-theme='dark'] .descriptionBlock {
-    color: #ccc;
-}
-
-[data-theme='dark'] .descriptionBlock h3 {
-    border-bottom-color: #333;
-}
-
-[data-theme='dark'] .quoteBlock {
-    background: #1e1e1e;
-    border-left-color: #fff;
-    color: #ccc;
-}
-
-[data-theme='dark'] .frameWrapper {
-    border-color: #333;
-    background: #333;
+  .frameBox {
+    width: min(68%, 260px);
+  }
 }

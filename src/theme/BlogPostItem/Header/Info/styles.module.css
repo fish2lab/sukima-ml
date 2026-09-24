@@ -1,0 +1,10 @@
+.container {
+  color: var(--wc-fg-2);
+  font-size: 0.9rem;
+  letter-spacing: 0.02em;
+}
+
+.date {
+  font-size: 0.85rem;
+  letter-spacing: 0.04em;
+}
