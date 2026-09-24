@@ -552,7 +552,7 @@
     "message": "This is not just a picture, but a piece of physical collection that can be passed down."
   },
   "giclee.sec1.title": {
-    "message": "🎨 Only 12 Colors can capture the depth of the 'Gap'"
+    "message": "Only 12 Colors can capture the depth of the 'Gap'"
   },
   "giclee.sec1.model": {
     "message": "【Epson SureColor P9580 · Flagship Output】"
@@ -594,7 +594,7 @@
     "message": "With 2400 dpi resolution and 3.5 pl micro-droplets, the eyelashes and strands of hair remain so clear that no visible dot pattern appears to the naked eye."
   },
   "giclee.sec2.title": {
-    "message": "📜 'Masterpiece' Touch within Reach"
+    "message": "'Masterpiece' Touch within Reach"
   },
   "giclee.sec2.model": {
     "message": "【Hahnemühle Photo Rag® 308g · Premium Paper】"
@@ -966,5 +966,130 @@
   "woodcut.sweep.toggle": {
     "message": "Show the Touhou version",
     "description": "SweepReveal 切换按钮的读屏名称（按下 = 显示东方版）"
+  },
+  "artwork.label.original": {
+    "message": "Original: {name}",
+    "description": "作品详情页展签：原作名"
+  },
+  "artwork.label.character": {
+    "message": "Characters: {name}",
+    "description": "作品详情页展签：画中的东方角色"
+  },
+  "artwork.label.artist": {
+    "message": "Artist: {name}",
+    "description": "作品详情页展签：画师"
+  },
+  "artwork.section.material": {
+    "message": "Material",
+    "description": "作品详情页材质段落的小标题"
+  },
+  "artwork.section.artist": {
+    "message": "Artist",
+    "description": "作品详情页画师主页段落的小标题"
+  },
+  "artwork.ticket.cancel": {
+    "message": "Let me think",
+    "description": "作品详情页确认票据上关闭弹窗的文字按钮"
+  },
+  "buy.ticket.title": {
+    "message": "Order",
+    "description": "购买页顶部小票据的抬头（票据列出从作品页带过来的作品、款式、规格、金额）"
+  },
+  "gallery.counter": {
+    "message": "Artwork {current} of {total}"
+  },
+  "gallery.wall.label": {
+    "message": "Gallery wall"
+  },
+  "gallery.yukari.ask": {
+    "message": "Ask Yukari about this artwork"
+  },
+  "gallery.bubble.label": {
+    "message": "Yukari on {title}"
+  },
+  "gallery.label.originalLine": {
+    "message": "Original: {painting}"
+  },
+  "gallery.label.characterLine": {
+    "message": "Characters: {character}"
+  },
+  "gallery.label.artistLine": {
+    "message": "Artist: {artist}"
+  },
+  "gallery.label.view": {
+    "message": "See this piece"
+  },
+  "home.hero.label": {
+    "message": "Sukima Moonlight",
+    "description": "首页开场左上角的小展签"
+  },
+  "home.hero.title": {
+    "message": "Where Classic Art Meets Touhou",
+    "description": "首页开场的手写大标题（h1）"
+  },
+  "home.hero.subtitle": {
+    "message": "名画与东方的邂逅",
+    "description": "首页大标题下面的副题；中文站是英文，英文站换成中文，两种语言各占一行"
+  },
+  "home.gallery.heading": {
+    "message": "Four works on the wall",
+    "description": "首页画廊墙的标题（只给读屏）"
+  },
+  "home.gallery.original": {
+    "message": "Original",
+    "description": "画廊墙展签：原作"
+  },
+  "home.gallery.character": {
+    "message": "Character",
+    "description": "画廊墙展签：角色"
+  },
+  "home.gallery.artist": {
+    "message": "Artist",
+    "description": "画廊墙展签：画师"
+  },
+  "home.gallery.view": {
+    "message": "View this piece",
+    "description": "画廊墙展签上进详情页的按钮"
+  },
+  "home.gallery.viewLabel": {
+    "message": "View this piece: {title}",
+    "description": "「看这幅」按钮的读屏名称"
+  },
+  "home.gallery.toggle": {
+    "message": "Show the Touhou version: {title}",
+    "description": "画廊墙上原作 / 东方版切换按钮的读屏名称"
+  },
+  "home.gallery.altOriginal": {
+    "message": "Original: {name}",
+    "description": "画廊墙上原作图片的 alt"
+  },
+  "home.gallery.altTouhou": {
+    "message": "Touhou version: {title}",
+    "description": "画廊墙上东方版图片的 alt"
+  },
+  "home.modules.heading": {
+    "message": "Four ways in",
+    "description": "首页四个入口的标题（只给读屏）"
+  },
+  "pages.dialog.close": {
+    "message": "Close"
+  },
+  "pages.notFound.text": {
+    "message": "Nothing here. The gap swallowed it."
+  },
+  "pages.notFound.home": {
+    "message": "Back to Home"
+  },
+  "giclee.photo.open": {
+    "message": "View full size: {alt}"
+  },
+  "test.progress.label": {
+    "message": "Quiz progress"
+  },
+  "test.question.number": {
+    "message": "Question {n}"
+  },
+  "home.hero.scrollHint": {
+    "message": "SCROLL"
   }
 }

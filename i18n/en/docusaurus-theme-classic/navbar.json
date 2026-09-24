@@ -22,5 +22,9 @@
   "item.label.摄影作品": {
     "message": "Photography",
     "description": "Navbar item with label 摄影作品"
+  },
+  "item.label.Studio Phantasm": {
+    "message": "Studio Phantasm",
+    "description": "Navbar item with label Studio Phantasm"
   }
 }

@@ -54,5 +54,9 @@
   "copyright": {
     "message": "© 2026 Sukima Moonlight. Protected under the Copyright Law of the PRC | All Rights Reserved.",
     "description": "The footer copyright"
+  },
+  "link.item.label.版权声明": {
+    "message": "版权声明",
+    "description": "The label of footer link with label=版权声明 linking to /copyright"
   }
 }
