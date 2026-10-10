@@ -1,5 +1,5 @@
 /**
- * 作品详情页（artwork-001..004）和数字作品页（digital-001、002）的售卖数据：
+ * 作品详情页（artwork-001..004）和数字作品页（digital-001..004）的售卖数据：
  * 规格、尺寸、价格、按钮文案、确认票据文案、购买链接，以及页面上原有的介绍文字。
  *
  * 全部从改版前的旧页面逐字搬来，改版时用一次性脚本和旧页面逐个状态比对过（价格、链接、文案一致）。
@@ -132,7 +132,7 @@ export interface ArtworkOffer {
 
 export interface DigitalOffer {
   kind: 'digital';
-  id: '001' | '002';
+  id: '001' | '002' | '003' | '004';
   seo: { title: string; description: string };
   title: string;
   subtitle: string;
@@ -295,6 +295,7 @@ export const artworkOffers: Record<ArtworkOffer['id'], ArtworkOffer> = {
     ],
     specTitle: '1. 选择规格 (Select Size)',
     specs: [
+      { id: 'digital-copy', type: '数字典藏', name: 'Digital Original (PNG)', spec: '3508 × 4102 px', imageSize: 'Original Source', price: 6.48, note: '含1张高清原图', digital: true },
       { id: 'core-14', type: '仅画芯', name: '14寸画芯', spec: '14 inch', imageSize: '30 × 35 cm', price: 69, note: '满印无留白' },
       { id: 'core-40-34', type: '仅画芯', name: '40×45cm画芯', imageSize: '34.2×40cm', price: 99, note: '侧边2.5cm留白' },
       { id: 'core-50-45', type: '仅画芯', name: '45×50cm画芯', imageSize: '43.4×45 cm', price: 139, note: '侧边2.5cm留白' },
@@ -313,7 +314,13 @@ export const artworkOffers: Record<ArtworkOffer['id'], ArtworkOffer> = {
       { id: 'framed-40-34', type: '装裱款', name: '装裱款 34.2×40cm', spec: '50x45cm Frame', imageSize: '34.2×40 cm', price: 349, note: '含50x45卡纸和相框' },
     ],
     defaultSpec: 'core-14',
-    purchase: { label: '收藏永恒 / Drink the Elixir', notice: '* 点击按钮扫码，备注规格' },
+    purchase: {
+      label: '收藏永恒 / Drink the Elixir',
+      notice: '* 点击按钮扫码，备注规格',
+      digitalLabel: DIGITAL_LABEL,
+      digitalNotice: '* 数字典藏包含高清原图',
+      digitalHref: '/sukima-ml/digital-003',
+    },
     ticket: [
       { label: '作品:', value: '蓬莱宫娥 (Las Meninas)' },
       { label: '规格:', from: 'name' },
@@ -351,6 +358,7 @@ export const artworkOffers: Record<ArtworkOffer['id'], ArtworkOffer> = {
     ],
     specTitle: '1. 选择规格 (Select Size)',
     specs: [
+      { id: 'digital-copy', type: '数字典藏', name: 'Digital Original (JPG)', spec: '4252 × 5669 px', imageSize: 'Original Source', price: 6.48, note: '含1张高清原图', digital: true },
       { id: 'core-14', type: '仅画芯', name: '14寸画芯', spec: '14 inch', imageSize: '30 × 35 cm', price: 68, note: '满印无留白' },
       {
         id: 'core-16',
@@ -381,7 +389,13 @@ export const artworkOffers: Record<ArtworkOffer['id'], ArtworkOffer> = {
       { id: 'framed-20', type: '装裱款', name: '装裱款 20寸', spec: '60×50cm画框', imageSize: '50 × 37.5 cm', price: 378, note: '含卡纸', tag: '效果最佳', description: '大画幅视觉张力更强' },
     ],
     defaultSpec: 'core-14',
-    purchase: { label: '荡入幻想 / Swing into Fantasy', notice: '* 点击按钮扫码，备注规格' },
+    purchase: {
+      label: '荡入幻想 / Swing into Fantasy',
+      notice: '* 点击按钮扫码，备注规格',
+      digitalLabel: DIGITAL_LABEL,
+      digitalNotice: '* 数字典藏包含高清原图',
+      digitalHref: '/sukima-ml/digital-004',
+    },
     ticket: [
       { label: '作品:', value: '妖怪之山的秋千 (The Swing)' },
       { label: '规格:', from: 'name' },
@@ -391,7 +405,7 @@ export const artworkOffers: Record<ArtworkOffer['id'], ArtworkOffer> = {
   },
 };
 
-// ===================== 两个数字作品页 =====================
+// ===================== 四个数字作品页 =====================
 
 const QR: DigitalOffer['payment']['qr'] = [
   { image: { src: '/img/alipay_receiveMoney.webp', alt: 'Alipay', width: 922, height: 964 }, label: '支付宝 (Alipay)' },
@@ -477,6 +491,62 @@ export const digitalOffers: Record<DigitalOffer['id'], DigitalOffer> = {
         ['如果条件允许，也希望你能通过下方的“奉纳幻想”支持社团的运营。这笔资金将全部用于填补美术资源的成本，以及支持后续更多精彩作品的诞生。'],
         ['愿幻想乡的月光，常伴你左右。'],
         ['感谢各位的支持，让更多的世界名画能够浸入幻想的染缸，又再次穿越幻想与现实的界线，来到你我身边。'],
+      ],
+      signature: SIGNATURE,
+    },
+    payment: PAYMENT_BASE,
+  },
+  '003': {
+    kind: 'digital',
+    id: '003',
+    seo: { title: 'Digital Collection - 蓬莱宫娥', description: 'Digital Download for Las Meninas × Touhou Project' },
+    title: 'Digital Collection',
+    subtitle: '数字典藏 · 蓬莱宫娥',
+    previews: [
+      { image: { src: '/img/artworks/artwork-003.webp', alt: '蓬莱宫娥', width: 1200, height: 1404 }, label: 'Las Meninas × Touhou Project' },
+    ],
+    downloadTitle: 'Download Original Assets',
+    downloads: [{ href: '/img/digital_Resource/artwork-003.png', label: 'Original Artwork (PNG)', size: 'PNG · 15.1 MB' }],
+    letter: {
+      title: LETTER_TITLE,
+      paragraphs: [
+        ['致每一位热爱东方与艺术的朋友：'],
+        ['《蓬莱宫娥》借用了委拉斯开兹《宫娥》的构图，把画面里的公主与侍从换成了辉夜和永远亭的众人。'],
+        [
+          '特别感谢画师 ',
+          { link: 'amibazh', href: 'https://www.pixiv.net/users/1500528', external: true, strong: true },
+          ' 老师，把这幅群像一笔一笔画了出来。',
+        ],
+        ['和之前的作品一样，高清原图直接放出，不加水印。如果你喜欢它，可以通过下方的“奉纳幻想”支持社团，这笔钱会用来填补美术资源的成本。'],
+        ['愿幻想乡的月光，常伴你左右。'],
+      ],
+      signature: SIGNATURE,
+    },
+    payment: PAYMENT_BASE,
+  },
+  '004': {
+    kind: 'digital',
+    id: '004',
+    seo: { title: 'Digital Collection - 妖怪之山的秋千', description: 'Digital Download for The Swing × Mountain of Faith' },
+    title: 'Digital Collection',
+    subtitle: '数字典藏 · 妖怪之山的秋千',
+    previews: [
+      { image: { src: '/img/artworks/artwork-004.webp', alt: '妖怪之山的秋千', width: 1063, height: 1417 }, label: 'The Swing × Mountain of Faith' },
+    ],
+    downloadTitle: 'Download Original Assets',
+    downloads: [{ href: '/img/digital_Resource/artwork-004.jpg', label: 'Original Artwork (JPG)', size: 'JPG · 16.3 MB' }],
+    letter: {
+      title: LETTER_TITLE,
+      paragraphs: [
+        ['致每一位热爱东方与艺术的朋友：'],
+        ['《妖怪之山的秋千》借用了弗拉戈纳尔《秋千》的构图，画的是早苗与文文在妖怪之山的一瞬间。'],
+        [
+          '特别感谢画师 ',
+          { link: '真菌_isomer', href: 'https://space.bilibili.com/308844850', external: true, strong: true },
+          ' 老师。这次他直接以 360PPI 起稿，这里放出的就是画布原图。',
+        ],
+        ['和之前的作品一样，高清原图直接放出，不加水印。如果你喜欢它，可以通过下方的“奉纳幻想”支持社团，这笔钱会用来填补美术资源的成本。'],
+        ['愿幻想乡的月光，常伴你左右。'],
       ],
       signature: SIGNATURE,
     },
